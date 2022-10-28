@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+ul,
+li,
+ol,
+dl,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+img,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  // 自定义滚动条
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  // 定义滚动条轨道
+  &::-webkit-scrollbar-track {
+    // border-radius: 10px;
+    background-color: #f6f6f6;
+  }
+
+  // 轨道滑块部分
+  &::-webkit-scrollbar-thumb {
+    // border-radius: 10px;
+    background-color: #cbc8c6;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b3b3;
+  }
+
+  // 轨道两端按钮部分
+  &::-webkit-scrollbar-button {
+    // background-color: #7c2929;
+  }
+
+  /// 横向滚动条和纵向滚动条相交处尖角
+  &::-webkit-scrollbar-corner {
+    // background-color: black;
+  }
+}
+
+img {
+  display: block;
+  width: 100%;
+  /* border 0 照顾低版本浏览器 如果 图片外面包含了链接会有边框的问题 */
+  border: 0;
+  /* 取消图片底侧有空白缝隙的问题 */
+  vertical-align: middle;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input::placeholder {
+  color: rgba(85, 128, 192, 0.5) !important;
+}
+
+@abc: #0ff;
