@@ -1,19 +1,19 @@
 import {
   createVuePlugin
-} from 'vite-plugin-vue2';
+} from "vite-plugin-vue2";
 import {
   defineConfig
-} from 'vite';
-import path from 'path';
+} from "vite";
+import path from "path";
 
 export default defineConfig(({
   mode,
 }) => {
   return {
-    base: mode === 'development' ? '/enterprise-risk-management/' : '/', //生产环境服务的公共基础路径
+    base: mode === "development" ? "/enterprise-risk-management/" : "/", //生产环境服务的公共基础路径
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        "@": path.resolve(__dirname, "src"),
       },
     },
     css: {
@@ -21,7 +21,7 @@ export default defineConfig(({
         less: {
           // 引入 common.less 这样就可以在全局中使用 common.less 中预定义的变量了
           // 必须给导入的路径最后加上;
-          additionalData: '@import "@/assets/css/common.less";',
+          additionalData: "@import \"@/assets/css/common.less\";",
         },
       },
     },
@@ -29,20 +29,20 @@ export default defineConfig(({
       createVuePlugin( /* options */ ),
     ],
     server: {
-      host: 'localhost',
+      host: "localhost",
       port: 8080,
       strictPort: false, //设为false时若端口已被占用则会尝试下一个可用端口，而不是直接退出
       open: false, // 是否自动在浏览器打开
       https: false, // 是否开启 https
       proxy: {
-        '/api': {
+        "/api": {
           // target: "http://183.67.4.126:8958", //微服务端
-          target: 'http://192.168.3.29:8084', //本地
+          target: "http://192.168.3.29:8084", //本地
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
-        '/socket.io': {
-          target: 'ws://localhost:3000',
+        "/socket.io": {
+          target: "ws://localhost:3000",
           ws: true,
         },
       },

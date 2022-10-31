@@ -23,8 +23,8 @@
 export default {
   data() {
     return {
-      activeName: 'second', //范德萨
-      aaa: '放松撒接口了', //范德萨
+      activeName: "second", //范德萨
+      aaa: "放松撒接口了", //范德萨
     };
   },
   methods: {

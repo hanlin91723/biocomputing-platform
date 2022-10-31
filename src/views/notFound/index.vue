@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import img_404 from '@/assets/images/404_images/404.png';
-import img_404_cloud from '@/assets/images/404_images/404_cloud.png';
+import img_404 from "@/assets/images/404_images/404.png";
+import img_404_cloud from "@/assets/images/404_images/404_cloud.png";
 export default {
-  name: 'NotFound',
+  name: "NotFound",
   data() {
     return {
       img_404,
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     message() {
-      return '对不起，您访问的页面不存在、或已被删除、或暂时不可用';
+      return "对不起，您访问的页面不存在、或已被删除、或暂时不可用";
     },
   },
 };
@@ -43,7 +43,7 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
   background: #f0f2f5;
   .pic-404 {
     position: relative;

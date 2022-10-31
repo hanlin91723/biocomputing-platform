@@ -33,13 +33,13 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
-      nowDay: '',
-      nowTime: '',
-      weather: '',
-      temperature: '',
+      nowDay: "",
+      nowTime: "",
+      weather: "",
+      temperature: "",
     };
   },
   computed: {
@@ -47,39 +47,39 @@ export default {
       return [
         {
           id: 1,
-          name: '智慧工地',
-          path: '/intelligent-site',
+          name: "智慧工地",
+          path: "/intelligent-site",
         },
         {
           id: 2,
-          name: '房地产',
-          path: '/real-estate',
+          name: "房地产",
+          path: "/real-estate",
         },
         {
           id: 3,
-          name: '住房保障',
-          path: '/housing-security',
+          name: "住房保障",
+          path: "/housing-security",
         },
         {
           id: 4,
-          name: '物业管理',
-          path: '/estate-management',
+          name: "物业管理",
+          path: "/estate-management",
         },
       ];
     },
   },
   created() {
     setInterval(() => {
-      this.nowDay = this.$dayjs().format('YYYY-MM-DD');
-      this.nowTime = this.$dayjs().format('HH:mm:ss');
+      this.nowDay = this.$dayjs().format("YYYY-MM-DD");
+      this.nowTime = this.$dayjs().format("HH:mm:ss");
     }, 1000);
     // this.getWeather();
   },
   methods: {
     getWeather() {
-      this.$axios.get('/construction/projectManager').then(() => {
-        this.weather = '多云转晴';
-        this.temperature = '23~30℃';
+      this.$axios.get("/construction/projectManager").then(() => {
+        this.weather = "多云转晴";
+        this.temperature = "23~30℃";
       });
     },
     handleNav(item) {

@@ -1,7 +1,7 @@
 import {
   Message
-} from 'element-ui';
-import axios from 'axios';
+} from "element-ui";
+import axios from "axios";
 // import router from "../router/index";
 
 const env =
@@ -10,20 +10,20 @@ let aaa = {
   a: 1,
   b: 2,
 };
-if (aaa === '1') {
+if (aaa === "1") {
   console.log(env);
 }
-const devUrl = '/api/build'; //开发环境
-const proUrl = '/build'; //生产环境
-const baseUrl = env === 'production' ? proUrl : devUrl;
+const devUrl = "/api/build"; //开发环境
+const proUrl = "/build"; //生产环境
+const baseUrl = env === "production" ? proUrl : devUrl;
 
 //基础配置
 const service = axios.create({
   timeout: 10000,
   baseURL: baseUrl,
-  responseType: 'json',
+  responseType: "json",
   headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
+    "Content-Type": "application/json;charset=UTF-8",
   },
 });
 
@@ -54,9 +54,9 @@ service.interceptors.response.use(
     //   sessionStorage.clear();
     //   return;
     // }
-    if (result.data.code === '0') {
-      return result.config.responseType === 'arraybuffer' ||
-        result.config.responseType === 'blob' ?
+    if (result.data.code === "0") {
+      return result.config.responseType === "arraybuffer" ||
+        result.config.responseType === "blob" ?
         result :
         result.data;
     } else {
@@ -69,13 +69,13 @@ service.interceptors.response.use(
       Message.error(error.response.data.message);
     } else {
       //请求超时状态
-      if (error.message.includes('timeout')) {
-        Message.error('网络请求超时，请稍后再试！');
-      } else if (error.message.includes('canceled')) {
+      if (error.message.includes("timeout")) {
+        Message.error("网络请求超时，请稍后再试！");
+      } else if (error.message.includes("canceled")) {
         // 取消请求
       } else {
         //可以展示断网组件
-        Message.error('网络请求异常，请稍后再试！');
+        Message.error("网络请求异常，请稍后再试！");
       }
     }
     return Promise.reject(error);
@@ -90,7 +90,7 @@ function request(method, url, params = {}, options = {}) {
     const config = Object.assign({
         url,
         method,
-        [method === 'get' || method === 'delete' ? 'params' : 'data']: params,
+        [method === "get" || method === "delete" ? "params" : "data"]: params,
       },
       options
     );
@@ -106,11 +106,11 @@ function request(method, url, params = {}, options = {}) {
 }
 
 const http = {
-  get: request.bind(null, 'get'),
-  post: request.bind(null, 'post'),
-  put: request.bind(null, 'put'),
-  patch: request.bind(null, 'patch'),
-  delete: request.bind(null, 'delete'),
+  get: request.bind(null, "get"),
+  post: request.bind(null, "post"),
+  put: request.bind(null, "put"),
+  patch: request.bind(null, "patch"),
+  delete: request.bind(null, "delete"),
 };
 
 export default http;

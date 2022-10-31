@@ -1,34 +1,46 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import NProgress from 'nprogress';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import NProgress from "nprogress";
 
 Vue.use(VueRouter);
 
 const routes = [{
-    path: '/',
-    name: 'home',
-    component: () => import('@/views/home/index.vue'),
-    redirect: '/demo',
+    path: "/",
+    redirect: "/login",
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/login/index.vue"),
+  },
+  {
+    path: "/container",
+    name: "Container",
+    component: () => import("@/views/container/index.vue"),
+    redirect: "/risk-map",
     children: [{
-      path: '/demo',
-      name: 'Demo',
-      component: () => import('@/views/demo/index.vue'),
+      path: "/risk-map",
+      name: "RiskMap",
+      component: () => import("@/views/home/risk-map/index.vue"),
     }, ],
   },
   {
-    path: '/not-found',
-    name: 'NotFound',
-    component: () => import('@/views/notFound/index.vue'),
+    path: "/demo",
+    name: "Demo",
+    component: () => import("@/views/demo/index.vue"),
   },
   {
-    path: '*',
-    redirect: {
-      path: '/not-found',
-    },
+    path: "/not-found",
+    name: "NotFound",
+    component: () => import("@/views/notFound/index.vue"),
+  },
+  {
+    path: "*",
+    redirect: "/not-found",
   },
 ];
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: import.meta.env.BASE_URL, //部署应用时的基本URL
   routes,
 });
