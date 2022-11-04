@@ -23,8 +23,13 @@
     </el-table-column>
   </el-table>
     <!-- 分页器 -->
-    <el-pagination background layout="total, prev, pager, next" :page-size="100" :total="1000" 
-    class="pagination" @current-change="handleCurrentChange">
+    <el-pagination background
+     layout="total, prev, pager, next"
+     :page-size="pageSize"
+     :total="total" 
+     :current-page="currentPage"
+     class="pagination"
+     @current-change="handleCurrentChange">
     </el-pagination>
     <!-- 编辑和添加用户弹窗 -->
     <el-dialog :title="roleId==-1?'新建角色':'编辑角色'" :visible="showRoleDialog" width="45%" @close="isCancel">
@@ -62,74 +67,8 @@
 export default {
   data() {
     return {
-      tableData: [{
-          id:1,
-          roleName: "高级管理员",
-          permissionDescription: "可查看编辑系统内全部数据",
-          time:"2022-03-02",
-          roleCount:5,
-        },{
-          id:2,
-          roleName: "普通管理员",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:2,
-        },{
-          id:3,
-          roleName: "访客",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:30,
-        },{
-          id:4,
-          roleName: "高级管理员",
-          permissionDescription: "可查看编辑系统内全部数据",
-          time:"2022-03-02",
-          roleCount:5,
-        },{
-          id:5,
-          roleName: "普通管理员",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:2,
-        },{
-          id:6,
-          roleName: "访客",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:30,
-        },{
-          id:7,
-          roleName: "高级管理员",
-          permissionDescription: "可查看编辑系统内全部数据",
-          time:"2022-03-02",
-          roleCount:5,
-        },{
-          id:8,
-          roleName: "普通管理员",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:2,
-        },{
-          id:9,
-          roleName: "访客",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:30,
-        },{
-          id:10,
-          roleName: "高级管理员",
-          permissionDescription: "可查看编辑系统内全部数据",
-          time:"2022-03-02",
-          roleCount:5,
-        },{
-          id:11,
-          roleName: "普通管理员",
-          permissionDescription: "用户权限描述文字",
-          time:"2022-03-02",
-          roleCount:2,
-        },],
-        roleList:[{
+      tableData: [],
+      roleList:[{
           label: 1,
           name:"产业链",
           children:[{
@@ -197,13 +136,13 @@ export default {
           },],
           checkedAll:false,
           isIndeterminate:true,
-        },],
-        checkedCities:[
+      },],
+      checkedCities:[
           [],
           [],
           [],
           [],
-        ],
+      ],
       nameOrRole:"",
       showRoleDialog:false,
       roleId:-1,
@@ -219,9 +158,89 @@ export default {
         permissionDescription: [{ required: true, message: "权限描述不能为空", trigger: "blur", },],
         functionPermission: [{ required: true, message: "用户权限不能为空", trigger: "change", },],
       },
+      // 分页
+      total:110,
+      pageSize:11,
+      currentPage:1,
     };
   },
+  created(){
+    this.getTableData();
+  },
   methods:{
+    getTableData(){
+      // this.$axios.get("/construction/projectManager").then(({data,})=>{
+      //   console.log(data);
+       
+      // });
+      this.tableData = [{
+          id:1,
+          roleName: "高级管理员",
+          permissionDescription: "可查看编辑系统内全部数据",
+          time:"2022-03-02",
+          roleCount:5,
+        },{
+          id:2,
+          roleName: "普通管理员",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:2,
+        },{
+          id:3,
+          roleName: "访客",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:30,
+        },{
+          id:4,
+          roleName: "高级管理员",
+          permissionDescription: "可查看编辑系统内全部数据",
+          time:"2022-03-02",
+          roleCount:5,
+        },{
+          id:5,
+          roleName: "普通管理员",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:2,
+        },{
+          id:6,
+          roleName: "访客",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:30,
+        },{
+          id:7,
+          roleName: "高级管理员",
+          permissionDescription: "可查看编辑系统内全部数据",
+          time:"2022-03-02",
+          roleCount:5,
+        },{
+          id:8,
+          roleName: "普通管理员",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:2,
+        },{
+          id:9,
+          roleName: "访客",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:30,
+        },{
+          id:10,
+          roleName: "高级管理员",
+          permissionDescription: "可查看编辑系统内全部数据",
+          time:"2022-03-02",
+          roleCount:5,
+        },{
+          id:11,
+          roleName: "普通管理员",
+          permissionDescription: "用户权限描述文字",
+          time:"2022-03-02",
+          roleCount:2,
+        },];
+    },
     // 全选
     handleCheckAllChange(val,item,index) {
         let checked = item.children.map((item) => item.label);
@@ -236,11 +255,28 @@ export default {
       this.roleList[index].isIndeterminate = checkedCount > 0 && checkedCount < allCount;
     },
     // 分页
-    handleCurrentChange(){},
+    handleCurrentChange(val){
+      this.currentPage = val;
+      // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+    },
     // 查询
     search(){
       // 调用接口查询，拿到结果给表格
       console.log("查询");
+      // let params = {
+      //   nameOrRole:this.nameOrRole,
+      // };
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
     },
     // 删除用户
     async deleteRole({id,}) {

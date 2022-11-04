@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-left">
         <el-select v-model="value" placeholder="请选择" class="user-select">
-          <el-option v-for="item in options"
+          <el-option v-for="item in roleOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"></el-option>
@@ -34,8 +34,13 @@
     </el-table-column>
   </el-table>
     <!-- 分页器 -->
-    <el-pagination background layout="total, prev, pager, next" :page-size="100" :total="1000" 
-    class="pagination" @current-change="handleCurrentChange">
+    <el-pagination background
+     layout="total, prev, pager, next"
+     :page-size="pageSize"
+     :total="total" 
+     :current-page="currentPage"
+     class="pagination"
+     @current-change="handleCurrentChange">
     </el-pagination>
     <!-- 编辑和添加用户弹窗 -->
     <el-dialog :title="userId==-1?'添加用户':'编辑用户'" :visible="showUserDialog" width="40%" @close="isCancel">
@@ -70,11 +75,51 @@
 </template>
 
 <script>
-// import UserDialog from "@/views/system/components/userInfoDialog.vue";
 export default {
   data() {
     return {
-      tableData: [{
+      tableData: [],
+      roleOptions: [],
+      value:"1",
+      nameOrnumber:"",
+      showUserDialog:false,
+      userId:-1,
+      userInfo:{
+        userName:"",
+        mobile:"",
+        oldPassword:"",
+        remarks:"",
+        role:"",
+      },
+      userInfoRules: {
+        username: [{ required: true, message: "用户名不能为空", trigger: "blur", }, {
+          min: 1, max: 4, message: "用户名为1-4位",
+        },],
+        mobile: [{ required: true, message: "手机号不能为空", trigger: "blur", }, {
+          pattern: /^1[3-9]\d{9}$/, message: "手机号格式不正确", trigger: "blur",
+        },],
+        oldPassword: [{ required: true, message: "初始密码不能为空", trigger: "blur", },
+        {pattern:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\W]{6,18}$/, message: "密码格式不正确", trigger:"blur",},],
+        remarks: [{ required: true, message: "用户身份备注不能为空", trigger: "blur", },],
+        role: [{ required: true, message: "用户权限不能为空", trigger: "change", },],
+      },
+      // 分页
+      total:110,
+      pageSize:11,
+      currentPage:1,
+    };
+  },
+  created(){
+    this.getTableData();
+    this.getRoleOptions();
+  },
+  methods:{
+    getTableData(){
+      // this.$axios.get("/construction/projectManager").then(({data,})=>{
+      //   console.log(data);
+       
+      // });
+      this.tableData = [{
           id:1,
           userName: "王小虎",
           mobile: "13898761234",
@@ -151,8 +196,14 @@ export default {
           remarks:"后台管理员",
           time:"2022-09-01  12:12:00",
           role:"普通管理员",
-        },],
-        options: [{
+        },];
+    },
+    getRoleOptions(){
+      // this.$axios.get("/construction/projectManager").then(({data,})=>{
+      //   console.log(data);
+       
+      // });
+      this.roleOptions = [{
           value: "1",
           label: "全部",
         },{
@@ -167,40 +218,20 @@ export default {
         },{
           value: "5",
           label: "锁定",
-        },],
-      value:"1",
-      nameOrnumber:"",
-      showUserDialog:false,
-      userId:-1,
-      userInfo:{
-        userName:"",
-        mobile:"",
-        oldPassword:"",
-        remarks:"",
-        role:"",
-      },
-      userInfoRules: {
-        username: [{ required: true, message: "用户名不能为空", trigger: "blur", }, {
-          min: 1, max: 4, message: "用户名为1-4位",
-        },],
-        mobile: [{ required: true, message: "手机号不能为空", trigger: "blur", }, {
-          pattern: /^1[3-9]\d{9}$/, message: "手机号格式不正确", trigger: "blur",
-        },],
-        oldPassword: [{ required: true, message: "初始密码不能为空", trigger: "blur", },
-        {pattern:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\W]{6,18}$/, message: "密码格式不正确", trigger:"blur",},],
-        remarks: [{ required: true, message: "用户身份备注不能为空", trigger: "blur", },],
-        role: [{ required: true, message: "用户权限不能为空", trigger: "change", },],
-      },
-    };
-  },
-  components:{
-    // UserDialog,
-  },
-  methods:{
+        },];
+    },
     // 查询
     search(){
       // 调用接口查询，拿到结果给表格
       console.log("查询");
+      // let params = {
+      //   roleValue:this.value,
+      //   nameOrnumber:this.nameOrnumber,
+      // };
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
     },
     // 删除用户
     async deleteUser({id,}) {
@@ -239,7 +270,17 @@ export default {
       this.showUserDialog = true;
     },
     // 分页
-    handleCurrentChange(){},
+    handleCurrentChange(val){
+      this.currentPage = val;
+      // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+    },
     // 确定
     async isOk(){
       // 两种，一是确定添加用户，二是确定编辑用户
