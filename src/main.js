@@ -23,6 +23,7 @@ Vue.component("v-chart", VueECharts);
 Vue.prototype.$axios = http;
 day.locale("zh-cn");
 Vue.prototype.$dayjs = day;
+Vue.prototype.$userInfo = {}; //全局变量用户信息
 
 new Vue({
   router,

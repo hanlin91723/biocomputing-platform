@@ -8,12 +8,12 @@
         :rules="loginFormRules"
         :model="loginForm"
       >
-        <el-form-item class="form-item" prop="userName">
+        <el-form-item class="form-item" prop="username">
           <el-input
             class="input"
             placeholder="请输入账号"
             prefix-icon="el-icon-user"
-            v-model="loginForm.userName"
+            v-model="loginForm.username"
           ></el-input>
         </el-form-item>
         <el-form-item class="form-item" prop="password">
@@ -50,11 +50,11 @@ export default {
       bgCanvas: null,
       loading: false,
       loginForm: {
-        userName: "",
+        username: "",
         password: "",
       },
       loginFormRules: {
-        userName: [
+        username: [
           {
             required: true,
             message: "请输入账号",
@@ -81,7 +81,7 @@ export default {
         color: "25, 187, 255", // 线条颜色
         pointColor: "255, 255, 255", // 节点颜色
         opacity: 1, // 线条透明度
-        count: 500, // 线条数量
+        count: 200, // 线条数量
         zIndex: 1, // 画面层级
       };
       this.bgCanvas = new CanvasNest(this.$refs.loginBg, config);
@@ -91,12 +91,11 @@ export default {
         if (valid) {
           this.loading = true;
           this.$axios
-            .post("/login", this.loginForm)
-            .then(({ data }) => {
-              sessionStorage.setItem("token", data.token);
-              this.$eventbus.$emit("numAdd", 1);
+            .get("/construction/projectManager")
+            .then(() => {
+              sessionStorage.setItem("token", 123);
               this.$router.push({
-                path: "/economic",
+                path: this.$route.query.redirect || "/risk-map",
               });
             })
             .finally(() => {

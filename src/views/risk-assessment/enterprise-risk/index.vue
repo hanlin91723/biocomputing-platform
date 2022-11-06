@@ -1,29 +1,45 @@
 <template>
   <div class="user">
     <div class="header">
-        <div>
-          <label for="" class="label">行业：</label>
-        <el-select v-model="industryValue" placeholder="请选择" class="user-select">
-          <el-option v-for="item in industryOptions"
+      <div>
+        <label for="" class="label">行业：</label>
+        <el-select
+          v-model="industryValue"
+          placeholder="请选择"
+          class="user-select"
+        >
+          <el-option
+            v-for="item in industryOptions"
             :key="item.value"
             :label="item.label"
-            :value="item.value"></el-option>
+            :value="item.value"
+          ></el-option>
         </el-select>
-        </div>
-        <div>
-          <label for="" class="label">综合风险等级：</label>
-        <el-select v-model="riskGradeValue" placeholder="请选择" class="user-select">
-          <el-option v-for="item in riskGradeOptions"
+      </div>
+      <div>
+        <label for="" class="label">综合风险等级：</label>
+        <el-select
+          v-model="riskGradeValue"
+          placeholder="请选择"
+          class="user-select"
+        >
+          <el-option
+            v-for="item in riskGradeOptions"
             :key="item.value"
             :label="item.label"
-            :value="item.value"></el-option>
+            :value="item.value"
+          ></el-option>
         </el-select>
-        </div>
-        <div>
-          <label for="" class="label">企业名称：</label>
-          <el-input class="input" placeholder="请输入关键字" v-model="enterpriseName"></el-input>
-        </div>
-        <!-- <div>
+      </div>
+      <div>
+        <label for="" class="label">企业名称：</label>
+        <el-input
+          class="input"
+          placeholder="请输入关键字"
+          v-model="enterpriseName"
+        ></el-input>
+      </div>
+      <!-- <div>
           <label for="" class="label">企业标签：</label>
           <el-select v-model="enterpriseLabelValue" placeholder="请选择" class="user-select">
             <el-option v-for="item in enterpriseLabelOptions"
@@ -32,38 +48,51 @@
               :value="item.value"></el-option>
           </el-select>
         </div> -->
-        <el-button type="primary" class="search" @click="search">查询</el-button>
+      <el-button type="primary" class="search" @click="search">查询</el-button>
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
     <el-table :data="tableData" border stripe class="table">
       <el-table-column prop="id" label="序号" width="80"></el-table-column>
-      <el-table-column prop="enterpriseName" label="企业名称" width="240"></el-table-column>
+      <el-table-column
+        prop="enterpriseName"
+        label="企业名称"
+        width="240"
+      ></el-table-column>
       <el-table-column prop="legalPerson" label="法人"></el-table-column>
-      <el-table-column prop="creditCode" label="统一社会信用代码"></el-table-column>
+      <el-table-column
+        prop="creditCode"
+        label="统一社会信用代码"
+      ></el-table-column>
       <el-table-column prop="industry" label="行业"></el-table-column>
       <el-table-column prop="riskIndex" label="综合风险指数">
         <template slot-scope="scope">
-          <span :class="{[riskColor(scope.row.riskIndex)]:true}">{{riskGrade(scope.row.riskIndex)}}</span>
+          <span :class="{ [riskColor(scope.row.riskIndex)]: true }">{{
+            riskGrade(scope.row.riskIndex)
+          }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="riskStatistics" label="风险统计（条）"></el-table-column>
+      <el-table-column
+        prop="riskStatistics"
+        label="风险统计（条）"
+      ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <span class="edit" @click="riskDetails(scope.row)">风险详情</span>
           <span class="delete" @click="portrait(scope.row)">企业画像</span>
         </template>
-    </el-table-column>
-  </el-table>
+      </el-table-column>
+    </el-table>
     <!-- 分页器 -->
-    <el-pagination background
-     layout="total, prev, pager, next"
-     :page-size="pageSize"
-     :total="total"
-     :current-page="currentPage"
-     class="pagination" 
-     @current-change="handleCurrentChange">
-    </el-pagination>
+    <el-pagination
+      background
+      layout="total, prev, pager, next"
+      :page-size="pageSize"
+      :total="total"
+      :current-page="currentPage"
+      class="pagination"
+      @current-change="handleCurrentChange"
+    ></el-pagination>
   </div>
 </template>
 
@@ -72,168 +101,193 @@ export default {
   data() {
     return {
       tableData: [],
-      industryOptions:[],
-      riskGradeOptions:[],
+      industryOptions: [],
+      riskGradeOptions: [],
       // 查询数据
-      industryValue:"1",
-      riskGradeValue:"1",
-      enterpriseName:"",
+      industryValue: "1",
+      riskGradeValue: "1",
+      enterpriseName: "",
       // 分页
-      total:110,
-      pageSize:11,
-      currentPage:1,
+      total: 110,
+      pageSize: 11,
+      currentPage: 1,
     };
   },
-  created(){
+  created() {
     this.getTableData();
     this.getIndustryOptions();
     this.getriskGradeOptions();
   },
-  methods:{
-    getTableData(){
+  methods: {
+    getTableData() {
       // this.$axios.get("/construction/projectManager").then(({data,})=>{
       //   console.log(data);
-       
+
       // });
-      this.tableData = [{
-          id:1,
+      this.tableData = [
+        {
+          id: 1,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },{
-          id:2,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+        {
+          id: 2,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:85,
-          riskStatistics:13548,
-        },{
-          id:3,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 85,
+          riskStatistics: 13548,
+        },
+        {
+          id: 3,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:68,
-          riskStatistics:13548,
-        },{
-          id:4,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 68,
+          riskStatistics: 13548,
+        },
+        {
+          id: 4,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:43,
-          riskStatistics:13548,
-        },{
-          id:5,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 43,
+          riskStatistics: 13548,
+        },
+        {
+          id: 5,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:12,
-          riskStatistics:13548,
-        },{
-          id:6,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 12,
+          riskStatistics: 13548,
+        },
+        {
+          id: 6,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:11,
-          riskStatistics:13548,
-        },{
-          id:7,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 11,
+          riskStatistics: 13548,
+        },
+        {
+          id: 7,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },{
-          id:8,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+        {
+          id: 8,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },{
-          id:9,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+        {
+          id: 9,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },{
-          id:10,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+        {
+          id: 10,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },{
-          id:11,
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+        {
+          id: 11,
           enterpriseName: "江苏商务集团有限公司",
           legalPerson: "张强",
-          creditCode:"9132092314052XXXXX",
-          industry:"商务服务业",
-          riskIndex:86,
-          riskStatistics:13548,
-        },];
+          creditCode: "9132092314052XXXXX",
+          industry: "商务服务业",
+          riskIndex: 86,
+          riskStatistics: 13548,
+        },
+      ];
     },
-    getIndustryOptions(){
+    getIndustryOptions() {
       // this.$axios.get("/construction/projectManager").then(({data,})=>{
       //   console.log(data);
-       
+
       // });
-      this.industryOptions = [{
+      this.industryOptions = [
+        {
           value: "1",
           label: "全部",
-        },{
+        },
+        {
           value: "2",
           label: "农、林、牧、渔业",
-        },{
+        },
+        {
           value: "3",
           label: "采矿业",
-        },{
+        },
+        {
           value: "4",
           label: "制造业",
-        },{
+        },
+        {
           value: "5",
           label: "电力、热力、燃气及水生产和供应业",
-        },{
+        },
+        {
           value: "6",
           label: "建筑业",
-        },];
+        },
+      ];
     },
-    getriskGradeOptions(){
+    getriskGradeOptions() {
       // this.$axios.get("/construction/projectManager").then(({data,})=>{
       //   console.log(data);
-       
+
       // });
-      this.riskGradeOptions = [{
+      this.riskGradeOptions = [
+        {
           value: "1",
           label: "全部",
-        },{
+        },
+        {
           value: "2",
           label: "高风险",
-        },{
+        },
+        {
           value: "3",
           label: "较高分析",
-        },{
+        },
+        {
           value: "4",
           label: "中风险",
-        },{
+        },
+        {
           value: "5",
           label: "低风险",
-        },];
+        },
+      ];
     },
     // 查询
-    search(){
+    search() {
       // 调用接口查询，拿到结果给表格
       console.log("查询");
       // let params = {
@@ -248,47 +302,49 @@ export default {
       // });
     },
     // 风险指数
-    riskGrade(val){
+    riskGrade(val) {
       switch (true) {
-        case (val>0 && val<=25):
+        case val > 0 && val <= 25:
           return val + "（低风险）";
-        case (val>25 && val<=50):
+        case val > 25 && val <= 50:
           return val + "（中风险）";
-        case (val>50 && val<=75):
+        case val > 50 && val <= 75:
           return val + "（较高风险）";
-        case (val>75 && val<=100):
+        case val > 75 && val <= 100:
           return val + "（高风险）";
         default:
           break;
       }
     },
-    riskColor(val){
+    riskColor(val) {
       switch (true) {
-        case (val>0 && val<=25):
+        case val > 0 && val <= 25:
           return "riskColor4";
-        case (val>25 && val<=50):
+        case val > 25 && val <= 50:
           return "riskColor3";
-        case (val>50 && val<=75):
+        case val > 50 && val <= 75:
           return "riskColor2";
-        case (val>75 && val<=100):
+        case val > 75 && val <= 100:
           return "riskColor1";
         default:
           break;
       }
     },
     // 企业画像
-    portrait({id,}) {
+    portrait({ id }) {
       //  提示
       console.log(id);
       // this.$router.push(`/portrait?id=${id}`);
     },
     // 风险详情
-    riskDetails({id,}){
+    riskDetails({ id }) {
       console.log(id);
-      // this.$router.push(`/riskDetails?id=${id}`);
+      this.$router.push({
+        path: "/enterprise-risk/detail",
+      });
     },
     // 分页
-    handleCurrentChange(val){
+    handleCurrentChange(val) {
       this.currentPage = val;
       // let params = {
       //   currentPage:this.currentPage,
@@ -304,55 +360,58 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user{
-  .header{
+.user {
+  .header {
     display: flex;
     justify-content: space-between;
     width: 1150px;
     margin-bottom: 20px;
-      .input{
-        width: 270px;
-        // margin: 0 30px;
-      }
-      .search{
-        width: 100px;
-      }
-    .addUser{
-        width: 100px;
-      }
+    .input {
+      width: 270px;
+      // margin: 0 30px;
+    }
+    .search {
+      width: 100px;
+    }
+    .addUser {
+      width: 100px;
+    }
   }
-  .table{
+  .table {
     width: 100%;
     height: 575px;
     margin-bottom: 10px;
-    .riskColor1{
+    .riskColor1 {
       color: rgb(217, 0, 27);
     }
-    .riskColor2{
+    .riskColor2 {
       color: rgb(245, 154, 42);
     }
-    .riskColor3{
+    .riskColor3 {
       color: rgb(191, 191, 78);
     }
-    .riskColor4{
-      color:rgb(112, 182, 3);
+    .riskColor4 {
+      color: rgb(112, 182, 3);
     }
-    .reset,.edit,.delete{
-      color:rgb(3, 167, 240);
+    .reset,
+    .edit,
+    .delete {
+      color: rgb(3, 167, 240);
       cursor: pointer;
     }
-    .edit{
+    .edit {
       margin: 0 20px;
     }
-    .delete{
-      color:orange;
+    .delete {
+      color: orange;
     }
   }
-  .pagination{
+  .pagination {
     display: flex;
     justify-content: flex-end;
   }
-  .ok,.cancel{
+  .ok,
+  .cancel {
     width: 60px;
     height: 30px;
   }

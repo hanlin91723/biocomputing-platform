@@ -1,10 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
+import Layout from "@/views/layout/index.vue";
 
 Vue.use(VueRouter);
 
-const routes = [{
+const constantRouterMap = [{
     path: "/",
     redirect: "/login",
   },
@@ -14,54 +15,230 @@ const routes = [{
     component: () => import("@/views/login/index.vue"),
   },
   {
+    path: "/404",
+    name: "NotFound",
+    component: () => import("@/views/notFound/index.vue"),
+  },
+];
+
+export const asyncRouterMap = [{
     path: "/container",
     name: "Container",
     component: () => import("@/views/container/index.vue"),
     redirect: "/risk-map",
     children: [{
-      path: "/risk-map",
-      name: "RiskMap",
-      component: () => import("@/views/home/risk-map/index.vue"),
-    }, ],
-  },
-  {
-    path: "/demo",
-    name: "Demo",
-    component: () => import("@/views/demo/index.vue"),
-  },
-  {
-    path: "/not-found",
-    name: "NotFound",
-    component: () => import("@/views/notFound/index.vue"),
+        path: "/home",
+        name: "Home",
+        component: Layout,
+        redirect: "/risk-map",
+        meta: {
+          title: "概览",
+          ico: "el-icon-location",
+          permission: ["1-1", "1-2", ],
+        },
+        children: [{
+            path: "/risk-map", //风险地图
+            name: "RiskMap",
+            component: () => import("@/views/home/risk-map/index.vue"),
+            meta: {
+              title: "风险地图",
+              permission: ["1-1", ],
+            },
+          },
+          {
+            path: "/statistical-analysis", //统计分析
+            name: "StatisticalAnalysis",
+            component: () => import("@/views/home/statistical-analysis/index.vue"),
+            meta: {
+              title: "统计分析",
+              permission: ["1-2", ],
+            },
+          },
+        ],
+      },
+      {
+        path: "/enterprise-monitor",
+        name: "EnterpriseMonitor",
+        component: Layout,
+        redirect: "/enterprise-retrieval",
+        meta: {
+          title: "企业监测",
+          ico: "el-icon-location",
+          permission: ["2-1", ],
+        },
+        children: [{
+          path: "/enterprise-retrieval", //企业检索
+          name: "EnterpriseRetrieval",
+          component: () => import("@/views/enterprise-monitor/enterprise-retrieval/index.vue"),
+          meta: {
+            title: "企业检索",
+            permission: ["2-1", ],
+          },
+        }, ],
+      },
+      {
+        path: "/risk-assessment",
+        name: "RiskAssessment",
+        component: Layout,
+        redirect: "/risk-map",
+        meta: {
+          title: "风险评估",
+          ico: "el-icon-location",
+          permission: ["3-1", "3-2", ],
+        },
+        children: [{
+            path: "/enterprise-risk", //企业风险
+            name: "EnterpriseRisk",
+            component: () => import("@/views/risk-assessment/enterprise-risk/index.vue"),
+            meta: {
+              title: "企业风险",
+              permission: ["3-1", ],
+            },
+          },
+          {
+            path: "/enterprise-risk/detail", //企业风险详情
+            name: "EnterpriseRiskDetail",
+            component: () => import("@/views/risk-assessment/enterprise-risk/enterprise-risk-detail/index.vue"),
+            meta: {
+              title: "企业风险详情",
+              hidden: true,
+              permission: ["3-1", ],
+            },
+          },
+          {
+            path: "/market-risk", //市场风险
+            name: "MarketRisk",
+            component: () => import("@/views/risk-assessment/market-risk/index.vue"),
+            meta: {
+              title: "市场风险",
+              permission: ["3-2", ],
+            },
+          },
+          {
+            path: "/market-risk/detail", //市场风险详情
+            name: "MarketRiskDetail",
+            component: () => import("@/views/risk-assessment/market-risk/market-risk-detail/index.vue"),
+            meta: {
+              title: "市场风险详情",
+              hidden: true,
+              permission: ["3-2", ],
+            },
+          },
+        ],
+      },
+      {
+        path: "/system-management",
+        name: "SystemManagement",
+        component: Layout,
+        redirect: "/user-management",
+        meta: {
+          title: "系统管理",
+          ico: "el-icon-location",
+          permission: ["4-1", "4-2", ],
+        },
+        children: [{
+            path: "/user", //用户管理
+            name: "UserManagement",
+            component: () => import("@/views/system-management/user-management/index.vue"),
+            meta: {
+              title: "用户管理",
+              permission: ["4-1", ],
+            },
+          },
+          {
+            path: "/permission", //权限管理
+            name: "PermissionManagement",
+            component: () => import("@/views/system-management/permission-management/index.vue"),
+            meta: {
+              title: "权限管理",
+              permission: ["4-2", ],
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     path: "*",
-    redirect: "/not-found",
+    redirect: "/404",
   },
 ];
-const router = new VueRouter({
+const createRouter = () => new VueRouter({
   mode: "history",
   base: import.meta.env.BASE_URL, //部署应用时的基本URL
-  routes,
+  routes: constantRouterMap,
 });
-// 路由守卫功能，可以控制当用户没有登陆的时候自动跳转回登录页
-router.beforeEach((to, from, next) => {
+const router = createRouter();
+let hasRoles = true;
+const whiteList = constantRouterMap.map(item => item.path); //定义白名单
+
+export const hasPermission = (rolePermissionList, route) => {
+  if (route.meta && route.meta.permission) {
+    return rolePermissionList.some(item => route.meta.permission.includes(item));
+  } else {
+    return true;
+  }
+};
+export const filterAsyncRoutes = (asyncRouterMap, rolePermissionList) => {
+  let res = [];
+  asyncRouterMap.forEach(item => {
+    let tmp = {
+      ...item,
+    };
+    if (hasPermission(rolePermissionList, tmp)) {
+      if (tmp.children) {
+        tmp.children = filterAsyncRoutes(tmp.children, rolePermissionList);
+      }
+      res.push(tmp);
+    }
+  });
+  return res;
+};
+// 路由守卫功能,可以控制当用户没有登陆的时候自动跳转回登录页
+router.beforeEach(async (to, from, next) => {
   NProgress.start();
-  next();
-  // if (to.name === "Login") {
-  //   next();
-  // } else {
-  //   if (!sessionStorage.getItem("userInfo")) {
-  //     next({
-  //       path: "/login"
-  //     });
-  //   } else {
-  //     next();
-  //   }
-  // }
+  //判断是否有token
+  if (sessionStorage.getItem("token")) {
+    // 路由添加进去了没有及时更新,需要重新进去一次拦截
+    if (hasRoles) {
+      // 获取处理好的路由
+      const rolePermissionList = ["1-1", "3-1", "3-2", "4-2", ];
+      const asyncRoutes = filterAsyncRoutes(asyncRouterMap, rolePermissionList);
+      console.log(asyncRoutes);
+      router.addRoutes(asyncRoutes);
+      hasRoles = false;
+      //
+      // await this.$axios.get("/construction/positionStatistic");
+      next({
+        ...to,
+        replace: true,
+      }); // 这里相当于push到一个页面,不在进入路由拦截
+    } else {
+      next(); // 如果不传参数就会重新执行路由拦截,重新进到这里
+    }
+  } else {
+    // 白名单(不需要登录就可以访问的名单)
+    if (whiteList.includes(to.path)) {
+      next();
+    } else {
+      next({
+        path: "/login",
+        query: {
+          redirect: to.path,
+        },
+      });
+    }
+  }
 });
 router.afterEach(() => {
   NProgress.done();
 });
+
+//重置路由,切换用户或者退出时,清除动态加载的路由
+export const resetRouter = () => {
+  hasRoles = true;
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // 新路由实例matcher赋值给旧路由实例的matcher(相当于replaceRouter)
+};
 
 export default router;

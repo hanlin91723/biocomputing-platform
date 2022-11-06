@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">风险地图</div>
+  <div class="wrap">市场风险详情</div>
 </template>
 
 <script>

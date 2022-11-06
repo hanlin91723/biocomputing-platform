@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">风险地图</div>
+  <div class="wrap">企业检索</div>
 </template>
 
 <script>
