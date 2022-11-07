@@ -45,7 +45,7 @@
         <el-breadcrumb separator="/">
           <el-breadcrumb-item
             class="breadcrumb-txt"
-            v-for="item in menuList"
+            v-for="item in breadcrumbList"
             :key="item.meta.title"
             >{{ item.meta.title }}</el-breadcrumb-item
           >
@@ -80,36 +80,27 @@
 </template>
 
 <script>
-import {
-  filterAsyncRoutes,
-  asyncRouterMap,
-  resetRouter,
-} from "@/router/index.js";
+import { resetRouter } from "@/router/index.js";
+import { useUserStore } from "@/store/index.js";
+const userInfo = useUserStore();
 export default {
   name: "Container",
   data() {
-    const rolePermissionList = ["1-1", "3-1", "3-2", "4-2"];
-    const asyncRoutes = filterAsyncRoutes(asyncRouterMap, rolePermissionList);
     return {
       isCollapse: false,
-      menuList: asyncRoutes[0].children,
+      menuList: userInfo.hasPermissionRoutes[0].children,
     };
   },
   computed: {
     activeMenuItem() {
       return "/" + this.$route.path.split("/")[1];
     },
-  },
-  mounted() {
-    // this.init();
-  },
-  methods: {
-    init() {
-      this.$axios.get("").then((res) => {
-        this.res.data[0].subMenuList = res;
-        this.menuList = this.res.data;
-      });
+    breadcrumbList() {
+      return this.$route.matched.filter((item) => item.meta.title);
     },
+  },
+  mounted() {},
+  methods: {
     handleCommand(command) {
       switch (command) {
         case "personalInfo":
@@ -125,7 +116,9 @@ export default {
             type: "warning",
           })
             .then(() => {
+              //清空缓存数据
               sessionStorage.clear();
+              userInfo.permissionList = [];
               this.$router.push({
                 path: "/login",
               });
@@ -143,7 +136,7 @@ export default {
     },
     //过滤掉隐藏的子菜单项
     filterSubmenu(submenuList) {
-      return submenuList.filter((item) => !item.meta.hidden);
+      return submenuList?.filter((item) => !item.meta.hidden);
     },
   },
 };

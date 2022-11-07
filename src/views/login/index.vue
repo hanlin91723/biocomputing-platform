@@ -94,6 +94,7 @@ export default {
             .get("/construction/projectManager")
             .then(() => {
               sessionStorage.setItem("token", 123);
+              sessionStorage.setItem("userId", 1);
               this.$router.push({
                 path: this.$route.query.redirect || "/risk-map",
               });

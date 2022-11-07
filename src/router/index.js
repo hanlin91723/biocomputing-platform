@@ -3,6 +3,15 @@ import VueRouter from "vue-router";
 import NProgress from "nprogress";
 import Layout from "@/views/layout/index.vue";
 
+import {
+  PiniaVuePlugin
+} from "pinia";
+Vue.use(PiniaVuePlugin);
+
+import {
+  useUserStore
+} from "@/store/index.js";
+
 Vue.use(VueRouter);
 
 const constantRouterMap = [{
@@ -21,7 +30,7 @@ const constantRouterMap = [{
   },
 ];
 
-export const asyncRouterMap = [{
+const asyncRouterMap = [{
     path: "/container",
     name: "Container",
     component: () => import("@/views/container/index.vue"),
@@ -169,46 +178,19 @@ const createRouter = () => new VueRouter({
   routes: constantRouterMap,
 });
 const router = createRouter();
-let hasRoles = true;
 const whiteList = constantRouterMap.map(item => item.path); //定义白名单
-
-export const hasPermission = (rolePermissionList, route) => {
-  if (route.meta && route.meta.permission) {
-    return rolePermissionList.some(item => route.meta.permission.includes(item));
-  } else {
-    return true;
-  }
-};
-export const filterAsyncRoutes = (asyncRouterMap, rolePermissionList) => {
-  let res = [];
-  asyncRouterMap.forEach(item => {
-    let tmp = {
-      ...item,
-    };
-    if (hasPermission(rolePermissionList, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, rolePermissionList);
-      }
-      res.push(tmp);
-    }
-  });
-  return res;
-};
 // 路由守卫功能,可以控制当用户没有登陆的时候自动跳转回登录页
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   //判断是否有token
   if (sessionStorage.getItem("token")) {
+    const userInfo = useUserStore();
     // 路由添加进去了没有及时更新,需要重新进去一次拦截
-    if (hasRoles) {
+    if (userInfo.permissionList.length === 0) {
       // 获取处理好的路由
-      const rolePermissionList = ["1-1", "3-1", "3-2", "4-2", ];
-      const asyncRoutes = filterAsyncRoutes(asyncRouterMap, rolePermissionList);
-      console.log(asyncRoutes);
-      router.addRoutes(asyncRoutes);
-      hasRoles = false;
-      //
-      // await this.$axios.get("/construction/positionStatistic");
+      await userInfo.getPermissionList();
+      userInfo.getHasPermissionRoutes(asyncRouterMap, userInfo.permissionList);
+      router.addRoutes(userInfo.hasPermissionRoutes);
       next({
         ...to,
         replace: true,
@@ -236,7 +218,7 @@ router.afterEach(() => {
 
 //重置路由,切换用户或者退出时,清除动态加载的路由
 export const resetRouter = () => {
-  hasRoles = true;
+  // hasRoles = true;
   const newRouter = createRouter();
   router.matcher = newRouter.matcher; // 新路由实例matcher赋值给旧路由实例的matcher(相当于replaceRouter)
 };

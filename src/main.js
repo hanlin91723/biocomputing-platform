@@ -11,6 +11,13 @@ import http from "./server/axios";
 import day from "dayjs";
 import "dayjs/locale/zh-cn";
 
+import {
+  createPinia,
+  PiniaVuePlugin
+} from "pinia";
+Vue.use(PiniaVuePlugin);
+const pinia = createPinia();
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 NProgress.inc(0.2);
@@ -27,5 +34,6 @@ Vue.prototype.$userInfo = {}; //全局变量用户信息
 
 new Vue({
   router,
+  pinia,
   render: (h) => h(App),
 }).$mount("#app");
