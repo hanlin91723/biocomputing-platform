@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="header">
-      <div>
+      <div class="item">
         <label for="" class="label">行业：</label>
         <el-select
           v-model="industryValue"
@@ -16,7 +16,7 @@
           ></el-option>
         </el-select>
       </div>
-      <div>
+      <div class="item">
         <label for="" class="label">综合风险等级：</label>
         <el-select
           v-model="riskGradeValue"
@@ -31,7 +31,22 @@
           ></el-option>
         </el-select>
       </div>
-      <div>
+      <div class="item">
+        <label for="" class="label">指标风险等级：</label>
+        <el-select
+          v-model="earlyWarningValue"
+          placeholder="请选择"
+          class="user-select"
+        >
+          <el-option
+            v-for="item in earlyWarningOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </div>
+      <div class="item">
         <label for="" class="label">企业名称：</label>
         <el-input
           class="input"
@@ -39,15 +54,6 @@
           v-model="enterpriseName"
         ></el-input>
       </div>
-      <!-- <div>
-          <label for="" class="label">企业标签：</label>
-          <el-select v-model="enterpriseLabelValue" placeholder="请选择" class="user-select">
-            <el-option v-for="item in enterpriseLabelOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"></el-option>
-          </el-select>
-        </div> -->
       <el-button type="primary" class="search" @click="search">查询</el-button>
     </div>
     <el-divider></el-divider>
@@ -74,9 +80,17 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="riskStatistics"
-        label="风险统计（条）"
-      ></el-table-column>
+        prop="earlyWarning"
+        label="指标风险（财务预警）"
+        sortable
+        width="185"
+      >
+        <template slot-scope="scope">
+          <span :class="{ [indexRisk(scope.row.earlyWarning).className]: true }">{{
+            indexRisk(scope.row.earlyWarning).text
+          }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <span class="edit" @click="riskDetails(scope.row)">风险详情</span>
@@ -104,9 +118,11 @@ export default {
       tableData: [],
       industryOptions: [],
       riskGradeOptions: [],
+      earlyWarningOptions: [],
       // 查询数据
       industryValue: "1",
       riskGradeValue: "1",
+      earlyWarningValue:"1",
       enterpriseName: "",
       // 分页
       total: 110,
@@ -117,7 +133,8 @@ export default {
   created() {
     this.getTableData();
     this.getIndustryOptions();
-    this.getriskGradeOptions();
+    this.getRiskGradeOptions();
+    this.getEarlyWarningOptions();
   },
   methods: {
     getTableData() {
@@ -133,7 +150,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 86,
-          riskStatistics: 13548,
+          earlyWarning: 86,
         },
         {
           id: 2,
@@ -142,7 +159,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 85,
-          riskStatistics: 13548,
+          earlyWarning: 85,
         },
         {
           id: 3,
@@ -151,7 +168,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 68,
-          riskStatistics: 13548,
+          earlyWarning: 68,
         },
         {
           id: 4,
@@ -160,7 +177,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 43,
-          riskStatistics: 13548,
+          earlyWarning: 43,
         },
         {
           id: 5,
@@ -169,7 +186,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 12,
-          riskStatistics: 13548,
+          earlyWarning: 12,
         },
         {
           id: 6,
@@ -178,7 +195,7 @@ export default {
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
           riskIndex: 11,
-          riskStatistics: 13548,
+          earlyWarning: 22,
         },
         {
           id: 7,
@@ -186,8 +203,8 @@ export default {
           legalPerson: "张强",
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
+          riskIndex: 22,
+          earlyWarning: 22,
         },
         {
           id: 8,
@@ -195,8 +212,8 @@ export default {
           legalPerson: "张强",
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
+          riskIndex: 22,
+          earlyWarning: 22,
         },
         {
           id: 9,
@@ -204,8 +221,8 @@ export default {
           legalPerson: "张强",
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
+          riskIndex: 22,
+          earlyWarning: 22,
         },
         {
           id: 10,
@@ -213,8 +230,8 @@ export default {
           legalPerson: "张强",
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
+          riskIndex: 22,
+          earlyWarning: 22,
         },
         {
           id: 11,
@@ -222,8 +239,8 @@ export default {
           legalPerson: "张强",
           creditCode: "9132092314052XXXXX",
           industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
+          riskIndex: 22,
+          earlyWarning: 22,
         },
       ];
     },
@@ -259,7 +276,7 @@ export default {
         },
       ];
     },
-    getriskGradeOptions() {
+    getRiskGradeOptions() {
       // this.$axios.get("/construction/projectManager").then(({data,})=>{
       //   console.log(data);
 
@@ -287,6 +304,26 @@ export default {
         },
       ];
     },
+    getEarlyWarningOptions(){
+      this.earlyWarningOptions = [
+        {
+          value: "1",
+          label: "全部",
+        },
+        {
+          value: "2",
+          label: "高风险",
+        },
+        {
+          value: "3",
+          label: "中风险",
+        },
+        {
+          value: "4",
+          label: "警示",
+        },
+      ];
+    },
     // 查询
     search() {
       // 调用接口查询，拿到结果给表格
@@ -294,8 +331,8 @@ export default {
       // let params = {
       //   industryValue:this.industryValue,
       //   riskGradeValue:this.riskGradeValue,
+      //   earlyWarningValue:this.earlyWarningValue
       //   enterpriseName:this.enterpriseName,
-      //   enterpriseLabelValue:this.enterpriseLabelValue,
       // };
       // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
       //   console.log(data);
@@ -313,17 +350,43 @@ export default {
         case val > 25 && val <= 50:
           return {
             className: "riskColor3",
-            text: val + "（中风险）",
+            text:val + "（中风险）",
           };
         case val > 50 && val <= 75:
           return {
             className: "riskColor2",
-            text: val + "（较高风险）",
+            text:val + "（较高风险）",
           };
         case val > 75 && val <= 100:
           return {
             className: "riskColor1",
-            text: val + "（高风险）",
+            text:val + "（高风险）",
+          };
+        default:
+          break;
+      }
+    },
+    indexRisk(val) {
+      switch (true) {
+        case val > 0 && val <= 25:
+          return {
+            className: "riskColor4",
+            text: "正常",
+          };
+        case val > 25 && val <= 50:
+          return {
+            className: "riskColor3",
+            text: "警示",
+          };
+        case val > 50 && val <= 75:
+          return {
+            className: "riskColor2",
+            text: "中风险",
+          };
+        case val > 75 && val <= 100:
+          return {
+            className: "riskColor1",
+            text: "高风险",
           };
         default:
           break;
@@ -363,22 +426,27 @@ export default {
   .header {
     display: flex;
     justify-content: space-between;
-    width: 1150px;
+    // width: 1150px;
+    width: 100%;
     margin-bottom: 20px;
+    .item{
+      display: flex;
+      align-items: center;
+      .user-select{
+      width: 170px;
+    }
     .input {
       width: 270px;
       // margin: 0 30px;
     }
-    .search {
-      width: 100px;
     }
-    .addUser {
+    .search {
       width: 100px;
     }
   }
   .table {
     width: 100%;
-    height: 575px;
+    height: 587px;
     margin-bottom: 10px;
     .riskColor1 {
       color: rgba(245, 114, 114, 1);

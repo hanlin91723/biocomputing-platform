@@ -273,10 +273,10 @@ export default {
       }
     },
     // 风险详情
-    riskDetails({ id }) {
+    riskDetails({ id, }) {
       console.log(id);
       this.$router.push({
-        path: "/enterprise-risk/detail",
+        path: "/market-risk/detail",
       });
     },
     // 分页
@@ -292,7 +292,7 @@ export default {
       // });
     },
     // 为表格头标题添加小图标并hover后出现提示信息
-    renderCount(h, { column }) {
+    renderCount(h, { column, }) {
       // h 是一个渲染函数       column 是一个对象表示当前列      $index 第几列
       return h("div", [
         h("span", column.label + "  ", {
@@ -355,7 +355,7 @@ export default {
       color: rgb(245, 154, 42);
     }
     .riskColor3 {
-      color: rgb(184, 116, 26);
+      color: rgb(182, 200, 76);
     }
     .reset,
     .edit,
