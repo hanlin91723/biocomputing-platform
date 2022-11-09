@@ -105,7 +105,7 @@ const asyncRouterMap = [{
             },
           },
           {
-            path: "/enterprise-risk/detail", //企业风险详情
+            path: "/enterprise-risk/detail/:id", //企业风险详情
             name: "EnterpriseRiskDetail",
             component: () => import("@/views/risk-assessment/enterprise-risk/enterprise-risk-detail/index.vue"),
             meta: {

@@ -19,9 +19,9 @@ export default defineConfig(({
     css: {
       preprocessorOptions: {
         less: {
-          // 引入 common.less 这样就可以在全局中使用 common.less 中预定义的变量了
+          // 引入 global.less 这样就可以在全局中使用 global.less 中预定义的变量了
           // 必须给导入的路径最后加上;
-          additionalData: "@import \"@/assets/css/common.less\";",
+          additionalData: "@import \"@/assets/css/global.less\";",
         },
       },
     },
