@@ -8,10 +8,10 @@
             :label="item.label"
             :value="item.value"></el-option>
         </el-select>
-        <el-input class="input" placeholder="请输入用户名/手机号" v-model="nameOrnumber"></el-input>
-        <el-button type="primary" class="search" @click="search">查询</el-button>
+        <el-input class="input" placeholder="请输入用户名/手机号" v-model="nameOrnumber" clearable></el-input>
+        <el-button type="primary" @click="search">查询</el-button>
       </div>
-      <el-button type="primary" icon="el-icon-plus" class="addUser" @click="addUser">添加用户</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="addUser">添加用户</el-button>
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
@@ -64,9 +64,9 @@
     <!-- footer插槽 -->
     <template v-slot:footer>
       <el-row type="flex" justify="center">
-        <el-col :span="6">
-          <el-button type="primary" class="ok" @click="isOk">确定</el-button>
-          <el-button class="cancel" @click="isCancel">取消</el-button>
+        <el-col :span="8">
+          <el-button size="medium" type="primary" @click="isOk">确定</el-button>
+          <el-button size="medium" @click="isCancel">取消</el-button>
         </el-col>
       </el-row>
     </template>
@@ -341,14 +341,8 @@ export default {
         width: 270px;
         margin: 0 30px;
       }
-      .search{
-        width: 100px;
-      }
       
     }
-    .addUser{
-        width: 100px;
-      }
   }
   .table{
     width: 100%;
@@ -368,10 +362,6 @@ export default {
   .pagination{
     display: flex;
     justify-content: flex-end;
-  }
-  .ok,.cancel{
-    width: 60px;
-    height: 30px;
   }
 }
 </style>

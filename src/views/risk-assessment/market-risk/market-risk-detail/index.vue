@@ -48,7 +48,10 @@
           </div>
           <div class="content-right">
             <h3>风险企业注册规模分布</h3>
-            <v-chart :option="option"></v-chart>
+            <v-chart
+             class="chart2"
+             :option="registeredScaleOption"
+             ></v-chart>
           </div>
         </div>
       </el-card>
@@ -61,38 +64,103 @@
 <script>
 import RiskLevel from "@/views/risk-assessment/market-risk/components/riskLevel.vue";
 import riskTable from "@/views/risk-assessment/market-risk/components/riskTable.vue";
-import { rankingBar } from "@/views/risk-assessment/market-risk/market-risk-detail/options/echarts-options.js";
+import { rankingBar,registeredScale } from "@/views/risk-assessment/market-risk/market-risk-detail/options/echarts-options.js";
 import { formatter } from "@/util/util";
 export default {
   data() {
     return {
-      option: {
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [150, 230, 224, 218, 135, 147, 260],
-            type: "line",
-          },
-        ],
-      },
+      rankingName:[],
+      rankingValue:[],
+      registeredScaleData:[],
     };
   },
   components: {
     RiskLevel,
     riskTable,
   },
+  created(){
+    this.getRankingData();
+    this.getRegisteredScaleData();
+  },
   computed: {
     rankingBarOption() {
-      return rankingBar();
+      return rankingBar(this.rankingName,this.rankingValue);
+    },
+    registeredScaleOption() {
+      return registeredScale(this.registeredScaleData);
     },
   },
   methods: {
+    // 获取排行数据
+    getRankingData(){
+      // this.$axios.get("/construction/projectManager").then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+      let rankingData = [
+        {
+          name:"批发和零售业",
+          value:12532,
+        },
+        {
+          name:"交通运输、仓储和邮政业",
+          value:8535,
+        },
+        {
+          name:"住宿和餐饮业",
+          value:7452,
+        },
+        {
+          name:"信息传输、软件和信息技术服务业",
+          value:6263,
+        },
+        {
+          name:"金融业",
+          value:3162,
+        },
+        {
+          name:"房地产业",
+          value:1523,
+        },
+        {
+          name:"租赁和商务服务业",
+          value:743,
+        },
+        {
+          name:"科学研究和技术服务业",
+          value:422,
+        },
+        {
+          name:"水利、环境和公共设施管理业",
+          value:245,
+        },
+        {
+          name:"居民服务、修理和其他服务业",
+          value:132,
+        },
+      ];
+      this.rankingName = rankingData.map(item=>{
+        return item.name;
+      });
+      this.rankingValue = rankingData.map(item=>{
+        return item.value;
+      });
+
+    },
+    // 获取饼图数据
+    getRegisteredScaleData(){
+      // this.$axios.get("/construction/projectManager").then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+      this.registeredScaleData = [
+                    {value:35, name:"100万以下",},
+                    {value:20, name:"100~200万",},
+                    {value:25, name:"200~500万",},
+                    {value:25, name:"500~1000万",},
+                    {value:20, name:"1000万以上",},
+                   ];
+    },
     // 千分位分隔
     formatter(val) {
       return formatter(val);
@@ -180,14 +248,19 @@ export default {
           width: 450px;
           font-size: 20px;
           .chart1 {
-            width: 300px;
-            height: 200px;
+            width: 500px;
+            height: 300px;
+            margin-left: -15px;
           }
         }
         .content-right {
           width: 300px;
           height: 200px;
           font-size: 20px;
+          .chart2 {
+            width: 270px;
+            height: 300px;
+          }
         }
       }
     }
