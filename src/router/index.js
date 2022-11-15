@@ -83,6 +83,16 @@ const asyncRouterMap = [{
             title: "企业检索",
             permission: ["2-1", ],
           },
+        },
+        {
+          path: "/enterprise-portrait/:id", //企业画像
+          name: "EnterprisePortrait",
+          component: () => import("@/views/enterprise-monitor/enterprise-portrait/index.vue"),
+          meta: {
+            title: "企业画像",
+            hidden: true,
+            permission: ["2-1", ],
+          },
         }, ],
       },
       {

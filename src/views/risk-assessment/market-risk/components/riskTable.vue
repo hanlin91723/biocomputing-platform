@@ -397,7 +397,7 @@ export default {
     portrait({ id, }) {
       //  提示
       console.log(id);
-      // this.$router.push(`/portrait?id=${id}`);
+      this.$router.push(`/enterprise-portrait/${id}`);
     },
     // 风险详情
     riskDetails({ id, }) {
