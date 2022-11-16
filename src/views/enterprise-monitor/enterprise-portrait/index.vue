@@ -43,10 +43,12 @@
             <el-dropdown-item>变更记录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <registerInfo class="margin"></registerInfo>
-        <shareholder class="margin"></shareholder>
-        <equityChart class="margin"></equityChart>
-        <keyPersonnel class="margin"></keyPersonnel>
+        <RegisterInfo class="margin"></RegisterInfo>
+        <Shareholder class="margin"></Shareholder>
+        <EquityChart class="margin"></EquityChart>
+        <KeyPersonnel class="margin"></KeyPersonnel>
+        <OutInvest class="margin"></OutInvest>
+        <ChangeRecord class="margin"></ChangeRecord>
       </el-tab-pane>
       <!-- 司法风险 -->
       <el-tab-pane>
@@ -147,16 +149,20 @@
 </template>
 
 <script>
-import registerInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/registerInfo.vue";
-import shareholder from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/shareholder.vue";
-import equityChart from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/equityChart.vue";
-import keyPersonnel from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/keyPersonnel.vue";
+import RegisterInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/registerInfo.vue";
+import Shareholder from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/shareholder.vue";
+import EquityChart from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/equityChart.vue";
+import KeyPersonnel from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/keyPersonnel.vue";
+import OutInvest from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/outInvest.vue";
+import ChangeRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/changeRecord.vue";
 export default {
 components:{
-  registerInfo,
-  shareholder,
-  equityChart,
-  keyPersonnel,
+  RegisterInfo,
+  Shareholder,
+  EquityChart,
+  KeyPersonnel,
+  OutInvest,
+  ChangeRecord,
 },
 };
 </script>

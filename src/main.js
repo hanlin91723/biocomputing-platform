@@ -6,7 +6,9 @@ import "element-ui/lib/theme-chalk/index.css";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import "@/assets/css/common.less"; // 引入自定义通用样式
-import "echarts";
+import * as echarts from "echarts";
+import china from "@/assets/json/china.json";
+echarts.registerMap("china",china);
 import VueECharts from "vue-echarts";
 import http from "./server/axios";
 import day from "dayjs";
