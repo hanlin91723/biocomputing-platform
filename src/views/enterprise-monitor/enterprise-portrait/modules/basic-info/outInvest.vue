@@ -37,16 +37,17 @@
       </el-table>
        <!-- 分页器 -->
        <el-pagination background
+       v-show="enterpriseInvestTotal > 10"
        layout="total, prev, pager, next"
-       :page-size="10"
-       :total="100" 
-       :current-page="1"
+       :page-size="enterpriseInvestPageSize"
+       :total="enterpriseInvestTotal" 
+       :current-page="enterpriseInvestCurrentPage"
        class="pagination"
-       @current-change="handleCurrentChange">
+       @current-change="enterpriseInvestCurrentChange">
       </el-pagination>
     </div>
     <div>
-      <h3 class="title">法定代表人对外投资信息</h3>
+      <h3 class="title">法定代表人对外投资信息 {{personInvestTotal}}</h3>
       <el-table
        :data="personInvestData"
        style="width: 100%"
@@ -68,6 +69,16 @@
         <el-table-column prop="actualQuota" label="实缴出资额" width="100"></el-table-column>
         <el-table-column prop="area" label="地区" width="100"></el-table-column>
     </el-table>
+    <!-- 分页器 -->
+    <el-pagination background
+       v-show="personInvestTotal > 10"
+       layout="total, prev, pager, next"
+       :page-size="personInvestPageSize"
+       :total="personInvestTotal" 
+       :current-page="personInvestCurrentPage"
+       class="pagination"
+       @current-change="personInvestCurrentChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -77,175 +88,17 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
   export default {
     data() {
       return {
-        enterpriseInvestData:[
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-        ],
-        personInvestData:[
-        {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-        ],
+        enterpriseInvestData:[],
+        personInvestData:[],
         mapAndBarData:[],
+        // 企业投资分页
+        enterpriseInvestCurrentPage:1,
+        enterpriseInvestPageSize:10,
+        enterpriseInvestTotal:0,
+        // 企业投资分页
+        personInvestCurrentPage:1,
+        personInvestPageSize:10,
+        personInvestTotal:0,
       };
     },
     computed:{
@@ -258,6 +111,8 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
     },
     created(){
       this.getmapData();
+      this.getEnterpriseInvestData();
+      this.getPersonInvestData();
     },
     methods:{
       getmapData(){
@@ -286,6 +141,222 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
             value: 2,
           },
         ];
+      },
+      // 企业投资表格数据
+      getEnterpriseInvestData(){
+        // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+          this.enterpriseInvestTotal = 100;
+          this.enterpriseInvestData = [
+          {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+          {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+          {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+          {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+          {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            dutyType: "",
+            mainType: "",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+        ];
+      },
+      // 企业投资分页
+      enterpriseInvestCurrentChange(val){
+      this.enterpriseInvestCurrentPage = val;
+      // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+      },
+      // 企业投资表格数据
+      getPersonInvestData(){
+        // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
+          this.personInvestTotal = 2;
+          this.personInvestData = [
+        {
+            enterpriseName: "石河子市欧拓通信软件有限公司",
+            registerState: "在营（开业）企业",
+            legalPerson: "朱高领",
+            contribution: "10000万元人民币",
+            contributionTime: "2016-07-28",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "新疆维吾尔自治区",
+          },
+          {
+            enterpriseName: "哲库科技（广东）有限公司",
+            registerState: "注销",
+            legalPerson: "刘君",
+            contribution: "10000万元人民币",
+            contributionTime: "2013-10-21",
+            contributionMode:"",
+            contributionScale:"100%",
+            shouldQuota: "",
+            actualQuota: "",
+            area: "广东",
+          },
+        ];
+      },
+      // 企业投资分页
+      personInvestCurrentChange(val){
+      this.personInvestCurrentPage = val;
+      // let params = {
+      //   currentPage:this.currentPage,
+      //   pageSize:this.pageSize,
+      // }
+      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
+      //   console.log(data);
+      //   this.tableData = data;
+      // });
       },
     },
   };
