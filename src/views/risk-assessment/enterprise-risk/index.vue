@@ -59,7 +59,11 @@
         label="企业名称"
         width="240"
       ></el-table-column>
-      <el-table-column prop="legalPerson" label="法人" width="90"></el-table-column>
+      <el-table-column
+        prop="legalPerson"
+        label="法人"
+        width="90"
+      ></el-table-column>
       <el-table-column
         prop="creditCode"
         label="统一社会信用代码"
@@ -308,7 +312,7 @@ export default {
         case val > 0 && val <= 25:
           return {
             className: "riskColor4",
-            text:val + "（低风险）",
+            text: val + "（低风险）",
           };
         case val > 25 && val <= 50:
           return {
@@ -330,16 +334,16 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id, }) {
+    portrait({ id }) {
       //  提示
       console.log(id);
       // this.$router.push(`/portrait?id=${id}`);
     },
     // 风险详情
-    riskDetails({ id, }) {
+    riskDetails({ id }) {
       console.log(id);
       this.$router.push({
-        path: "/enterprise-risk/detail",
+        path: "/enterprise-risk/detail/1",
       });
     },
     // 分页

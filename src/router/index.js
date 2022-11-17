@@ -76,24 +76,35 @@ const asyncRouterMap = [{
           permission: ["2-1", ],
         },
         children: [{
-          path: "/enterprise-retrieval", //企业检索
-          name: "EnterpriseRetrieval",
-          component: () => import("@/views/enterprise-monitor/enterprise-retrieval/index.vue"),
-          meta: {
-            title: "企业检索",
-            permission: ["2-1", ],
+            path: "/enterprise-retrieval", //企业检索
+            name: "EnterpriseRetrieval",
+            component: () => import("@/views/enterprise-monitor/enterprise-retrieval/index.vue"),
+            meta: {
+              title: "企业检索",
+              permission: ["2-1", ],
+            },
           },
-        },
-        {
-          path: "/enterprise-portrait/:id", //企业画像
-          name: "EnterprisePortrait",
-          component: () => import("@/views/enterprise-monitor/enterprise-portrait/index.vue"),
-          meta: {
-            title: "企业画像",
-            hidden: true,
-            permission: ["2-1", ],
+          {
+            path: "/enterprise-retrieval/enterprise-list", //企业检索列表
+            name: "EnterpriseList",
+            component: () => import("@/views/enterprise-monitor/enterprise-retrieval/enterprise-list/index.vue"),
+            meta: {
+              title: "企业检索列表",
+              hidden: true,
+              permission: ["2-1", ],
+            },
           },
-        }, ],
+          {
+            path: "/enterprise-retrieval/enterprise-portrait/:id", //企业画像
+            name: "EnterprisePortrait",
+            component: () => import("@/views/enterprise-monitor/enterprise-portrait/index.vue"),
+            meta: {
+              title: "企业画像",
+              hidden: true,
+              permission: ["2-1", ],
+            },
+          },
+        ],
       },
       {
         path: "/risk-assessment",
