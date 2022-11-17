@@ -308,7 +308,7 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
       //   this.tableData = data;
       // });
       },
-      // 企业投资表格数据
+      // 法人投资表格数据
       getPersonInvestData(){
         // let params = {
       //   currentPage:this.currentPage,
@@ -346,7 +346,7 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
           },
         ];
       },
-      // 企业投资分页
+      // 法人投资分页
       personInvestCurrentChange(val){
       this.personInvestCurrentPage = val;
       // let params = {

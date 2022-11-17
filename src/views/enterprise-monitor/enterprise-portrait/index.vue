@@ -1,5 +1,5 @@
 <template>
-  <div class="portrait">
+  <div class="portrait" ref="portrait">
     <el-card>
       <div class="card">
         <img src="https://img5.tianyancha.com/logo/lll/ef99052a87d2249f6559cd98b34f2606.png@!f_200x200" alt="" class="img">
@@ -28,9 +28,19 @@
         </div>
       </div>
     </el-card>
-    <el-tabs type="border-card" class="tabs" stretch>
+    <!-- tab切换 -->
+    <ul class="replaceTabs" v-show="isTabShow">
+      <li
+       :class="{tabItem:true,active:activeName === item}"
+       v-for="(item,index) in tabsList"
+      :key="index"
+      @click="tabChange(item)"
+      >{{item}}</li>
+    </ul>
+    <div ref="tabs"></div>
+    <el-tabs v-model="activeName" type="border-card" class="tabs" stretch>
       <!-- 基本信息 -->
-      <el-tab-pane>
+      <el-tab-pane name="基本信息">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             基本信息
@@ -51,7 +61,7 @@
         <ChangeRecord class="margin"></ChangeRecord>
       </el-tab-pane>
       <!-- 司法风险 -->
-      <el-tab-pane>
+      <el-tab-pane name="司法风险">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             司法风险
@@ -64,10 +74,14 @@
             <el-dropdown-item>裁判文书</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        司法风险
+        <Executee class="margin"></Executee>
+        <LimitConsume class="margin"></LimitConsume>
+        <RestrictedExit class="margin"></RestrictedExit>
+        <FinalCase class="margin"></FinalCase>
+        <Document class="margin"></Document>
       </el-tab-pane>
       <!-- 经营风险 -->
-      <el-tab-pane>
+      <el-tab-pane name="经营风险">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             经营风险
@@ -80,10 +94,14 @@
             <el-dropdown-item>欠税公告</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        经营风险
+        <BusinessUnusual class="margin"></BusinessUnusual>
+        <SeriousIllegal class="margin"></SeriousIllegal>
+        <EquityPledge class="margin"></EquityPledge>
+        <AdministrationPunish class="margin"></AdministrationPunish>
+        <TaxRecord class="margin"></TaxRecord>
       </el-tab-pane>
       <!-- 经营信息 -->
-      <el-tab-pane>
+      <el-tab-pane name="经营信息">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             经营信息
@@ -99,7 +117,7 @@
         经营信息
       </el-tab-pane>
       <!-- 企业发展 -->
-      <el-tab-pane>
+      <el-tab-pane name="企业发展">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             企业发展
@@ -112,7 +130,7 @@
         企业发展
       </el-tab-pane>
       <!-- 知识产权 -->
-      <el-tab-pane>
+      <el-tab-pane name="知识产权">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             知识产权
@@ -129,7 +147,7 @@
         知识产权
       </el-tab-pane>
       <!-- 其他信息 -->
-      <el-tab-pane>
+      <el-tab-pane name="其他信息">
         <el-dropdown slot="label">
           <span class="el-dropdown-link">
             其他信息
@@ -149,13 +167,33 @@
 </template>
 
 <script>
+// 基础信息
 import RegisterInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/registerInfo.vue";
 import Shareholder from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/shareholder.vue";
 import EquityChart from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/equityChart.vue";
 import KeyPersonnel from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/keyPersonnel.vue";
 import OutInvest from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/outInvest.vue";
 import ChangeRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/changeRecord.vue";
+// 司法风险
+import Executee from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/executee.vue";
+import LimitConsume from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/limitConsume.vue";
+import RestrictedExit from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/restrictedExit.vue";
+import FinalCase from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/finalCase.vue";
+import Document from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/document.vue";
+// 经营风险
+import BusinessUnusual from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/businessUnusual.vue";
+import SeriousIllegal from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/seriousIllegal.vue";
+import EquityPledge from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/equityPledge.vue";
+import AdministrationPunish from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/administrationPunish.vue";
+import TaxRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/taxRecord.vue";
 export default {
+  data() {
+    return {
+      activeName:"基本信息",
+      tabsList:["基本信息","司法风险","经营风险","经营信息","企业发展","知识产权","其他信息",],
+      isTabShow:false,
+    };
+  },
 components:{
   RegisterInfo,
   Shareholder,
@@ -163,6 +201,37 @@ components:{
   KeyPersonnel,
   OutInvest,
   ChangeRecord,
+  Executee,
+  LimitConsume,
+  RestrictedExit,
+  FinalCase,
+  Document,
+  BusinessUnusual,
+  SeriousIllegal,
+  EquityPledge,
+  AdministrationPunish,
+  TaxRecord,
+},
+mounted(){
+  this.watchScroll();
+},
+methods:{
+  tabChange(item){
+    this.activeName = item;
+    this.$refs.portrait.parentNode.scrollTop = 0;
+  },
+  // tab固定
+  isAttachTop(){
+    if(this.$refs.tabs.getBoundingClientRect().top < 47){
+      this.isTabShow = true;
+    }else{
+      this.isTabShow = false;
+    }
+  },
+  // 监听滚动
+  watchScroll(){
+    this.$refs.portrait.parentNode.addEventListener("scroll",this.isAttachTop);
+  },
 },
 };
 </script>
@@ -216,6 +285,31 @@ components:{
       .endUpdateTime{
         font-family: 'Microsoft YaHei';
         font-size: 15px;
+      }
+    }
+  }
+  .replaceTabs{
+    position: sticky;
+    top: -20px;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    width: 100%;
+    height: 40px;
+    background-color: #F5F7FA;
+    border: 1px solid #E4E7ED;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 12%), 0 0 6px 0 rgb(0 0 0 / 4%);
+    .tabItem{
+      flex: 1;
+      text-align: center;
+      line-height: 40px;
+      color: #606266;
+      font-size: 14px;
+      cursor: pointer;
+      &.active{
+        border-left: 1px solid #DCDFE6;
+        border-right: 1px solid #DCDFE6;
+        background-color: #fff;
       }
     }
   }
