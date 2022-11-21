@@ -41,64 +41,64 @@
     <el-tabs v-model="activeName" type="border-card" class="tabs" stretch>
       <!-- 基本信息 -->
       <el-tab-pane name="基本信息">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'基本信息')">
           <span class="el-dropdown-link">
             基本信息
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>工商信息</el-dropdown-item>
-            <el-dropdown-item>股东信息</el-dropdown-item>
-            <el-dropdown-item>主要人员</el-dropdown-item>
-            <el-dropdown-item>对外投资</el-dropdown-item>
-            <el-dropdown-item>变更记录</el-dropdown-item>
+            <el-dropdown-item command="RegisterInfo">工商信息</el-dropdown-item>
+            <el-dropdown-item command="Shareholder">股东信息</el-dropdown-item>
+            <el-dropdown-item command="KeyPersonnel">主要人员</el-dropdown-item>
+            <el-dropdown-item command="OutInvest">对外投资</el-dropdown-item>
+            <el-dropdown-item command="ChangeRecord">变更记录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <RegisterInfo class="margin"></RegisterInfo>
-        <Shareholder class="margin"></Shareholder>
-        <EquityChart class="margin"></EquityChart>
-        <KeyPersonnel class="margin"></KeyPersonnel>
-        <OutInvest class="margin"></OutInvest>
-        <ChangeRecord class="margin"></ChangeRecord>
+        <RegisterInfo class="margin" ref="RegisterInfo"></RegisterInfo>
+        <Shareholder class="margin" ref="Shareholder"></Shareholder>
+        <EquityChart class="margin" ref="EquityChart"></EquityChart>
+        <KeyPersonnel class="margin" ref="KeyPersonnel"></KeyPersonnel>
+        <OutInvest class="margin" ref="OutInvest"></OutInvest>
+        <ChangeRecord class="margin" ref="ChangeRecord"></ChangeRecord>
       </el-tab-pane>
       <!-- 司法风险 -->
       <el-tab-pane name="司法风险">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'司法风险')">
           <span class="el-dropdown-link">
             司法风险
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>被执行人</el-dropdown-item>
-            <el-dropdown-item>限制高消费</el-dropdown-item>
-            <el-dropdown-item>限制出境</el-dropdown-item>
-            <el-dropdown-item>终本案件</el-dropdown-item>
-            <el-dropdown-item>裁判文书</el-dropdown-item>
+            <el-dropdown-item command="Executee">被执行人</el-dropdown-item>
+            <el-dropdown-item command="LimitConsume">限制高消费</el-dropdown-item>
+            <el-dropdown-item command="RestrictedExit">限制出境</el-dropdown-item>
+            <el-dropdown-item command="FinalCase">终本案件</el-dropdown-item>
+            <el-dropdown-item command="Document">裁判文书</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <Executee class="margin"></Executee>
-        <LimitConsume class="margin"></LimitConsume>
-        <RestrictedExit class="margin"></RestrictedExit>
-        <FinalCase class="margin"></FinalCase>
-        <Document class="margin"></Document>
+        <Executee class="margin" ref="Executee"></Executee>
+        <LimitConsume class="margin" ref="LimitConsume"></LimitConsume>
+        <RestrictedExit class="margin" ref="RestrictedExit"></RestrictedExit>
+        <FinalCase class="margin" ref="FinalCase"></FinalCase>
+        <Document class="margin" ref="Document"></Document>
       </el-tab-pane>
       <!-- 经营风险 -->
       <el-tab-pane name="经营风险">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'经营风险')">
           <span class="el-dropdown-link">
             经营风险
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>经营异常</el-dropdown-item>
-            <el-dropdown-item>严重违法</el-dropdown-item>
-            <el-dropdown-item>股权质押</el-dropdown-item>
-            <el-dropdown-item>行政处罚</el-dropdown-item>
-            <el-dropdown-item>欠税公告</el-dropdown-item>
+            <el-dropdown-item command="BusinessUnusual">经营异常</el-dropdown-item>
+            <el-dropdown-item command="SeriousIllegal">严重违法</el-dropdown-item>
+            <el-dropdown-item command="EquityPledge">股权质押</el-dropdown-item>
+            <el-dropdown-item command="AdministrationPunish">行政处罚</el-dropdown-item>
+            <el-dropdown-item command="TaxRecord">欠税公告</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <BusinessUnusual class="margin"></BusinessUnusual>
-        <SeriousIllegal class="margin"></SeriousIllegal>
-        <EquityPledge class="margin"></EquityPledge>
-        <AdministrationPunish class="margin"></AdministrationPunish>
-        <TaxRecord class="margin"></TaxRecord>
+        <BusinessUnusual class="margin" ref="BusinessUnusual"></BusinessUnusual>
+        <SeriousIllegal class="margin" ref="SeriousIllegal"></SeriousIllegal>
+        <EquityPledge class="margin" ref="EquityPledge"></EquityPledge>
+        <AdministrationPunish class="margin" ref="AdministrationPunish"></AdministrationPunish>
+        <TaxRecord class="margin" ref="TaxRecord"></TaxRecord>
       </el-tab-pane>
       <!-- 经营信息 -->
       <el-tab-pane name="经营信息">
@@ -216,13 +216,27 @@ mounted(){
   this.watchScroll();
 },
 methods:{
+  // 锚点链接功能
+  anchorScroll(item,tabName){
+    // 首先做个tab的切换
+    if(this.activeName !== tabName){
+      this.activeName = tabName;
+    }
+    // 滚动,需等待切换完
+    this.$nextTick(()=>{
+        this.$refs.portrait.parentNode.scrollTo({
+        top: this.$refs[item].$el.getBoundingClientRect().top - 80,
+        behavior: "smooth", // 让滚动丝滑
+      });
+    });
+  },
   tabChange(item){
     this.activeName = item;
     this.$refs.portrait.parentNode.scrollTop = 0;
   },
   // tab固定
   isAttachTop(){
-    if(this.$refs.tabs.getBoundingClientRect().top < 47){
+    if(this.$refs.tabs?.getBoundingClientRect()?.top < 47){
       this.isTabShow = true;
     }else{
       this.isTabShow = false;

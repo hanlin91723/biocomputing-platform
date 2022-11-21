@@ -67,7 +67,8 @@ export default class StockTree {
             // 如果有父节点，则根节点居中，否则根节点上浮一段距离
           parentsLength > 0 ? -this.config.height / 2 : -this.config.height / 3,
           this.config.width,
-          this.config.height,
+          // this.config.height,
+          window.innerHeight,
         ];
       })
       .style("user-select", "none")
