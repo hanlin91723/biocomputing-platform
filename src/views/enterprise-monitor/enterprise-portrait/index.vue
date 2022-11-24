@@ -148,19 +148,23 @@
       </el-tab-pane>
       <!-- 其他信息 -->
       <el-tab-pane name="其他信息">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'其他信息')">
           <span class="el-dropdown-link">
             其他信息
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>强制性产品认证</el-dropdown-item>
-            <el-dropdown-item>食品农产品认证</el-dropdown-item>
-            <el-dropdown-item>自愿性工业产品认证</el-dropdown-item>
-            <el-dropdown-item>B2B信息</el-dropdown-item>
-            <el-dropdown-item>百科介绍</el-dropdown-item>
+            <el-dropdown-item command="MandatoryProducts">强制性产品认证</el-dropdown-item>
+            <el-dropdown-item command="FarmProduce">食品农产品认证</el-dropdown-item>
+            <el-dropdown-item command="VoluntaryProducts">自愿性工业产品认证</el-dropdown-item>
+            <el-dropdown-item command="BTwoBInfo">B2B信息</el-dropdown-item>
+            <el-dropdown-item command="Encyclopedias">百科介绍</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        其他信息
+        <MandatoryProducts class="margin" ref="MandatoryProducts"></MandatoryProducts>
+        <FarmProduce class="margin" ref="FarmProduce"></FarmProduce>
+        <VoluntaryProducts class="margin" ref="VoluntaryProducts"></VoluntaryProducts>
+        <BTwoBInfo class="margin" ref="BTwoBInfo"></BTwoBInfo>
+        <Encyclopedias class="margin" ref="Encyclopedias"></Encyclopedias>
       </el-tab-pane>
   </el-tabs>
   </div>
@@ -186,6 +190,12 @@ import SeriousIllegal from "@/views/enterprise-monitor/enterprise-portrait/modul
 import EquityPledge from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/equityPledge.vue";
 import AdministrationPunish from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/administrationPunish.vue";
 import TaxRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/taxRecord.vue";
+// 其他信息
+import MandatoryProducts from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/mandatoryProducts.vue";
+import FarmProduce from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/farmProduce.vue";
+import VoluntaryProducts from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/voluntaryProducts.vue";
+import BTwoBInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/BTwoBInfo.vue";
+import Encyclopedias from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/encyclopedias.vue";
 export default {
   data() {
     return {
@@ -195,22 +205,31 @@ export default {
     };
   },
 components:{
+  // 基础信息
   RegisterInfo,
   Shareholder,
   EquityChart,
   KeyPersonnel,
   OutInvest,
   ChangeRecord,
+  // 司法风险
   Executee,
   LimitConsume,
   RestrictedExit,
   FinalCase,
   Document,
+  // 经营风险
   BusinessUnusual,
   SeriousIllegal,
   EquityPledge,
   AdministrationPunish,
   TaxRecord,
+  // 其他信息
+  MandatoryProducts,
+  FarmProduce,
+  VoluntaryProducts,
+  BTwoBInfo,
+  Encyclopedias,
 },
 mounted(){
   this.watchScroll();
