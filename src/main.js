@@ -10,6 +10,9 @@ import * as echarts from "echarts";
 import china from "@/assets/json/china.json";
 echarts.registerMap("china",china);
 import VueECharts from "vue-echarts";
+import VueBMap from "vue-bmap-gl";
+import "vue-bmap-gl/dist/style.css";
+import VueMapvgl from "vue-mapvgl";
 import http from "./server/axios";
 import day from "dayjs";
 import "dayjs/locale/zh-cn";
@@ -23,6 +26,13 @@ const pinia = createPinia();
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(VueBMap);
+Vue.use(VueMapvgl);
+VueBMap.initBMapApiLoader({
+  ak: "UKHEh5F64q0mVl2KQ0B5Qt1SiIGOYYrc",
+  // 默认百度 sdk 版本为 1.0
+  v: "1.0",
+});
 NProgress.inc(0.2);
 NProgress.configure({
   easing: "ease",
