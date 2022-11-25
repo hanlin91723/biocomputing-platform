@@ -60,43 +60,42 @@ export default {
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          aaa: item,
+          tag: item.id,
         },
       });
     },
     querySearchAsync(queryString, cb) {
       this.$axios
         .get("/construction/projectManager", {
-          aaa: queryString,
+          enterpriseName: queryString,
         })
         .then(() => {
           const searchResultList = [
-            { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
+            { value: "三全鲜食（北新泾店）", name: "长宁区新渔路144号" },
             {
               value: "Hot honey 首尔炸鸡（仙霞路）",
-              address: "上海市长宁区淞虹路661号",
+              name: "上海市长宁区淞虹路661号",
             },
             {
               value: "新旺角茶餐厅",
-              address: "上海市普陀区真北路988号创邑金沙谷6号楼113",
+              name: "上海市普陀区真北路988号创邑金沙谷6号楼113",
             },
-            { value: "泷千家(天山西路店)", address: "天山西路438号" },
+            { value: "泷千家(天山西路店)", name: "天山西路438号" },
             {
               value: "胖仙女纸杯蛋糕（上海凌空店）",
-              address: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101",
+              name: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101",
             },
             {
               value: "浮生若茶（凌空soho店）",
-              address: "上海长宁区金钟路968号9号楼地下一层",
+              name: "上海长宁区金钟路968号9号楼地下一层",
             },
-            { value: "枪会山", address: "上海市普陀区棕榈路" },
-            { value: "纵食", address: "元丰天山花园(东门) 双流路267号" },
-            { value: "钱记", address: "上海市长宁区天山西路" },
-            { value: "壹杯加", address: "上海市长宁区通协路" },
+            { value: "枪会山", name: "上海市普陀区棕榈路" },
+            { value: "纵食", name: "元丰天山花园(东门) 双流路267号" },
+            { value: "钱记", name: "上海市长宁区天山西路" },
+            { value: "壹杯加", name: "上海市长宁区通协路" },
             {
               value: "唦哇嘀咖",
-              address:
-                "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元",
+              name: "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元",
             },
           ];
           cb(searchResultList);
@@ -107,7 +106,7 @@ export default {
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          aaa: item.value,
+          enterpriseName: item.value,
         },
       });
     },
@@ -116,7 +115,7 @@ export default {
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          aaa: this.searchVal,
+          enterpriseName: this.searchVal,
         },
       });
     },
