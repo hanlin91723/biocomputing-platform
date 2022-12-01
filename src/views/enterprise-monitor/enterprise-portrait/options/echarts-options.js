@@ -338,3 +338,346 @@ export const investPie = function(){
 };
 };
 
+export const trendChange = function() {
+  return {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // Use axis to trigger tooltip
+        type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
+      },
+    },
+    // legend: {
+    //   icon: "circle",
+    //   orient: "horizontal",
+    //   itemGap: 40,
+    //   itemWidth: 14,
+    //   itemHeight: 14,
+    //   textStyle: {
+    //     fontSize: 14,
+    //     color: "#858585",
+    //     fontWeight: 400,
+    //     padding: [4, 0, 0, 0,],
+    //   },
+    //   data: ["A", "B", "P", "E",],
+    // },
+    color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
+    grid: {
+      left: "8%",
+      right: "0",
+      top: "10%",
+      containLabel: false,
+    },
+    xAxis: {
+      type: "category",
+      data: ["2021.11","2021.12","2022.01","2022.02","2022.03","2022.04","2022.05","2022.06","2022.07","2022.08","2022.09","2022.10",],
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        show: true,
+      },
+      axisLine: {
+        show: false,
+      },
+    },
+    yAxis: {
+      // min: 0,
+      // max: 1200,
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          color: "#F3F4F5",
+        },
+      },
+    },
+    series: [
+      {
+        // name: "E",
+        name: "积极舆论",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: function (e) {
+            return e.value ? e.seriesName : "";
+          },
+        },
+        itemStyle: {
+          borderRadius: [0, 0, 4, 4,],
+        },
+        barWidth: 20,
+        emphasis: {
+          focus: "series",
+        },
+        data: [320, 80, 301, 334, 390, 330, 320, 390, 330, 320, 390, 390,],
+      },
+      {
+        // name: "P",
+        name: "中级舆论",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: [120, 132, 101, 134, 90, 230, 210, 302, 301, 334, 390, 330,],
+      },
+      {
+        // name: "A",
+        name: "消极舆论",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        itemStyle: {
+          borderRadius: [4, 4, 0, 0,],
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: [150, 212, 201, 154, 190, 330, 410, 182, 191, 234, 290, 330,],
+      },
+      {
+        name: "趋势",
+        type: "line",
+        smooth: false,
+        showAllSymbol: true,
+        symbol: "circle",
+        symbolSize: 6,
+        lineStyle: {
+            normal: {
+                color: "#1990FF",
+            },
+        },
+        label: {
+            show: false,
+            position: "top",
+            textStyle: {
+                color: "#6c50f3",
+            },
+        },
+        itemStyle: {
+            color: "rgba(0, 96, 255, 0.8)",
+            borderColor: "#fff",
+            borderWidth: 2,
+        },
+      
+        data: [ 1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,],
+    },
+    ],
+  };
+};
+
+export const ringPie = function(){
+  return {
+    color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
+    tooltip : {
+      trigger: "item",
+      // formatter: "{a} <br/>{b} : {c} ({d}%)",
+      formatter: "{b} : {d}%",
+  },
+    legend: {
+        show: true,
+        // orient: "vertical",
+        itemlength:20,
+        itemWidth:15,
+        bottom:"0%",
+        // left: "60%",
+        // align:"left",
+        // top:"middle",
+        data: ["信息传输、软件和信息技术服务业", "科学研究和技术服务业", "制造业", "金融业", "文化、体育和娱乐行业","批发和零售业",],
+    },
+    series: [
+        {
+            name: "",
+            type: "pie",
+            radius: ["40%", "60%",],
+            center:["180","34%",],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: "center",
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: "85",
+                    fontWeight: "bold",
+                },
+            },
+            labelLine: {
+                show: false,
+            },
+            data: [
+                {value: 335, name: "信息传输、软件和信息技术服务业",},
+                {value: 310, name: "科学研究和技术服务业",},
+                {value: 234, name: "制造业",},
+                {value: 135, name: "金融业",},
+                {value: 1548, name: "文化、体育和娱乐行业",},    
+                {value: 600, name: "批发和零售业",},    
+            ],
+        },
+    ],
+};
+};
+
+export const recruit = function(){
+  return {
+    
+    tooltip: {
+        trigger: "axis",
+        axisPointer: {
+            type: "shadow",
+        },
+    },
+    grid: {
+        top: "10%",
+        right: "3%",
+        left: "5%",
+        bottom: "14%",
+    },
+    xAxis: [{
+        type: "category",
+        data: ["2022", "2021", "2020","2019","2018","2017",],
+        axisLine: {
+            show:false,
+            lineStyle: {
+                color: "rgba(255,255,255,0.12)",
+            },
+        },
+        axisLabel: {
+            show:true,
+            margin: 10,
+            color: "black",
+            textStyle: {
+                fontSize: 14,
+            },
+        },
+    },],
+    yAxis: [{
+        name: "",
+        axisLabel: {
+            show:false,
+            formatter: "{value}",
+            color: "#e2e9ff",
+        },
+        "axisTick":{ //y轴刻度线
+          "show":false,
+        },
+        axisLine: {
+            show: false,
+            lineStyle: {
+                color: "rgba(255,255,255,1)",
+            },
+        },
+        splitLine: {
+            show:false,
+            lineStyle: {
+                color: "rgba(255,255,255,0.12)",
+            },
+        },
+    },],
+    series: [{
+        type: "bar",
+        data: [3000, 2600, 1300, 1300, 1250, 1500, 2000, 3000, 1250, 1500, 2000, 3000,],
+        barWidth: "20px",
+        itemStyle: {
+            normal: {
+                // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                //     offset: 0,
+                //     color: "rgba(0,244,255,1)", // 0% 处的颜色
+                // }, {
+                //     offset: 1,
+                //     color: "rgba(0,77,167,1)", // 100% 处的颜色
+                // },], false),
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(0,244,255,1)", // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(0,77,167,1)", // 100% 处的颜色
+                    },
+                  ],
+                  global: false, // 缺省为 false
+                },
+                barBorderRadius: [30, 30, 30, 30,],
+                shadowColor: "rgba(0,160,221,1)",
+                shadowBlur: 4,
+            },
+        },
+        label: {
+           show:true,
+           position:["-22%",-17,],
+        },
+    },],
+};
+};
+
+export const basicPie = function(){
+  return {
+    color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
+    tooltip : {
+      trigger: "item",
+      // formatter: "{a} <br/>{b} : {c} ({d}%)",
+      formatter: "{b} : {d}%",
+  },
+    legend: {
+        show: true,
+        orient: "vertical",
+        itemlength:20,
+        itemWidth:15,
+        left: "60%",
+        align:"left",
+        top:"middle",
+        data: ["信息传输、软件和信息技术服务业", "科学研究和技术服务业", "制造业", "金融业", "文化、体育和娱乐行业","批发和零售业",],
+    },
+    series: [
+        {
+            name: "",
+            type: "pie",
+            radius: [0, "60%",],
+            center:["200","50%",],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: "center",
+            },
+            emphasis: {
+                label: {
+                    show: false,
+                    fontSize: "85",
+                    fontWeight: "bold",
+                },
+            },
+            labelLine: {
+                show: false,
+            },
+            data: [
+                {value: 335, name: "信息传输、软件和信息技术服务业",},
+                {value: 310, name: "科学研究和技术服务业",},
+                {value: 234, name: "制造业",},
+                {value: 135, name: "金融业",},
+                {value: 1548, name: "文化、体育和娱乐行业",},    
+                {value: 600, name: "批发和零售业",},    
+            ],
+        },
+    ],
+};
+};

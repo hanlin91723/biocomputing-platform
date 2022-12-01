@@ -152,7 +152,7 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
       //   console.log(data);
       //   this.tableData = data;
       // });
-          this.enterpriseInvestTotal = 100;
+          this.enterpriseInvestTotal = 10;
           this.enterpriseInvestData = [
           {
             enterpriseName: "石河子市欧拓通信软件有限公司",

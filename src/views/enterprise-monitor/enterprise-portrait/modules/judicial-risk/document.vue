@@ -5,11 +5,11 @@
       <div class="chart">
         <el-card class="mapChart" shadow="never">
           <h3 class="chartTitle">案由</h3>
-          <v-chart class="chartContent" :option="investPie"></v-chart>
+          <v-chart class="chartContent" :option="basicPie"></v-chart>
         </el-card>
         <el-card class="pieChart" shadow="never">
           <h3 class="chartTitle">类型</h3>
-          <v-chart class="chartContent" :option="investPie"></v-chart>
+          <v-chart class="chartContent" :option="basicPie"></v-chart>
         </el-card>
       </div>
       <el-table
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { investPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
   export default {
     data() {
       return {
@@ -59,8 +59,8 @@ import { investPie } from "@/views/enterprise-monitor/enterprise-portrait/option
       };
     },
     computed:{
-      investPie(){
-        return investPie();
+      basicPie(){
+        return basicPie();
       },
     },
     created(){
@@ -80,7 +80,7 @@ import { investPie } from "@/views/enterprise-monitor/enterprise-portrait/option
           this.documentTotal = 2;
           this.documentData = [
           {
-            referenceNum: "（2021）粤0307民初30807号",
+            referenceNum: "(2021)粤0307民初30807号",
             documentTitle: "劳动争议民事一审调解书",
             causeAction: "劳动争议",
             type: "民事",
@@ -93,7 +93,7 @@ import { investPie } from "@/views/enterprise-monitor/enterprise-portrait/option
             judgmentTime:"2021-11-25",
           },
           {
-            referenceNum: "（2018）京73行初7940号",
+            referenceNum: "(2018)京73行初7940号",
             documentTitle: "专利行政管理（专利）行政一审裁定书",
             causeAction: "专利行政管理（专利）",
             type: "民事",

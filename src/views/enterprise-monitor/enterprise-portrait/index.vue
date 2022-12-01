@@ -102,32 +102,37 @@
       </el-tab-pane>
       <!-- 经营信息 -->
       <el-tab-pane name="经营信息">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'经营信息')">
           <span class="el-dropdown-link">
             经营信息
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>行政许可</el-dropdown-item>
-            <el-dropdown-item>信用评价</el-dropdown-item>
-            <el-dropdown-item>招聘</el-dropdown-item>
-            <el-dropdown-item>社保信息</el-dropdown-item>
-            <el-dropdown-item>土地信息</el-dropdown-item>
+            <el-dropdown-item command="Administration">行政许可</el-dropdown-item>
+            <el-dropdown-item command="Credit">信用评价</el-dropdown-item>
+            <el-dropdown-item command="Recruitment">招聘</el-dropdown-item>
+            <el-dropdown-item command="SocialSecurity">社保信息</el-dropdown-item>
+            <el-dropdown-item command="LandInfo">土地信息</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        经营信息
+        <Administration class="margin" ref="Administration"></Administration>
+        <Credit class="margin" ref="Credit"></Credit>
+        <Recruitment class="margin" ref="Recruitment"></Recruitment>
+        <SocialSecurity class="margin" ref="SocialSecurity"></SocialSecurity>
+        <LandInfo class="margin" ref="LandInfo"></LandInfo>
       </el-tab-pane>
       <!-- 企业发展 -->
       <el-tab-pane name="企业发展">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'企业发展')">
           <span class="el-dropdown-link">
             企业发展
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>企业年报股东出资</el-dropdown-item>
-            <el-dropdown-item>新闻舆情</el-dropdown-item>
+            <el-dropdown-item command="Contributor">企业年报股东出资</el-dropdown-item>
+            <el-dropdown-item command="PublicSentiment">新闻舆情</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        企业发展
+        <Contributor class="margin" ref="Contributor"></Contributor>
+        <PublicSentiment class="margin" ref="PublicSentiment"></PublicSentiment>
       </el-tab-pane>
       <!-- 知识产权 -->
       <el-tab-pane name="知识产权">
@@ -196,6 +201,17 @@ import FarmProduce from "@/views/enterprise-monitor/enterprise-portrait/modules/
 import VoluntaryProducts from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/voluntaryProducts.vue";
 import BTwoBInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/BTwoBInfo.vue";
 import Encyclopedias from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/encyclopedias.vue";
+// 企业发展
+import Contributor from "@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/contributor.vue";
+import PublicSentiment from "@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/publicSentiment.vue";
+// 经营信息
+import Administration from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/administration.vue";
+import Credit from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/credit.vue";
+import Recruitment from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/recruitment.vue";
+import SocialSecurity from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/socialSecurity.vue";
+import LandInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/landInfo.vue";
+
+
 export default {
   data() {
     return {
@@ -230,9 +246,19 @@ components:{
   VoluntaryProducts,
   BTwoBInfo,
   Encyclopedias,
+  // 企业发展
+  Contributor,
+  PublicSentiment,
+  // 经营信息
+  Administration,
+  Credit,
+  Recruitment,
+  SocialSecurity,
+  LandInfo,
 },
 mounted(){
   this.watchScroll();
+  console.log(1);
 },
 methods:{
   // 锚点链接功能

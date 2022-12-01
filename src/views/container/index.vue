@@ -1,17 +1,21 @@
 <template>
   <el-container class="container">
     <el-aside width="200px">
-      <h3 class="header-title">企业风险管理</h3>
+      <h3 :class="{['header-title']:true,isCollapse:isCollapse}">
+        <i class="el-icon-menu"></i>
+        {{isCollapse?'':'企业风险管理'}}
+      </h3>
       <el-menu
         ref="menu"
         class="menu-list"
         @select="handleSelect"
+        unique-opened
         :default-active="activeMenuItem"
         :collapse="isCollapse"
         :collapse-transition="false"
-        background-color="#545c64"
+        background-color="#1A3885"
         text-color="#fff"
-        active-text-color="#ffd04b"
+        active-text-color="#FFFFFF"
       >
         <el-submenu
           v-for="item in menuList"
@@ -34,7 +38,7 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="header">
+      <el-header :class="['header','section', isCollapse ? 'collapse' : '']">
         <i
           @click="isCollapse = !isCollapse"
           :class="[
@@ -149,41 +153,58 @@ export default {
   height: fit-content;
 
   .header-title {
+    width: 200px;
     text-align: center;
     line-height: @headerTitleHeight;
-    background: #545c64;
+    // background: #545c64;
+    background: #1A3885;
     color: #fff;
+    &.isCollapse{
+      width: 64px;
+    }
   }
 
   .menu-list {
     height: calc(100vh - @headerTitleHeight);
     border-right: none;
-
+    /deep/.el-submenu__title{
+      font-weight: 700;
+      font-size: 17px;
+    }
     .submenu-item {
       min-width: auto;
+      padding-left: 57px !important;
 
       &.is-active {
-        background: rgb(67, 74, 80) !important;
+        // background: rgb(67, 74, 80) !important;
+        background: #5D77FF !important;
+
       }
     }
   }
 
   .header {
+    width: auto;
     display: flex;
     // justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    background: #545c64;
+    // background: #545c64;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 12%), 0 0 6px 0 rgb(0 0 0 / 4%);
 
     .collapse-btn {
       padding-right: 20px;
-      color: #fff;
+      // color: #fff;
+      color: #ACB1BC;
+      font-size: 32px;
       cursor: pointer;
     }
 
     .breadcrumb-txt {
       /deep/ .el-breadcrumb__inner {
-        color: #fff;
+        // color: #fff;
+        color: #1E293B;
       }
     }
 
@@ -195,7 +216,8 @@ export default {
         display: flex;
         align-items: center;
         cursor: pointer;
-        color: #fff;
+        // color: #fff;
+        color: #1E293B;
 
         .username {
           padding-left: 10px;

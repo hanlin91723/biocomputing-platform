@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="title">B2B信息</h3>
+    <h3 class="title">百科介绍</h3>
     <table class="project-table">
           <tr class="project-table-tr">
             <td class="project-name">官网网址</td>
