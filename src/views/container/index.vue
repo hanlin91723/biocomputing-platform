@@ -1,9 +1,9 @@
 <template>
   <el-container class="container">
     <el-aside width="200px">
-      <h3 :class="{['header-title']:true,isCollapse:isCollapse}">
+      <h3 :class="{ ['header-title']: true, isCollapse: isCollapse }">
         <i class="el-icon-menu"></i>
-        {{isCollapse?'':'企业风险管理'}}
+        {{ isCollapse ? "" : "企业风险管理" }}
       </h3>
       <el-menu
         ref="menu"
@@ -38,7 +38,7 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header :class="['header','section', isCollapse ? 'collapse' : '']">
+      <el-header :class="['header', 'section', isCollapse ? 'collapse' : '']">
         <i
           @click="isCollapse = !isCollapse"
           :class="[
@@ -157,9 +157,9 @@ export default {
     text-align: center;
     line-height: @headerTitleHeight;
     // background: #545c64;
-    background: #1A3885;
+    background: #1a3885;
     color: #fff;
-    &.isCollapse{
+    &.isCollapse {
       width: 64px;
     }
   }
@@ -167,7 +167,7 @@ export default {
   .menu-list {
     height: calc(100vh - @headerTitleHeight);
     border-right: none;
-    /deep/.el-submenu__title{
+    /deep/.el-submenu__title {
       font-weight: 700;
       font-size: 17px;
     }
@@ -177,26 +177,25 @@ export default {
 
       &.is-active {
         // background: rgb(67, 74, 80) !important;
-        background: #5D77FF !important;
-
+        background: #5d77ff !important;
       }
     }
   }
 
   .header {
-    width: auto;
     display: flex;
     // justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     // background: #545c64;
-    background: #FFFFFF;
+    z-index: 2;
+    background: #ffffff;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 12%), 0 0 6px 0 rgb(0 0 0 / 4%);
 
     .collapse-btn {
       padding-right: 20px;
       // color: #fff;
-      color: #ACB1BC;
+      color: #acb1bc;
       font-size: 32px;
       cursor: pointer;
     }
@@ -204,7 +203,7 @@ export default {
     .breadcrumb-txt {
       /deep/ .el-breadcrumb__inner {
         // color: #fff;
-        color: #1E293B;
+        color: #1e293b;
       }
     }
 
@@ -217,7 +216,7 @@ export default {
         align-items: center;
         cursor: pointer;
         // color: #fff;
-        color: #1E293B;
+        color: #1e293b;
 
         .username {
           padding-left: 10px;

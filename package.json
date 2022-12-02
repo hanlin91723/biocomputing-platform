@@ -12,6 +12,7 @@
     "canvas-nest.js": "^2.0.4",
     "d3": "^7.4.0",
     "dayjs": "^1.11.6",
+    "echarts-wordcloud": "^2.1.0",
     "element-ui": "^2.15.10",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.23",
@@ -19,7 +20,8 @@
     "vue-bmap-gl": "^0.0.30",
     "vue-echarts": "^6.2.3",
     "vue-mapvgl": "^0.0.34",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "vue-seamless-scroll": "^1.1.23"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
