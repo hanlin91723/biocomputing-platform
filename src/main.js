@@ -8,7 +8,7 @@ import "nprogress/nprogress.css";
 import "@/assets/css/common.less"; // 引入自定义通用样式
 import * as echarts from "echarts";
 import china from "@/assets/json/china.json";
-echarts.registerMap("china",china);
+echarts.registerMap("china", china);
 import VueECharts from "vue-echarts";
 import VueBMap from "vue-bmap-gl";
 import "vue-bmap-gl/dist/style.css";
@@ -16,6 +16,7 @@ import VueMapvgl from "vue-mapvgl";
 import http from "./server/axios";
 import day from "dayjs";
 import "dayjs/locale/zh-cn";
+import "echarts-wordcloud";
 
 import {
   createPinia,
