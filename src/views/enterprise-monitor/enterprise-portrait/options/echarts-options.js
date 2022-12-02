@@ -681,3 +681,116 @@ export const basicPie = function(){
     ],
 };
 };
+
+export const patentBar = function() {
+  return {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        // Use axis to trigger tooltip
+        type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
+      },
+    },
+    legend: {
+      icon: "circle",
+      orient: "horizontal",
+      itemGap: 40,
+      itemWidth: 14,
+      itemHeight: 14,
+      textStyle: {
+        fontSize: 14,
+        color: "#858585",
+        fontWeight: 400,
+        padding: [4, 0, 0, 0,],
+      },
+      // data: ["A", "B", "P", "E",],
+    },
+    color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
+    grid: {
+      left: "8%",
+      right: "0",
+      top: "20%",
+      bottom: "10%",
+      containLabel: false,
+    },
+    xAxis: {
+      type: "category",
+      data: ["2021.11","2021.12","2022.01","2022.02","2022.03","2022.04","2022.05","2022.06","2022.07","2022.08","2022.09","2022.10",],
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        show: true,
+      },
+      axisLine: {
+        show: false,
+      },
+    },
+    yAxis: {
+      // min: 0,
+      // max: 1200,
+      type: "value",
+      splitLine: {
+        lineStyle: {
+          color: "#F3F4F5",
+        },
+      },
+    },
+    series: [
+      {
+        // name: "E",
+        name: "发明专利",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: function (e) {
+            return e.value ? e.seriesName : "";
+          },
+        },
+        itemStyle: {
+          borderRadius: [0, 0, 4, 4,],
+        },
+        barWidth: 20,
+        emphasis: {
+          focus: "series",
+        },
+        data: [320, 80, 301, 334, 390, 330, 320, 390, 330, 320, 390, 390,],
+      },
+      {
+        // name: "P",
+        name: "外观专利",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: [120, 132, 101, 134, 90, 230, 210, 302, 301, 334, 390, 330,],
+      },
+      {
+        // name: "A",
+        name: "实用新型专利",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        itemStyle: {
+          borderRadius: [4, 4, 0, 0,],
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: [150, 212, 201, 154, 190, 330, 410, 182, 191, 234, 290, 330,],
+      },
+    ],
+  };
+};

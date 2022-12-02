@@ -334,13 +334,12 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id }) {
+    portrait({ id, }) {
       //  提示
-      console.log(id);
-      // this.$router.push(`/portrait?id=${id}`);
+      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${id}`);
     },
     // 风险详情
-    riskDetails({ id }) {
+    riskDetails({ id, }) {
       console.log(id);
       this.$router.push({
         path: "/enterprise-risk/detail/1",

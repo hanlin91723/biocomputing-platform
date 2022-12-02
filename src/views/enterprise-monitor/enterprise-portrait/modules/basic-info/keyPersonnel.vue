@@ -2,7 +2,7 @@
   <div classs="hareholder">
     <div class="title" @click="handleTab">
       <span :class="{titleItem:true,active:selectTab.startsWith('主要人员'),disabled:keyPersonnelTotal == 0}">主要人员 {{keyPersonnelTotal}}</span>
-      <span :class="{titleItem:true,active:selectTab.startsWith('历史高管'),disabled:keyPersonnelTotal == 0}">历史高管 {{oldManagerTotal}}</span>
+      <span :class="{titleItem:true,active:selectTab.startsWith('历史高管'),disabled:oldManagerTotal == 0}">历史高管 {{oldManagerTotal}}</span>
     </div>
     <!-- 股东信息表格 -->
     <el-table

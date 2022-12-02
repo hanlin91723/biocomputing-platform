@@ -42,7 +42,7 @@ const asyncRouterMap = [{
         redirect: "/risk-map",
         meta: {
           title: "概览",
-          ico: "el-icon-location",
+          ico: "el-icon-monitor",
           permission: ["1-1", "1-2", ],
         },
         children: [{
@@ -72,7 +72,7 @@ const asyncRouterMap = [{
         redirect: "/enterprise-retrieval",
         meta: {
           title: "企业监测",
-          ico: "el-icon-location",
+          ico: "el-icon-data-line",
           permission: ["2-1", ],
         },
         children: [{
@@ -113,7 +113,7 @@ const asyncRouterMap = [{
         redirect: "/risk-map",
         meta: {
           title: "风险评估",
-          ico: "el-icon-location",
+          ico: "el-icon-notebook-1",
           permission: ["3-1", "3-2", ],
         },
         children: [{
@@ -163,7 +163,7 @@ const asyncRouterMap = [{
         redirect: "/user-management",
         meta: {
           title: "系统管理",
-          ico: "el-icon-location",
+          ico: "el-icon-set-up",
           permission: ["4-1", "4-2", ],
         },
         children: [{

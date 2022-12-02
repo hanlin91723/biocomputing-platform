@@ -136,20 +136,24 @@
       </el-tab-pane>
       <!-- 知识产权 -->
       <el-tab-pane name="知识产权">
-        <el-dropdown slot="label">
+        <el-dropdown slot="label" @command="anchorScroll($event,'知识产权')">
           <span class="el-dropdown-link">
             知识产权
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>专利信息</el-dropdown-item>
-            <el-dropdown-item>商标信息</el-dropdown-item>
-            <el-dropdown-item>软件著作权</el-dropdown-item>
-            <el-dropdown-item>作品著作权</el-dropdown-item>
-            <el-dropdown-item>科技成果</el-dropdown-item>
-            <el-dropdown-item>网站备案</el-dropdown-item>
+            <el-dropdown-item command="PatentInfo">专利信息</el-dropdown-item>
+            <el-dropdown-item command="BrandInfo">商标信息</el-dropdown-item>
+            <el-dropdown-item command="SoftwareRight">软件著作权</el-dropdown-item>
+            <el-dropdown-item command="Copyright">作品著作权</el-dropdown-item>
+            <el-dropdown-item command="Administration">科技成果</el-dropdown-item>
+            <el-dropdown-item command="WebsiteFiling">网站备案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        知识产权
+        <PatentInfo class="margin" ref="PatentInfo"></PatentInfo>
+        <BrandInfo class="margin" ref="BrandInfo"></BrandInfo>
+        <SoftwareRight class="margin" ref="SoftwareRight"></SoftwareRight>
+        <Copyright class="margin" ref="Copyright"></Copyright>
+        <WebsiteFiling class="margin" ref="WebsiteFiling"></WebsiteFiling>
       </el-tab-pane>
       <!-- 其他信息 -->
       <el-tab-pane name="其他信息">
@@ -210,6 +214,12 @@ import Credit from "@/views/enterprise-monitor/enterprise-portrait/modules/busin
 import Recruitment from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/recruitment.vue";
 import SocialSecurity from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/socialSecurity.vue";
 import LandInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/landInfo.vue";
+// 知识产权
+import PatentInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/patentInfo.vue";
+import BrandInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/brandInfo.vue";
+import SoftwareRight from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/softwareRight.vue";
+import Copyright from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/copyright.vue";
+import WebsiteFiling from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/websiteFiling.vue";
 
 
 export default {
@@ -255,10 +265,15 @@ components:{
   Recruitment,
   SocialSecurity,
   LandInfo,
+  // 知识产权
+  PatentInfo,
+  BrandInfo,
+  SoftwareRight,
+  Copyright,
+  WebsiteFiling,
 },
 mounted(){
   this.watchScroll();
-  console.log(1);
 },
 methods:{
   // 锚点链接功能

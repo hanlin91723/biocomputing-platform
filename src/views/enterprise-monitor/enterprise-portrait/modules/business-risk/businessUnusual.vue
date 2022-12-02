@@ -2,7 +2,7 @@
   <div classs="hareholder">
     <div class="title" @click="handleTab">
       <span :class="{titleItem:true,active:selectTab.startsWith('经营异常'),disabled:businessUnusualTotal == 0}">经营异常 {{businessUnusualTotal}}</span>
-      <span :class="{titleItem:true,active:selectTab.startsWith('历史经营异常'),disabled:businessUnusualTotal == 0}">历史经营异常 {{oldBusinessUnusualTotal}}</span>
+      <span :class="{titleItem:true,active:selectTab.startsWith('历史经营异常'),disabled:oldBusinessUnusualTotal == 0}">历史经营异常 {{oldBusinessUnusualTotal}}</span>
     </div>
     <!-- 股东信息表格 -->
     <el-table

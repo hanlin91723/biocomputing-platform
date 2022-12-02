@@ -24,7 +24,7 @@
           class="menu-item"
         >
           <template slot="title">
-            <i :class="item.meta.ico"></i>
+            <i :class="item.meta.ico" style="color:#fff;"></i>
             <span>{{ item.meta.title }}</span>
           </template>
           <el-menu-item
@@ -174,6 +174,10 @@ export default {
     .submenu-item {
       min-width: auto;
       padding-left: 57px !important;
+      background: rgba(21, 45, 106, 0.6) !important;
+      &:hover{
+        background: rgba(21, 45, 106, 1) !important;
+      }
 
       &.is-active {
         // background: rgb(67, 74, 80) !important;

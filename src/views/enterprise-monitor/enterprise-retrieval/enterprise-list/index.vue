@@ -413,7 +413,7 @@ export default {
   },
   created() {
     const routeParams = this.$route.params;
-    this.searchFormData.tag = routeParams.tag ? [routeParams.tag] : [];
+    this.searchFormData.tag = routeParams.tag ? [routeParams.tag,] : [];
     this.searchFormData.enterpriseName = routeParams.enterpriseName || "";
     this.getTableData();
   },
@@ -553,10 +553,9 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id }) {
+    portrait({ id, }) {
       //  提示
-      console.log(id);
-      // this.$router.push(`/portrait?id=${id}`);
+      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${id}`);
     },
     // 分页
     handleCurrentChange(val) {
