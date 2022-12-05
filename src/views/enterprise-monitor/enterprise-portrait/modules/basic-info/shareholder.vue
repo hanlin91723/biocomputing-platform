@@ -17,7 +17,7 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="shareholder" label="股东名称" width="196"></el-table-column>
+      <el-table-column prop="shareholder" label="股东名称"></el-table-column>
       <el-table-column prop="scale" label="出资比例" width="100"></el-table-column>
       <el-table-column prop="shouldQuota" label="认缴出资额" width="150"></el-table-column>
       <el-table-column prop="shouldTime" label="认缴出资日期" width="150"></el-table-column>
@@ -49,7 +49,7 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="oldShareholderName" label="历史股东名称" width="200"></el-table-column>
+      <el-table-column prop="oldShareholderName" label="历史股东名称"></el-table-column>
       <el-table-column prop="scale" label="出资比例" width="196"></el-table-column>
       <el-table-column prop="shouldQuota" label="认缴出资额" width="200"></el-table-column>
       <el-table-column prop="shouldTime" label="认缴出资日期" width="200"></el-table-column>
@@ -79,7 +79,7 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="changeType" label="变动类型" width="175"></el-table-column>
+      <el-table-column prop="changeType" label="变动类型"></el-table-column>
       <el-table-column prop="changeTime" label="变动日期" width="170"></el-table-column>
       <el-table-column prop="shareholderName" label="股东名称" width="170"></el-table-column>
       <el-table-column prop="beforeChangeQuota" label="变更前投资额" width="170"></el-table-column>

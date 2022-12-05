@@ -15,7 +15,7 @@
       <el-table-column prop="referenceNum" label="案号" width="259"></el-table-column>
       <el-table-column prop="IDCard" label="被执行人身份证号码/组织机构代码" width="249"></el-table-column>
       <el-table-column prop="filingCaseTime" label="立案日期" width="209"></el-table-column>
-      <el-table-column prop="court" label="执行法院" width="270"></el-table-column>
+      <el-table-column prop="court" label="执行法院"></el-table-column>
       <el-table-column prop="amount" label="执行标的(元)" width="209"></el-table-column>
     </el-table>
     <!-- 分页器 -->

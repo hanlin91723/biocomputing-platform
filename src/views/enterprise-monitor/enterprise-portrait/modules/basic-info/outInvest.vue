@@ -22,8 +22,14 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="enterpriseName" label="被投企业名称" width="110"></el-table-column>
-        <el-table-column prop="registerState" label="企业登记状态" width="100"></el-table-column>
+        <el-table-column prop="enterpriseName" label="被投企业名称"></el-table-column>
+        <el-table-column
+         prop="registerState"
+         label="企业登记状态"
+         width="100"
+         :filters="filterData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="legalPerson" label="被投资企业法定代表人" width="96"></el-table-column>
         <el-table-column prop="dutyType" label="责任类型" width="100"></el-table-column>
         <el-table-column prop="mainType" label="主体类型" width="100"></el-table-column>
@@ -58,8 +64,14 @@
         'text-align':'center'
         }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="enterpriseName" label="被投企业名称" width="260"></el-table-column>
-        <el-table-column prop="registerState" label="企业登记状态" width="150"></el-table-column>
+        <el-table-column prop="enterpriseName" label="被投企业名称"></el-table-column>
+        <el-table-column
+         prop="registerState"
+         label="企业登记状态"
+         width="150"
+         :filters="filterData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="legalPerson" label="被投资企业法定代表人" width="96"></el-table-column>
         <el-table-column prop="contribution" label="出资额" width="100"></el-table-column>
         <el-table-column prop="contributionTime" label="出资日期" width="100"></el-table-column>
@@ -99,6 +111,16 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
         personInvestCurrentPage:1,
         personInvestPageSize:10,
         personInvestTotal:0,
+        filterData:[
+          {
+            text: "在营（开业）企业",
+            value: "在营（开业）企业",
+          },
+          {
+            text: "注销",
+            value: "注销",
+          },
+        ],
       };
     },
     computed:{
@@ -357,6 +379,10 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

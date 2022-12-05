@@ -12,13 +12,19 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="registerNum" label="登记编号" width="170"></el-table-column>
+      <el-table-column prop="registerNum" label="登记编号"></el-table-column>
       <el-table-column prop="pledgor" label="出质人" width="170"></el-table-column>
-      <el-table-column prop="pledgorEnterprise" label="出质股权标的企业" width="176"></el-table-column>
+      <el-table-column prop="pledgorEnterprise" label="出质股权标的企业"></el-table-column>
       <el-table-column prop="pledgee" label="质权人" width="170"></el-table-column>
       <el-table-column prop="pledgeAmount" label="质押金额" width="170"></el-table-column>
       <el-table-column prop="pledgeFilingTime" label="质押备案日期" width="170"></el-table-column>
-      <el-table-column prop="status" label="状态" width="170"></el-table-column>
+      <el-table-column
+         prop="status"
+         label="状态"
+         width="170"
+         :filters="filterData"
+         :filter-method="filterHandler">
+        </el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination background
@@ -42,6 +48,16 @@
         equityPledgeCurrentPage:1,
         equityPledgePageSize:10,
         equityPledgeTotal:0,
+        filterData:[
+          {
+            text: "质押",
+            value: "质押",
+          },
+          {
+            text: "出售",
+            value: "出售",
+          },
+        ],
       };
     },
     created(){
@@ -82,6 +98,10 @@
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

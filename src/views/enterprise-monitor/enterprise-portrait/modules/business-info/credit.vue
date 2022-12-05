@@ -11,10 +11,10 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="company" label="评级公司" width="240"></el-table-column>
+      <el-table-column prop="company" label="评级公司"></el-table-column>
       <el-table-column prop="subjectGrade" label="主体信用等级" width="239"></el-table-column>
       <el-table-column prop="DebtGrade" label="债项信用等级" width="239"></el-table-column>
-      <el-table-column prop="expectation" label="展望" width="239"></el-table-column>
+      <el-table-column prop="expectation" label="展望"></el-table-column>
       <el-table-column prop="dateTime" label="评级/发布日期" width="239"></el-table-column>
     </el-table>
     <!-- 分页器 -->

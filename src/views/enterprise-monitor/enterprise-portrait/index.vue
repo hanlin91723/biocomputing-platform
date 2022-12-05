@@ -175,52 +175,54 @@
         <BTwoBInfo class="margin" ref="BTwoBInfo"></BTwoBInfo>
         <Encyclopedias class="margin" ref="Encyclopedias"></Encyclopedias>
       </el-tab-pane>
-  </el-tabs>
+    </el-tabs>
+    <div class="backtop" v-show="isShowBacktop" @click="backtop">
+      <i class="el-icon-caret-top"></i>
+    </div>
   </div>
 </template>
 
 <script>
 // 基础信息
-import RegisterInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/registerInfo.vue";
-import Shareholder from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/shareholder.vue";
-import EquityChart from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/equityChart.vue";
-import KeyPersonnel from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/keyPersonnel.vue";
-import OutInvest from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/outInvest.vue";
-import ChangeRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/changeRecord.vue";
+const RegisterInfo = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/registerInfo.vue");
+const Shareholder = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/shareholder.vue");
+const EquityChart = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/equityChart.vue");
+const KeyPersonnel = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/keyPersonnel.vue");
+const OutInvest = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/outInvest.vue");
+const ChangeRecord = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/basic-info/changeRecord.vue");
 // 司法风险
-import Executee from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/executee.vue";
-import LimitConsume from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/limitConsume.vue";
-import RestrictedExit from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/restrictedExit.vue";
-import FinalCase from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/finalCase.vue";
-import Document from "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/document.vue";
+const Executee = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/executee.vue");
+const LimitConsume = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/limitConsume.vue");
+const RestrictedExit = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/restrictedExit.vue");
+const FinalCase = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/finalCase.vue");
+const Document = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/document.vue");
 // 经营风险
-import BusinessUnusual from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/businessUnusual.vue";
-import SeriousIllegal from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/seriousIllegal.vue";
-import EquityPledge from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/equityPledge.vue";
-import AdministrationPunish from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/administrationPunish.vue";
-import TaxRecord from "@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/taxRecord.vue";
+const BusinessUnusual = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/businessUnusual.vue");
+const SeriousIllegal = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/seriousIllegal.vue");
+const EquityPledge = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/equityPledge.vue");
+const AdministrationPunish = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/administrationPunish.vue");
+const TaxRecord = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-risk/taxRecord.vue");
 // 其他信息
-import MandatoryProducts from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/mandatoryProducts.vue";
-import FarmProduce from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/farmProduce.vue";
-import VoluntaryProducts from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/voluntaryProducts.vue";
-import BTwoBInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/BTwoBInfo.vue";
-import Encyclopedias from "@/views/enterprise-monitor/enterprise-portrait/modules/other-info/encyclopedias.vue";
+const MandatoryProducts = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/other-info/mandatoryProducts.vue");
+const FarmProduce = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/other-info/farmProduce.vue");
+const VoluntaryProducts = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/other-info/voluntaryProducts.vue");
+const BTwoBInfo = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/other-info/BTwoBInfo.vue");
+const Encyclopedias = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/other-info/encyclopedias.vue");
 // 企业发展
-import Contributor from "@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/contributor.vue";
-import PublicSentiment from "@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/publicSentiment.vue";
+const Contributor = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/contributor.vue");
+const PublicSentiment = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/enterprise-development/publicSentiment.vue");
 // 经营信息
-import Administration from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/administration.vue";
-import Credit from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/credit.vue";
-import Recruitment from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/recruitment.vue";
-import SocialSecurity from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/socialSecurity.vue";
-import LandInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/business-info/landInfo.vue";
+const Administration = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-info/administration.vue");
+const Credit = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-info/credit.vue");
+const Recruitment = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-info/recruitment.vue");
+const SocialSecurity = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-info/socialSecurity.vue");
+const LandInfo = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/business-info/landInfo.vue");
 // 知识产权
-import PatentInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/patentInfo.vue";
-import BrandInfo from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/brandInfo.vue";
-import SoftwareRight from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/softwareRight.vue";
-import Copyright from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/copyright.vue";
-import WebsiteFiling from "@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/websiteFiling.vue";
-
+const PatentInfo = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/patentInfo.vue");
+const BrandInfo = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/brandInfo.vue");
+const SoftwareRight = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/softwareRight.vue");
+const Copyright = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/copyright.vue");
+const WebsiteFiling = () => import("@/views/enterprise-monitor/enterprise-portrait/modules/intellectual-property/websiteFiling.vue");
 
 export default {
   data() {
@@ -228,6 +230,7 @@ export default {
       activeName:"基本信息",
       tabsList:["基本信息","司法风险","经营风险","经营信息","企业发展","知识产权","其他信息",],
       isTabShow:false,
+      isShowBacktop:false,
     };
   },
 components:{
@@ -290,6 +293,13 @@ methods:{
       });
     });
   },
+  // 丝滑回到顶部
+  backtop(){
+    this.$refs.portrait.parentNode.scrollTo({
+        top: 0,
+        behavior: "smooth", // 让滚动丝滑
+      });
+  },
   tabChange(item){
     this.activeName = item;
     this.$refs.portrait.parentNode.scrollTop = 0;
@@ -298,8 +308,10 @@ methods:{
   isAttachTop(){
     if(this.$refs.tabs?.getBoundingClientRect()?.top < 47){
       this.isTabShow = true;
+      this.isShowBacktop = true;
     }else{
       this.isTabShow = false;
+      this.isShowBacktop = false;
     }
   },
   // 监听滚动
@@ -392,6 +404,26 @@ methods:{
     .margin{
       margin-bottom: 30px;
     }
+  }
+  .backtop{
+    position: fixed;
+    right: 50px;
+    bottom: 100px;
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #409eff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 6px rgb(0 0 0 / 12%);
+    cursor: pointer;
+    z-index: 5;
+    &:hover {
+    background-color: #f2f6fc;
+}
   }
 }
 </style>

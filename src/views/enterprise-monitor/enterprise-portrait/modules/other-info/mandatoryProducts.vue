@@ -11,10 +11,10 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="projectName" label="项目名称" width="170"></el-table-column>
+      <el-table-column prop="projectName" label="项目名称"></el-table-column>
       <el-table-column prop="productName" label="产品名称及单元" width="170"></el-table-column>
       <el-table-column prop="certificateStatus" label="证书状态" width="156"></el-table-column>
-      <el-table-column prop="issuingAuthority" label="发证机构" width="170"></el-table-column>
+      <el-table-column prop="issuingAuthority" label="发证机构"></el-table-column>
       <el-table-column prop="standard" label="认证依据的标准和技术要求" width="190"></el-table-column>
       <el-table-column prop="certificationTime" label="颁证日期" width="170"></el-table-column>
       <el-table-column prop="certificateExpireTime" label="证书到期日期" width="170"></el-table-column>

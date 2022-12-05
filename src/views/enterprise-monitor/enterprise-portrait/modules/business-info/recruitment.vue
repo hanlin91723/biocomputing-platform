@@ -37,12 +37,29 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="position" label="职位" width="201"></el-table-column>
-        <el-table-column prop="recruitTime" label="招聘时间" width="199"></el-table-column>
+        <el-table-column prop="position" label="职位"></el-table-column>
+        <el-table-column
+         prop="recruitTime"
+         label="招聘时间"
+         width="199"
+         :filters="filterDateData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="educationRequire" label="学历要求" width="199"></el-table-column>
-        <el-table-column prop="workExperience" label="工作经验" width="199"></el-table-column>
+        <el-table-column
+         prop="workExperience"
+         label="工作经验"
+         width="199"
+         :filters="filterExperienceData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="wages" label="工资" width="199"></el-table-column>
-        <el-table-column prop="area" label="地区" width="199"></el-table-column>
+        <el-table-column
+         prop="area"
+         label="地区"
+         :filters="filterAreaData"
+         :filter-method="filterHandler">
+        </el-table-column>
       </el-table>
        <!-- 分页器 -->
        <el-pagination background
@@ -68,6 +85,40 @@ import { recruit,basicPie,ringPie } from "@/views/enterprise-monitor/enterprise-
         recruitmentCurrentPage:1,
         recruitmentPageSize:10,
         recruitmentTotal:0,
+        filterDateData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
+        filterExperienceData:[
+          {
+            text: "1年经验",
+            value: "1年经验",
+          },
+          {
+            text: "2~3年经验",
+            value: "2~3年经验",
+          },
+        ],
+        filterAreaData:[
+          {
+            text: "乌鲁木齐市",
+            value: "乌鲁木齐市",
+          },
+          {
+            text: "西安市",
+            value: "西安市",
+          },
+          {
+            text: "天津市",
+            value: "天津市",
+          },
+        ],
       };
     },
     computed:{
@@ -190,6 +241,10 @@ import { recruit,basicPie,ringPie } from "@/views/enterprise-monitor/enterprise-
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

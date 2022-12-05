@@ -22,14 +22,32 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="referenceNum" label="案号" width="133"></el-table-column>
-        <el-table-column prop="documentTitle" label="文书标题" width="132"></el-table-column>
-        <el-table-column prop="causeAction" label="案由" width="132"></el-table-column>
-        <el-table-column prop="type" label="类型" width="132"></el-table-column>
-        <el-table-column prop="party" label="当事人" width="139"></el-table-column>
+        <el-table-column prop="referenceNum" label="案号"></el-table-column>
+        <el-table-column prop="documentTitle" label="文书标题"></el-table-column>
+        <el-table-column
+         prop="causeAction"
+         label="案由"
+         width="132"
+         :filters="filterCauseData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column
+         prop="type"
+         label="类型"
+         width="132"
+         :filters="filterTypeData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column prop="party" label="当事人"></el-table-column>
         <el-table-column prop="caseAmount" label="案件金额" width="132"></el-table-column>
-        <el-table-column prop="judgmentResult" label="裁判结果" width="132"></el-table-column>
-        <el-table-column prop="releaseTime" label="发布日期" width="132"></el-table-column>
+        <el-table-column prop="judgmentResult" label="裁判结果"></el-table-column>
+        <el-table-column
+         prop="releaseTime"
+         label="发布日期"
+         width="132"
+         :filters="filterDateData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="judgmentTime" label="裁判日期" width="132"></el-table-column>
       </el-table>
        <!-- 分页器 -->
@@ -56,6 +74,36 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
         documentCurrentPage:1,
         documentPageSize:10,
         documentTotal:0,
+        filterCauseData:[
+          {
+            text: "劳动争议",
+            value: "劳动争议",
+          },
+          {
+            text: "专利行政管理（专利）",
+            value: "专利行政管理（专利）",
+          },
+        ],
+        filterTypeData:[
+          {
+            text: "民事",
+            value: "民事",
+          },
+          {
+            text: "调解",
+            value: "调解",
+          },
+        ],
+        filterDateData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
       };
     },
     computed:{
@@ -77,7 +125,7 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
       //   console.log(data);
       //   this.tableData = data;
       // });
-          this.documentTotal = 2;
+          this.documentTotal = 3;
           this.documentData = [
           {
             referenceNum: "(2021)粤0307民初30807号",
@@ -105,6 +153,19 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
             releaseTime:"2020-12-29",
             judgmentTime:"2020-04-24",
           },
+          {
+            referenceNum: "(2021)粤0307民初30807号",
+            documentTitle: "劳动争议民事一审调解书",
+            causeAction: "劳动争议",
+            type: "调解",
+            party: `原告-比亚迪股份有限公司
+                    被告-张*
+                    原告-诉*`,
+            caseAmount: "",
+            judgmentResult: "",
+            releaseTime:"2021-12-21",
+            judgmentTime:"2021-11-25",
+          },
         ];
       },
       // 裁判文书分页
@@ -118,6 +179,10 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

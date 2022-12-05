@@ -16,8 +16,8 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="fullName" label="姓名" width="598"></el-table-column>
-      <el-table-column prop="position" label="职位" width="598"></el-table-column>
+      <el-table-column prop="fullName" label="姓名"></el-table-column>
+      <el-table-column prop="position" label="职位"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -43,7 +43,7 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="fullName" label="姓名" width="596"></el-table-column>
-      <el-table-column prop="position" label="职位" width="200"></el-table-column>
+      <el-table-column prop="position" label="职位"></el-table-column>
       <el-table-column prop="InductionTime" label="入职日期" width="200"></el-table-column>
       <el-table-column prop="quitTime" label="离职日期" width="200"></el-table-column>
     </el-table>

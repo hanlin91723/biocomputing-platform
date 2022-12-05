@@ -12,12 +12,18 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="referenceNum" label="案号" width="175"></el-table-column>
-      <el-table-column prop="restrictedExitObjects" label="限制出境对象" width="170"></el-table-column>
+      <el-table-column prop="restrictedExitObjects" label="限制出境对象"></el-table-column>
       <el-table-column prop="executeeInfo" label="被执行人信息" width="171"></el-table-column>
       <el-table-column prop="executionApplicant" label="申请执行人" width="170"></el-table-column>
       <el-table-column prop="executeAmount" label="执行标的金额" width="170"></el-table-column>
-      <el-table-column prop="court" label="承办法院" width="170"></el-table-column>
-      <el-table-column prop="releaseTime" label="发布日期" width="170"></el-table-column>
+      <el-table-column prop="court" label="承办法院"></el-table-column>
+      <el-table-column
+         prop="releaseTime"
+         label="发布日期"
+         width="170"
+         :filters="filterData"
+         :filter-method="filterHandler">
+        </el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination background
@@ -41,6 +47,16 @@
         restrictedExitCurrentPage:1,
         restrictedExitPageSize:10,
         restrictedExitTotal:0,
+        filterData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
       };
     },
     created(){
@@ -90,6 +106,10 @@
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

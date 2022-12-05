@@ -23,14 +23,26 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="title" label="标题" width="380">
+        <el-table-column prop="title" label="标题">
           <template slot-scope="scope">
             <span class="titleText">{{scope.row.title}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="time" label="舆情日期" width="169"></el-table-column>
-        <el-table-column prop="classify" label="舆情分类" width="169"></el-table-column>
-        <el-table-column prop="keyword" label="关键词" width="309"></el-table-column>
+        <el-table-column
+         prop="time"
+         label="舆情日期"
+         width="169"
+         :filters="filterDateData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column
+         prop="classify"
+         label="舆情分类"
+         width="169"
+         :filters="filterTypeData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column prop="keyword" label="关键词"></el-table-column>
         <el-table-column prop="source" label="信息来源" width="169"></el-table-column>
       </el-table>
        <!-- 分页器 -->
@@ -59,6 +71,30 @@ import { investPie,trendChange } from "@/views/enterprise-monitor/enterprise-por
         publicSentimentCurrentPage:1,
         publicSentimentPageSize:10,
         publicSentimentTotal:0,
+        filterDateData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
+        filterTypeData:[
+          {
+            text: "积极",
+            value: "积极",
+          },
+          {
+            text: "中立",
+            value: "中立",
+          },
+          {
+            text: "消极",
+            value: "消极",
+          },
+        ],
       };
     },
     computed:{
@@ -161,6 +197,10 @@ import { investPie,trendChange } from "@/views/enterprise-monitor/enterprise-por
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

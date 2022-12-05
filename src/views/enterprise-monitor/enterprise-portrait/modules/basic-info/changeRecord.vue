@@ -11,7 +11,7 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="changeProject" label="变更项目" width="299"></el-table-column>
+      <el-table-column prop="changeProject" label="变更项目"></el-table-column>
       <el-table-column prop="changeTime" label="变更日期" width="299"></el-table-column>
       <el-table-column prop="beforeInfo" label="变更前信息" width="299"></el-table-column>
       <el-table-column prop="afterInfo" label="变更后信息" width="299"></el-table-column>

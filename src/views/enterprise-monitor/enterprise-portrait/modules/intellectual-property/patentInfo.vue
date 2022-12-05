@@ -23,14 +23,38 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="applyDate" label="申请日" width="149"></el-table-column>
-        <el-table-column prop="patentName" label="专利名称" width="153"></el-table-column>
-        <el-table-column prop="patentType" label="专利类型" width="149"></el-table-column>
-        <el-table-column prop="patentStatus" label="专利状态" width="149"></el-table-column>
+        <el-table-column
+         prop="applyDate"
+         label="申请日"
+         width="149"
+         :filters="filterApplyData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column prop="patentName" label="专利名称"></el-table-column>
+        <el-table-column
+         prop="patentType"
+         label="专利类型"
+         width="149"
+         :filters="filterTypeData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column
+         prop="patentStatus"
+         label="专利状态"
+         width="149"
+         :filters="filterStatusData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="applyNum" label="申请号" width="149"></el-table-column>
         <el-table-column prop="openNum" label="公开号" width="149"></el-table-column>
-        <el-table-column prop="openDate" label="公开日" width="149"></el-table-column>
-        <el-table-column prop="inventor" label="发明人" width="149"></el-table-column>
+        <el-table-column
+         prop="openDate"
+         label="公开日"
+         width="149"
+         :filters="filterOpenData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column prop="inventor" label="发明人"></el-table-column>
       </el-table>
        <!-- 分页器 -->
        <el-pagination background
@@ -56,6 +80,46 @@ import { patentBar,basicPie } from "@/views/enterprise-monitor/enterprise-portra
         patentInfoCurrentPage:1,
         patentInfoPageSize:10,
         patentInfoTotal:0,
+        filterApplyData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
+        filterTypeData:[
+          {
+            text: "发明专利",
+            value: "发明专利",
+          },
+          {
+            text: "实用新型专利",
+            value: "实用新型专利",
+          },
+        ],
+        filterStatusData:[
+          {
+            text: "公开",
+            value: "公开",
+          },
+          {
+            text: "个人",
+            value: "个人",
+          },
+        ],
+        filterOpenData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
       };
     },
     computed:{
@@ -165,6 +229,10 @@ import { patentBar,basicPie } from "@/views/enterprise-monitor/enterprise-portra
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

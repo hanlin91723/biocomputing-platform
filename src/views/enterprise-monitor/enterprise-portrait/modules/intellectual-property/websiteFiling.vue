@@ -23,8 +23,8 @@
           </template>
       </el-table-column>
       <el-table-column prop="domainName" label="域名" width="239"></el-table-column>
-      <el-table-column prop="websiteFiling" label="网站备案/许可证书" width="240"></el-table-column>
-      <el-table-column prop="registerAuthority" label="登记机关" width="239"></el-table-column>
+      <el-table-column prop="websiteFiling" label="网站备案/许可证书"></el-table-column>
+      <el-table-column prop="registerAuthority" label="登记机关"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -57,8 +57,8 @@
       </el-table-column>
       <el-table-column prop="domainName" label="域名" width="199"></el-table-column>
       <el-table-column prop="websiteFiling" label="网站备案/许可证书" width="201"></el-table-column>
-      <el-table-column prop="logoutDate" label="注销日期" width="199"></el-table-column>
-      <el-table-column prop="registerAuthority" label="登记机关" width="199"></el-table-column>
+      <el-table-column prop="logoutDate" label="注销日期"></el-table-column>
+      <el-table-column prop="registerAuthority" label="登记机关"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination

@@ -11,13 +11,13 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="projectName" label="项目名称" width="149"></el-table-column>
-      <el-table-column prop="projectposition" label="项目位置" width="153"></el-table-column>
+      <el-table-column prop="projectName" label="项目名称"></el-table-column>
+      <el-table-column prop="projectposition" label="项目位置"></el-table-column>
       <el-table-column prop="district" label="行政区" width="149"></el-table-column>
       <el-table-column prop="area" label="面积（公顷）" width="149"></el-table-column>
       <el-table-column prop="transactionPrice" label="成交价格（万元）" width="149"></el-table-column>
       <el-table-column prop="landUse" label="土地用途" width="149"></el-table-column>
-      <el-table-column prop="company" label="批准单位" width="149"></el-table-column>
+      <el-table-column prop="company" label="批准单位"></el-table-column>
       <el-table-column prop="signingDate" label="合同签订时间" width="149"></el-table-column>
     </el-table>
     <!-- 分页器 -->

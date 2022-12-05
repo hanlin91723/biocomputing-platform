@@ -17,8 +17,8 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="inclusionTime" label="列入日期" width="398"></el-table-column>
-      <el-table-column prop="office" label="登记/移入机关" width="398"></el-table-column>
-      <el-table-column prop="inclusionReason" label="列入原因" width="400"></el-table-column>
+      <el-table-column prop="office" label="登记/移入机关" ></el-table-column>
+      <el-table-column prop="inclusionReason" label="列入原因"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -44,8 +44,8 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="removeTime" label="移出日期" width="398"></el-table-column>
-      <el-table-column prop="office" label="核验/移出机关" width="398"></el-table-column>
-      <el-table-column prop="removeReason" label="移出原因" width="400"></el-table-column>
+      <el-table-column prop="office" label="核验/移出机关"></el-table-column>
+      <el-table-column prop="removeReason" label="移出原因"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination

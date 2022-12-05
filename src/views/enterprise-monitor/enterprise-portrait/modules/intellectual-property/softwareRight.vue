@@ -12,8 +12,8 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="approvalTime" label="登记批准时间" width="199"></el-table-column>
-      <el-table-column prop="FullName" label="软件全称" width="199"></el-table-column>
-      <el-table-column prop="abbreviation" label="软件简称" width="199"></el-table-column>
+      <el-table-column prop="FullName" label="软件全称"></el-table-column>
+      <el-table-column prop="abbreviation" label="软件简称"></el-table-column>
       <el-table-column prop="registerNum" label="登记号" width="199"></el-table-column>
       <el-table-column prop="versionNum" label="版本号" width="199"></el-table-column>
       <el-table-column prop="firstPublishDate" label="首次发表日期" width="199"></el-table-column>

@@ -12,8 +12,8 @@
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="punishTime" label="处罚日期" width="199"></el-table-column>
-      <el-table-column prop="documentNum" label="决定文书号" width="199"></el-table-column>
-      <el-table-column prop="punishReason" label="处罚事由/违法行为类型" width="201"></el-table-column>
+      <el-table-column prop="documentNum" label="决定文书号"></el-table-column>
+      <el-table-column prop="punishReason" label="处罚事由/违法行为类型"></el-table-column>
       <el-table-column prop="punishResult" label="处罚结果/内容" width="199"></el-table-column>
       <el-table-column prop="punishCompany" label="处罚单位" width="199"></el-table-column>
       <el-table-column prop="dataSources" label="数据来源" width="199"></el-table-column>

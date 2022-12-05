@@ -23,7 +23,13 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="applyDate" label="申请日" width="170"></el-table-column>
+        <el-table-column
+         prop="applyDate"
+         label="申请日"
+         width="170"
+         :filters="filterApplyData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="brand" label="商标" width="170">
           <template slot-scope="scope">
             <el-image 
@@ -33,14 +39,25 @@
           </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="brandName" label="商标名称" width="176">
+        <el-table-column prop="brandName" label="商标名称">
           <template slot-scope="scope">
             <span class="brandName">{{scope.row.brandName}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="registerNum" label="注册号" width="170"></el-table-column>
-        <el-table-column prop="classify" label="国际分类" width="170"></el-table-column>
-        <el-table-column prop="brandStatus" label="商标状态" width="170"></el-table-column>
+        <el-table-column prop="registerNum" label="注册号"></el-table-column>
+        <el-table-column
+         prop="classify"
+         label="国际分类"
+         width="170"
+         :filters="filterTypeData"
+         :filter-method="filterHandler">
+        </el-table-column>
+        <el-table-column
+         prop="brandStatus"
+         label="商标状态"
+         :filters="filterStatusData"
+         :filter-method="filterHandler">
+        </el-table-column>
         <el-table-column prop="registerDate" label="注册公告日期" width="170"></el-table-column>
       </el-table>
        <!-- 分页器 -->
@@ -67,6 +84,36 @@ import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait
         brandInfoCurrentPage:1,
         brandInfoPageSize:10,
         brandInfoTotal:0,
+        filterApplyData:[
+          {
+            text: "2022",
+            value: "2022",
+          },
+          {
+            text: "2021",
+            value: "2021",
+          },
+        ],
+        filterTypeData:[
+          {
+            text: "09类-科学仪器",
+            value: "09类-科学仪器",
+          },
+          {
+            text: "37类-建筑修理",
+            value: "37类-建筑修理",
+          },
+        ],
+        filterStatusData:[
+          {
+            text: "初审公告",
+            value: "初审公告",
+          },
+          {
+            text: "商标已注册",
+            value: "商标已注册",
+          },
+        ],
       };
     },
     computed:{
@@ -124,6 +171,10 @@ import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait
       //   console.log(data);
       //   this.tableData = data;
       // });
+      },
+      filterHandler(value, row, column) {
+        const property = column["property"];
+        return row[property] === value;
       },
     },
   };

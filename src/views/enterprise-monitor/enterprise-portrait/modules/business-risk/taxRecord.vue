@@ -14,10 +14,10 @@
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="releaseTime" label="发布日期" width="199"></el-table-column>
       <el-table-column prop="number" label="纳税人识别号" width="199"></el-table-column>
-      <el-table-column prop="taxCategory" label="欠税税种" width="199"></el-table-column>
+      <el-table-column prop="taxCategory" label="欠税税种"></el-table-column>
       <el-table-column prop="newBalance" label="当前新发生的欠税余额" width="199"></el-table-column>
       <el-table-column prop="balance" label="欠税余额" width="199"></el-table-column>
-      <el-table-column prop="taxAuthority" label="税务机关" width="201"></el-table-column>
+      <el-table-column prop="taxAuthority" label="税务机关"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination background

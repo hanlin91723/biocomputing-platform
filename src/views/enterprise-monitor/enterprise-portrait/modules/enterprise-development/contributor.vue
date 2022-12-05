@@ -12,7 +12,7 @@
         'text-align':'center'
         }">
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column prop="shareholderName" label="股东名称" width="175"></el-table-column>
+      <el-table-column prop="shareholderName" label="股东名称"></el-table-column>
       <el-table-column prop="AccumulatedShouldAmount" label="累计认缴额" width="170"></el-table-column>
       <el-table-column prop="shouldTime" label="认缴出资日期" width="170"></el-table-column>
       <el-table-column prop="shouldMode" label="认缴出资方式" width="170"></el-table-column>

@@ -22,8 +22,8 @@
           'text-align':'center'
           }">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="workName" label="作品名称" width="199"></el-table-column>
-        <el-table-column prop="registerNum" label="登记号" width="201"></el-table-column>
+        <el-table-column prop="workName" label="作品名称"></el-table-column>
+        <el-table-column prop="registerNum" label="登记号"></el-table-column>
         <el-table-column prop="workCategory" label="作品类别" width="199"></el-table-column>
         <el-table-column prop="finishDate" label="创作完成日期" width="199"></el-table-column>
         <el-table-column prop="registerDate" label="登记日期" width="199"></el-table-column>

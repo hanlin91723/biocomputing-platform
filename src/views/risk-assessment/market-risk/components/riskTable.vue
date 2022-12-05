@@ -403,7 +403,7 @@ export default {
     riskDetails({ id, }) {
       console.log(id);
       this.$router.push({
-        path: "/enterprise-risk/detail",
+        path: "/enterprise-risk/detail/1",
       });
     },
     // 分页
