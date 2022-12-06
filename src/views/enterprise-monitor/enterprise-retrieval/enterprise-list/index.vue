@@ -112,7 +112,7 @@
       </el-tag>
     </div>
     <el-divider></el-divider>
-    <el-table :data="tableData" border stripe class="table">
+    <el-table :data="tableData" border stripe class="table" id="outTable">
       <el-table-column prop="id" label="序号" width="80"></el-table-column>
       <el-table-column
         prop="enterpriseName"
@@ -161,6 +161,7 @@
 </template>
 
 <script>
+import { exportTableAsXLSX } from "@/util/util";
 const searchFormList = [
   {
     formLabel: "所属行业",
@@ -570,7 +571,7 @@ export default {
       // });
     },
     onSubmit() {
-      console.log("submit!");
+      exportTableAsXLSX("outTable");
     },
     reset() {
       for (const keyName in this.searchFormData) {
