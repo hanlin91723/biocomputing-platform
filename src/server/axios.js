@@ -31,9 +31,9 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     //默认往所有接口headers传入token校验
-    // if (sessionStorage.getItem("token")) {
-    //   config.headers["token"] = sessionStorage.getItem("token");
-    // }
+    if (sessionStorage.getItem("token")) {
+      config.headers["token"] = sessionStorage.getItem("token");
+    }
     return config;
   },
   error => {

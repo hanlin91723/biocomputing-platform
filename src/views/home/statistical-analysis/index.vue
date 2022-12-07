@@ -281,12 +281,12 @@ export default {
             value: 644,
           },
           {
-            name: "UK伦理剧",
+            name: "UK发的剧",
             value: 32,
           },
           {
             name: "没内存瞎操作",
-            value: 1654,
+            value: 4654,
           },
           {
             name: "范德萨123",
@@ -301,7 +301,7 @@ export default {
             value: 644,
           },
           {
-            name: "UK伦理剧4321",
+            name: "UK发的剧4321",
             value: 32,
           },
           {

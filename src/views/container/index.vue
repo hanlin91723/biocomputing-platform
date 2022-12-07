@@ -24,7 +24,7 @@
           class="menu-item"
         >
           <template slot="title">
-            <i :class="item.meta.ico" style="color:#fff;"></i>
+            <i :class="item.meta.ico" style="color: #fff"></i>
             <span>{{ item.meta.title }}</span>
           </template>
           <el-menu-item
@@ -65,7 +65,7 @@
           </div>
           <el-dropdown-menu class="dropdown-menu" slot="dropdown">
             <el-dropdown-item class="dropdown-menu-item" command="personalInfo"
-              >个人资料</el-dropdown-item
+              >个人信息</el-dropdown-item
             >
             <el-dropdown-item class="dropdown-menu-item" command="modifyPwd"
               >修改密码</el-dropdown-item
@@ -80,6 +80,79 @@
         <router-view />
       </el-main>
     </el-container>
+    <el-dialog
+      title="个人信息"
+      :visible="showUserDialog"
+      width="700px"
+      @close="handleCancel"
+    >
+      <div class="user-info-wrap">
+        <div class="user-info-item">
+          <span class="name">姓名：</span>
+          <span class="value">{{ info.name }}</span>
+        </div>
+        <div class="user-info-item">
+          <span class="name">手机号：</span>
+          <span class="value">{{ info.phone }}</span>
+        </div>
+        <div class="user-info-item">
+          <span class="name">用户身份备注：</span>
+          <span class="value">{{ info.remark }}</span>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="修改密码"
+      :visible="showPwdDialog"
+      width="700px"
+      @close="handleCancel"
+    >
+      <el-form
+        class="form"
+        ref="form"
+        :rules="formRules"
+        :model="formData"
+        label-width="120px"
+      >
+        <el-form-item class="form-item" prop="oldPwd" label="当前密码">
+          <el-input
+            class="input"
+            placeholder="请输入当前密码"
+            prefix-icon="el-icon-lock"
+            v-model="formData.oldPwd"
+            show-password
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" prop="newPwd" label="新密码">
+          <el-input
+            class="input"
+            placeholder="请输入新密码"
+            prefix-icon="el-icon-lock"
+            v-model="formData.newPwd"
+            show-password
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" prop="checkedNewPwd" label="确认新密码">
+          <el-input
+            class="input"
+            placeholder="请再次输入新密码"
+            prefix-icon="el-icon-lock"
+            v-model="formData.checkedNewPwd"
+            show-password
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <template v-slot:footer>
+        <el-row type="flex" justify="center">
+          <el-col :span="8">
+            <el-button size="medium" type="primary" @click="isOk"
+              >确定</el-button
+            >
+            <el-button size="medium" @click="handleCancel">取消</el-button>
+          </el-col>
+        </el-row>
+      </template>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -90,9 +163,49 @@ const userInfo = useUserStore();
 export default {
   name: "Container",
   data() {
+    const validatePassCheck = (rule, value, callback) => {
+      if (this.formData.checkedNewPwd === "") {
+        callback(new Error("请再次输入新密码"));
+      } else if (this.formData.checkedNewPwd !== this.formData.newPwd) {
+        callback(new Error("两次密码输入不一致"));
+      } else {
+        callback();
+      }
+    };
     return {
       isCollapse: false,
       menuList: userInfo.hasPermissionRoutes[0].children,
+      showUserDialog: false,
+      showPwdDialog: false,
+      info: {},
+      formData: {
+        oldPwd: "",
+        newPwd: "",
+        checkedNewPwd: "",
+      },
+      formRules: {
+        oldPwd: [
+          {
+            required: true,
+            message: "请输入当前密码",
+            trigger: "blur",
+          },
+        ],
+        newPwd: [
+          {
+            required: true,
+            message: "请输入新密码",
+            trigger: "blur",
+          },
+        ],
+        checkedNewPwd: [
+          {
+            required: true,
+            validator: validatePassCheck,
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   computed: {
@@ -103,15 +216,26 @@ export default {
       return this.$route.matched.filter((item) => item.meta.title);
     },
   },
-  mounted() {},
+  created() {
+    this.getUser();
+  },
   methods: {
+    getUser() {
+      this.$axios.get("/construction/projectManager").then(() => {
+        this.info = {
+          name: "测试",
+          phone: "13212345678",
+          remark: "后台管理员",
+        };
+      });
+    },
     handleCommand(command) {
       switch (command) {
         case "personalInfo":
-          console.log("个人资料");
+          this.showUserDialog = true;
           break;
         case "modifyPwd":
-          console.log("修改密码");
+          this.showPwdDialog = true;
           break;
         case "exit":
           this.$confirm("即将退出登录，是否继续？", "提示", {
@@ -141,6 +265,18 @@ export default {
     //过滤掉隐藏的子菜单项
     filterSubmenu(submenuList) {
       return submenuList?.filter((item) => !item.meta.hidden);
+    },
+    handleCancel() {
+      this.showUserDialog = false;
+      this.showPwdDialog = false;
+    },
+    isOk() {
+      this.$axios
+        .get("/construction/projectManager", this.formData)
+        .then(() => {
+          this.$message.success("密码修改成功，下次登录后生效");
+          this.handleCancel();
+        });
     },
   },
 };
@@ -175,7 +311,7 @@ export default {
       min-width: auto;
       padding-left: 57px !important;
       background: rgba(21, 45, 106, 0.6) !important;
-      &:hover{
+      &:hover {
         background: rgba(21, 45, 106, 1) !important;
       }
 
@@ -241,5 +377,23 @@ export default {
 
 .dropdown-menu-item {
   padding: 0 20px;
+}
+.user-info-wrap {
+  padding-left: 50px;
+  .user-info-item {
+    padding: 10px 0;
+    font-size: 16px;
+    .name {
+      display: inline-block;
+      width: 130px;
+      padding-right: 10px;
+      font-weight: 700;
+      text-align: right;
+      color: #303133;
+    }
+    .value {
+      color: #606266;
+    }
+  }
 }
 </style>
