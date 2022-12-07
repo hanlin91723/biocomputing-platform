@@ -150,7 +150,6 @@ export const mapAndBar = function(data){
   let yValue = data.map(item=>{
     return item.value;
   });
-  console.log(yValue);
   return {
     tooltip: {
       formatter: function (params) {
@@ -166,9 +165,7 @@ export const mapAndBar = function(data){
       // left: "left",
       top: "bottom",
       text: ["高", "低",], //取值范围的文字
-      textStyle: {
-        color: "white",
-      },
+      color: "white",
       inRange: {
         color: ["#e0ffff", "rgba(0,60,153,0.8)",], //取值范围的颜色
       },
@@ -180,26 +177,22 @@ export const mapAndBar = function(data){
       zoom: 1.23, //视角缩放比例
       left:"100px",
       label: {
-        normal: {
           show: false,
           fontSize: "10",
           color: "rgba(0,0,0,0.7)",
-        },
       },
       itemStyle: {
-        normal: {
           // borderColor: "rgba(0, 0, 0, 0.2)",
           //  areaColor: 'rgba(0,60,153,0.8)',
           borderColor: "#02c0ff",
-        },
-        emphasis: {
-          areaColor: "#F3B329", //鼠标选择区域颜色
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          shadowBlur: 20,
-          borderWidth: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-        },
+      },
+      emphasis: {
+        areaColor: "#F3B329", //鼠标选择区域颜色
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowBlur: 20,
+        borderWidth: 0,
+        shadowColor: "rgba(0, 0, 0, 0.5)",
       },
     },
     legend: {
@@ -454,16 +447,12 @@ export const trendChange = function() {
         symbol: "circle",
         symbolSize: 6,
         lineStyle: {
-            normal: {
-                color: "#1990FF",
-            },
+              color: "#1990FF",
         },
         label: {
             show: false,
             position: "top",
-            textStyle: {
-                color: "#6c50f3",
-            },
+            color: "#6c50f3",
         },
         itemStyle: {
             color: "rgba(0, 96, 255, 0.8)",
@@ -558,9 +547,7 @@ export const recruit = function(){
             show:true,
             margin: 10,
             color: "black",
-            textStyle: {
-                fontSize: 14,
-            },
+            fontSize: 14,
         },
     },],
     yAxis: [{
@@ -591,7 +578,6 @@ export const recruit = function(){
         data: [3000, 2600, 1300, 1300, 1250, 1500, 2000, 3000, 1250, 1500, 2000, 3000,],
         barWidth: "20px",
         itemStyle: {
-            normal: {
                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 //     offset: 0,
                 //     color: "rgba(0,244,255,1)", // 0% 处的颜色
@@ -617,10 +603,9 @@ export const recruit = function(){
                   ],
                   global: false, // 缺省为 false
                 },
-                barBorderRadius: [30, 30, 30, 30,],
+                borderRadius: [30, 30, 30, 30,],
                 shadowColor: "rgba(0,160,221,1)",
                 shadowBlur: 4,
-            },
         },
         label: {
            show:true,
@@ -697,12 +682,10 @@ export const patentBar = function() {
       itemGap: 40,
       itemWidth: 14,
       itemHeight: 14,
-      textStyle: {
-        fontSize: 14,
-        color: "#858585",
-        fontWeight: 400,
-        padding: [4, 0, 0, 0,],
-      },
+      fontSize: 14,
+      color: "#858585",
+      fontWeight: 400,
+      padding: [4, 0, 0, 0,],
       // data: ["A", "B", "P", "E",],
     },
     color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],

@@ -71,7 +71,7 @@ export default {
         })
         .then(() => {
           const searchResultList = [
-            { value: "三全鲜食（北新泾店）", name: "长宁区新渔路144号" },
+            { value: "三全鲜食（北新泾店）", name: "长宁区新渔路144号", },
             {
               value: "Hot honey 首尔炸鸡（仙霞路）",
               name: "上海市长宁区淞虹路661号",
@@ -80,7 +80,7 @@ export default {
               value: "新旺角茶餐厅",
               name: "上海市普陀区真北路988号创邑金沙谷6号楼113",
             },
-            { value: "泷千家(天山西路店)", name: "天山西路438号" },
+            { value: "泷千家(天山西路店)", name: "天山西路438号", },
             {
               value: "胖仙女纸杯蛋糕（上海凌空店）",
               name: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101",
@@ -89,10 +89,10 @@ export default {
               value: "浮生若茶（凌空soho店）",
               name: "上海长宁区金钟路968号9号楼地下一层",
             },
-            { value: "枪会山", name: "上海市普陀区棕榈路" },
-            { value: "纵食", name: "元丰天山花园(东门) 双流路267号" },
-            { value: "钱记", name: "上海市长宁区天山西路" },
-            { value: "壹杯加", name: "上海市长宁区通协路" },
+            { value: "枪会山", name: "上海市普陀区棕榈路", },
+            { value: "纵食", name: "元丰天山花园(东门) 双流路267号", },
+            { value: "钱记", name: "上海市长宁区天山西路", },
+            { value: "壹杯加", name: "上海市长宁区通协路", },
             {
               value: "唦哇嘀咖",
               name: "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元",
@@ -111,7 +111,6 @@ export default {
       });
     },
     handleSearch() {
-      console.log(this.searchVal);
       this.$router.push({
         name: "EnterpriseList",
         params: {
