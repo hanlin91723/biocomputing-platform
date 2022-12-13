@@ -80,12 +80,14 @@ methods:{
   }
 }
 .tag{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 64px;
   height: 24px;
   border-radius: 4px;
   box-sizing: border-box;
   margin-left: 26px;
-  text-align: center;
   &.tag1{
     border: 1px solid rgba(93, 209, 140, 0.3);
     background-color: rgba(93, 209, 140, 0.1);
