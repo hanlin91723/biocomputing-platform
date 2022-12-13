@@ -76,7 +76,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
-      <el-main :class="['section', isCollapse ? 'collapse' : '']">
+      <el-main :class="['section', isCollapse ? 'collapse' : '']" ref="main">
         <router-view />
       </el-main>
     </el-container>
@@ -214,6 +214,11 @@ export default {
     },
     breadcrumbList() {
       return this.$route.matched.filter((item) => item.meta.title);
+    },
+  },
+  watch:{
+    activeMenuItem(){
+      this.$refs.main.$el.scrollTop = 0;
     },
   },
   created() {
