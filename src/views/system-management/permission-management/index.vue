@@ -32,7 +32,7 @@
      @current-change="handleCurrentChange">
     </el-pagination>
     <!-- 编辑和添加用户弹窗 -->
-    <el-dialog :title="roleId==-1?'新建角色':'编辑角色'" :visible="showRoleDialog" width="45%" @close="isCancel">
+    <el-dialog :title="roleId==-1?'新建角色':'编辑角色'" :visible="showRoleDialog" width="45%" @close="isCancel" top="9vh">
     <el-form label-width="120px" :model="roleInfo" :rules="roleInfoRules" ref="userInfo">
       <el-form-item label="角色名称" prop="roleName">
         <el-input placeholder="请输入角色名称"  v-model="roleInfo.roleName"/>
@@ -40,7 +40,7 @@
       <el-form-item label="权限描述" prop="permissionDescription">
         <el-input type="textarea"  placeholder="请输入权限描述" v-model="roleInfo.permissionDescription"/>
       </el-form-item>
-      <el-form-item label="功能权限" prop="functionPermission">
+      <el-form-item label="功能权限" prop="functionPermission" class="permission">
         <!-- 多组多选项 -->
         <div v-for="(item,index) in roleList" :key="item.label">
           <el-checkbox :indeterminate="item.isIndeterminate" v-model="item.checkedAll" @change="(val)=>{handleCheckAllChange(val,item,index)}">{{item.name}}</el-checkbox>
@@ -70,50 +70,42 @@ export default {
       tableData: [],
       roleList:[{
           label: 1,
-          name:"产业链",
+          name:"概览",
           children:[{
-            label:1.1,
-            name:"产业总览",
+            label:"1-1",
+            name:"风险地图",
             checked:false,
           },{
-            label:1.2,
-            name:"产业榜单",
-            checked:false,
-          },{
-            label:1.3,
-            name:"产业图谱",
-            checked:false,
-          },{
-            label:1.4,
-            name:"产业地图",
-            checked:false,
-          },{
-            label:1.5,
-            name:"区域对比",
+            label:"1-2",
+            name:"统计分析",
             checked:false,
           },],
           checkedAll:false,
           isIndeterminate:true,
         },{
           label: 2,
-          name:"精准匹配",
+          name:"企业监测",
           children:[{
-            label:1.1,
-            name:"智能推荐",
+            label:"2-1",
+            name:"企业检索",
             checked:false,
           },{
-            label:1.2,
-            name:"企业检索",
+            label:"2-2",
+            name:"企业画像",
             checked:false,
           },],
           checkedAll:false,
           isIndeterminate:true,
         },{
           label: 3,
-          name:"项目管理",
+          name:"风险评估",
           children:[{
-            label:1.1,
-            name:"一企一策",
+            label:"3-1",
+            name:"企业风险",
+            checked:false,
+          },{
+            label:"3-2",
+            name:"市场风险",
             checked:false,
           },],
           checkedAll:false,
@@ -122,16 +114,12 @@ export default {
           label: 4,
           name:"系统管理",
           children:[{
-            label:1.1,
+            label:"4-1",
             name:"用户管理",
             checked:false,
           },{
-            label:1.2,
+            label:"4-2",
             name:"权限管理",
-            checked:false,
-          },{
-            label:1.3,
-            name:"配置管理",
             checked:false,
           },],
           checkedAll:false,
@@ -385,6 +373,9 @@ export default {
   .pagination{
     display: flex;
     justify-content: flex-end;
+  }
+  .permission{
+    height: 290px;
   }
 }
 </style>
