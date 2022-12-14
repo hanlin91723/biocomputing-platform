@@ -54,8 +54,8 @@
       </el-tab-pane>
       <el-tab-pane name="fourth">
         <span slot="label">经营风险 {{ 245 }}</span>
-        定时任务补偿</el-tab-pane
-      >
+        <management-risk></management-risk>
+      </el-tab-pane>
       <el-tab-pane name="five">
         <span slot="label">关联风险 {{ 135 }}</span>
         <related-risk></related-risk>
@@ -76,6 +76,7 @@ export default {
     "risk-warning": () => import("./components/risk-warning.vue"),
     "related-risk": () => import("./components/related-risk.vue"),
     "judicial-risk": () => import("./components/judicial-risk.vue"),
+    "management-risk": () => import("./components/management-risk.vue"),
   },
   data() {
     return {

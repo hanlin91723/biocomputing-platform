@@ -48,33 +48,33 @@
     </div>
     <!-- <div class="tip">{{ tableDataTemp }}</div> -->
     <el-collapse>
-      <!-- 被执行人 -->
+      <!-- 经营异常 -->
       <el-collapse-item
-        v-if="tableDataTemp.personSubjectResp"
+        v-if="tableDataTemp.abnormalOperationResp"
         class="colllapse-item-wrap"
       >
         <div class="header flex" slot="title">
-          <div class="risk-type">被执行人</div>
+          <div class="risk-type">经营异常</div>
           <div class="risk-disc">
-            {{ tableDataTemp.personSubjectResp.desc }}（{{
-              tableDataTemp.personSubjectResp.count
+            {{ tableDataTemp.abnormalOperationResp.desc }}（{{
+              tableDataTemp.abnormalOperationResp.count
             }}）
           </div>
           <el-tag
             class="risk-level"
             :type="
-              tableDataTemp.personSubjectResp.riskLevel === '高风险'
+              tableDataTemp.abnormalOperationResp.riskLevel === '高风险'
                 ? 'danger'
-                : tableDataTemp.personSubjectResp.riskLevel === '中风险'
+                : tableDataTemp.abnormalOperationResp.riskLevel === '中风险'
                 ? 'warning'
                 : 'info'
             "
             size="small"
-            >{{ tableDataTemp.personSubjectResp.riskLevel }}</el-tag
+            >{{ tableDataTemp.abnormalOperationResp.riskLevel }}</el-tag
           >
         </div>
         <el-table
-          :data="tableDataTemp.personSubjectResp.personSubjectList"
+          :data="tableDataTemp.abnormalOperationResp.abnormalOperationList"
           border
           size="small"
         >
@@ -93,20 +93,20 @@
           background
           small
           layout="prev, pager, next"
-          :current-page="personSubjectRespPageNum"
+          :current-page="abnormalOperationRespPageNum"
           :page-size="pageSize"
-          :total="tableDataTemp.personSubjectResp.count"
-          @current-change="pageChange('personSubjectResp', $event)"
+          :total="tableDataTemp.abnormalOperationResp.count"
+          @current-change="pageChange('abnormalOperationResp', $event)"
         >
         </el-pagination>
       </el-collapse-item>
-      <!-- 失信信息 -->
+      <!-- 严重违法 -->
       <el-collapse-item
         v-if="tableDataTemp.breatchTrustResp"
         class="colllapse-item-wrap"
       >
         <div class="header flex" slot="title">
-          <div class="risk-type">失信信息</div>
+          <div class="risk-type">严重违法</div>
           <div class="risk-disc">
             {{ tableDataTemp.breatchTrustResp.desc }}（{{
               tableDataTemp.breatchTrustResp.count
@@ -152,33 +152,33 @@
         >
         </el-pagination>
       </el-collapse-item>
-      <!-- 限制高消费 -->
+      <!-- 股权质押 -->
       <el-collapse-item
-        v-if="tableDataTemp.limitConsumptionResp"
+        v-if="tableDataTemp.pledgeEquityResp"
         class="colllapse-item-wrap"
       >
         <div class="header flex" slot="title">
-          <div class="risk-type">限制高消费</div>
+          <div class="risk-type">股权质押</div>
           <div class="risk-disc">
-            {{ tableDataTemp.limitConsumptionResp.desc }}（{{
-              tableDataTemp.limitConsumptionResp.count
+            {{ tableDataTemp.pledgeEquityResp.desc }}（{{
+              tableDataTemp.pledgeEquityResp.count
             }}）
           </div>
           <el-tag
             class="risk-level"
             :type="
-              tableDataTemp.limitConsumptionResp.riskLevel === '高风险'
+              tableDataTemp.pledgeEquityResp.riskLevel === '高风险'
                 ? 'danger'
-                : tableDataTemp.limitConsumptionResp.riskLevel === '中风险'
+                : tableDataTemp.pledgeEquityResp.riskLevel === '中风险'
                 ? 'warning'
                 : 'info'
             "
             size="small"
-            >{{ tableDataTemp.limitConsumptionResp.riskLevel }}</el-tag
+            >{{ tableDataTemp.pledgeEquityResp.riskLevel }}</el-tag
           >
         </div>
         <el-table
-          :data="tableDataTemp.limitConsumptionResp.limitConsumptionList"
+          :data="tableDataTemp.pledgeEquityResp.pledgeEquityList"
           border
           size="small"
         >
@@ -197,40 +197,40 @@
           background
           small
           layout="prev, pager, next"
-          :current-page="limitConsumptionRespPageNum"
+          :current-page="pledgeEquityRespPageNum"
           :page-size="pageSize"
-          :total="tableDataTemp.limitConsumptionResp.count"
-          @current-change="pageChange('limitConsumptionResp', $event)"
+          :total="tableDataTemp.pledgeEquityResp.count"
+          @current-change="pageChange('pledgeEquityResp', $event)"
         >
         </el-pagination>
       </el-collapse-item>
-      <!-- 终本案件 -->
+      <!-- 行政处罚 -->
       <el-collapse-item
-        v-if="tableDataTemp.closingCaseResp"
+        v-if="tableDataTemp.adminPenaltyResp"
         class="colllapse-item-wrap"
       >
         <div class="header flex" slot="title">
-          <div class="risk-type">终本案件</div>
+          <div class="risk-type">行政处罚</div>
           <div class="risk-disc">
-            {{ tableDataTemp.closingCaseResp.desc }}（{{
-              tableDataTemp.closingCaseResp.count
+            {{ tableDataTemp.adminPenaltyResp.desc }}（{{
+              tableDataTemp.adminPenaltyResp.count
             }}）
           </div>
           <el-tag
             class="risk-level"
             :type="
-              tableDataTemp.closingCaseResp.riskLevel === '高风险'
+              tableDataTemp.adminPenaltyResp.riskLevel === '高风险'
                 ? 'danger'
-                : tableDataTemp.closingCaseResp.riskLevel === '中风险'
+                : tableDataTemp.adminPenaltyResp.riskLevel === '中风险'
                 ? 'warning'
                 : 'info'
             "
             size="small"
-            >{{ tableDataTemp.closingCaseResp.riskLevel }}</el-tag
+            >{{ tableDataTemp.adminPenaltyResp.riskLevel }}</el-tag
           >
         </div>
         <el-table
-          :data="tableDataTemp.closingCaseResp.closingCaseList"
+          :data="tableDataTemp.adminPenaltyResp.adminPenaltyList"
           border
           size="small"
         >
@@ -249,10 +249,62 @@
           background
           small
           layout="prev, pager, next"
-          :current-page="closingCaseRespPageNum"
+          :current-page="adminPenaltyRespPageNum"
           :page-size="pageSize"
-          :total="tableDataTemp.closingCaseResp.count"
-          @current-change="pageChange('closingCaseResp', $event)"
+          :total="tableDataTemp.adminPenaltyResp.count"
+          @current-change="pageChange('adminPenaltyResp', $event)"
+        >
+        </el-pagination>
+      </el-collapse-item>
+      <!-- 欠税公告 -->
+      <el-collapse-item
+        v-if="tableDataTemp.taxArrearsResp"
+        class="colllapse-item-wrap"
+      >
+        <div class="header flex" slot="title">
+          <div class="risk-type">欠税公告</div>
+          <div class="risk-disc">
+            {{ tableDataTemp.taxArrearsResp.desc }}（{{
+              tableDataTemp.taxArrearsResp.count
+            }}）
+          </div>
+          <el-tag
+            class="risk-level"
+            :type="
+              tableDataTemp.taxArrearsResp.riskLevel === '高风险'
+                ? 'danger'
+                : tableDataTemp.taxArrearsResp.riskLevel === '中风险'
+                ? 'warning'
+                : 'info'
+            "
+            size="small"
+            >{{ tableDataTemp.taxArrearsResp.riskLevel }}</el-tag
+          >
+        </div>
+        <el-table
+          :data="tableDataTemp.taxArrearsResp.taxArrearsList"
+          border
+          size="small"
+        >
+          <el-table-column
+            prop="row"
+            label="序号"
+            width="180"
+          ></el-table-column>
+          <el-table-column prop="createTime" label="立案日期"></el-table-column>
+          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
+          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
+          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+        </el-table>
+        <el-pagination
+          class="page-tool"
+          background
+          small
+          layout="prev, pager, next"
+          :current-page="taxArrearsRespPageNum"
+          :page-size="pageSize"
+          :total="tableDataTemp.taxArrearsResp.count"
+          @current-change="pageChange('taxArrearsResp', $event)"
         >
         </el-pagination>
       </el-collapse-item>
@@ -272,30 +324,35 @@ export default {
       riskLevelIsIndeterminate: false,
       tableData: {},
       pageSize: 1,
-      personSubjectRespPageNum: 1, //被执行人
-      breatchTrustRespPageNum: 1, //失信信息
-      limitConsumptionRespPageNum: 1, //限制高消费
-      closingCaseRespPageNum: 1, //终本案件
+      abnormalOperationRespPageNum: 1, //经营异常
+      breatchTrustRespPageNum: 1, //严重违法
+      pledgeEquityRespPageNum: 1, //股权质押
+      adminPenaltyRespPageNum: 1, //行政处罚
+      taxArrearsRespPageNum: 1, //欠税公告
     };
   },
   computed: {
     riskTypeList() {
       return [
         {
-          label: "被执行人",
-          value: "personSubjectResp",
+          label: "经营异常",
+          value: "abnormalOperationResp",
         },
         {
-          label: "失信信息",
+          label: "严重违法",
           value: "breatchTrustResp",
         },
         {
-          label: "限制高消费",
-          value: "limitConsumptionResp",
+          label: "股权质押",
+          value: "pledgeEquityResp",
         },
         {
-          label: "终本案件",
-          value: "closingCaseResp",
+          label: "行政处罚",
+          value: "adminPenaltyResp",
+        },
+        {
+          label: "欠税公告",
+          value: "taxArrearsResp",
         },
       ];
     },
@@ -353,11 +410,11 @@ export default {
     getData() {
       this.$axios.get("/construction/projectManager").then(() => {
         this.tableData = {
-          personSubjectResp: {
+          abnormalOperationResp: {
             riskLevel: "高风险",
             desc: "发打算发达",
             count: 3,
-            personSubjectList: [
+            abnormalOperationList: [
               {
                 row: 1,
                 id: 96,
@@ -465,11 +522,11 @@ export default {
               },
             ],
           },
-          limitConsumptionResp: {
+          pledgeEquityResp: {
             riskLevel: "警示",
             desc: "发撒打发打算",
             count: 1,
-            limitConsumptionList: [
+            pledgeEquityList: [
               {
                 row: 1,
                 id: 7744,
@@ -489,11 +546,50 @@ export default {
               },
             ],
           },
-          closingCaseResp: {
+          adminPenaltyResp: {
             riskLevel: "中风险",
             desc: "发第三方的撒范德萨",
             count: 2,
-            closingCaseList: [
+            adminPenaltyList: [
+              {
+                row: 1,
+                id: 3112,
+                entId: "8535efbfc3d44226206332272daeffc5",
+                entName: "盐城市亭湖区黄尖供销合作有限公司",
+                caseCreateTime: "2016-01-18T16:00:00.000+00:00",
+                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
+                caseCode: "(2016)苏0902执247号",
+                execMoney: 849348,
+                execMoneyUnit: "元",
+                noExecMoney: 0,
+                noExecMoneyUnit: "元",
+                execCourtName: "盐城市亭湖区人民法院",
+                createTime: "2022-11-17 00:01:43",
+                updateTime: "2022-11-17 00:01:43",
+              },
+              {
+                row: 2,
+                id: 10084,
+                entId: "8535efbfc3d44226206332272daeffc5",
+                entName: "盐城市亭湖区黄尖供销合作有限公司",
+                caseCreateTime: "2016-01-20T16:00:00.000+00:00",
+                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
+                caseCode: "(2016)苏0902执293号",
+                execMoney: 952365,
+                execMoneyUnit: "元",
+                noExecMoney: 0,
+                noExecMoneyUnit: "元",
+                execCourtName: "盐城市亭湖区人民法院",
+                createTime: "2022-11-17 00:05:44",
+                updateTime: "2022-11-17 00:05:44",
+              },
+            ],
+          },
+          taxArrearsResp: {
+            riskLevel: "警示",
+            desc: "发撒打发打算发打算分散",
+            count: 15,
+            taxArrearsList: [
               {
                 row: 1,
                 id: 3112,
@@ -558,15 +654,15 @@ export default {
     pageChange(type, val) {
       console.log(type, val);
       switch (type) {
-        case "personSubjectResp":
-          this.personSubjectRespPageNum = val;
+        case "abnormalOperationResp":
+          this.abnormalOperationRespPageNum = val;
           this.$axios
             .get("/construction/projectManager", {
-              pageNum: this.personSubjectRespPageNum,
+              pageNum: this.abnormalOperationRespPageNum,
               pageSize: this.pageSize,
             })
             .then(() => {
-              this.tableData.personSubjectResp.personSubjectList = [
+              this.tableData.abnormalOperationResp.abnormalOperationList = [
                 {
                   row: 1,
                   id: 96,
@@ -680,15 +776,15 @@ export default {
               ];
             });
           break;
-        case "limitConsumptionResp":
-          this.limitConsumptionRespPageNum = val;
+        case "pledgeEquityResp":
+          this.pledgeEquityRespPageNum = val;
           this.$axios
             .get("/construction/projectManager", {
-              pageNum: this.limitConsumptionRespPageNum,
+              pageNum: this.pledgeEquityRespPageNum,
               pageSize: this.pageSize,
             })
             .then(() => {
-              this.tableData.limitConsumptionResp.limitConsumptionList = [
+              this.tableData.pledgeEquityResp.pledgeEquityList = [
                 {
                   row: val,
                   id: 6005,
@@ -712,15 +808,47 @@ export default {
               ];
             });
           break;
-        case "closingCaseResp":
-          this.closingCaseRespPageNum = val;
+        case "adminPenaltyResp":
+          this.adminPenaltyRespPageNum = val;
           this.$axios
             .get("/construction/projectManager", {
-              pageNum: this.closingCaseRespPageNum,
+              pageNum: this.adminPenaltyRespPageNum,
               pageSize: this.pageSize,
             })
             .then(() => {
-              this.tableData.closingCaseResp.closingCaseList = [
+              this.tableData.adminPenaltyResp.adminPenaltyList = [
+                {
+                  row: val,
+                  id: 6005,
+                  entId: "8535efbfc3d44226206332272daeffc5",
+                  entName: "盐城市亭湖区黄尖供销合作有限公司",
+                  creditCode: "91320902745597120Y",
+                  registrationNumber: "320924000019628",
+                  inReason:
+                    "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
+                  inDate: "2020-08-25T16:00:00.000+00:00",
+                  inOrg: "原盐城市税务局稽查局",
+                  inWnum: null,
+                  inTitle: null,
+                  inContent: null,
+                  yzType: null,
+                  yzFact: null,
+                  url: null,
+                  createTime: "2022-11-15 02:11:34",
+                  updateTime: "2022-11-15 02:11:34",
+                },
+              ];
+            });
+          break;
+        case "taxArrearsResp":
+          this.taxArrearsRespPageNum = val;
+          this.$axios
+            .get("/construction/projectManager", {
+              pageNum: this.taxArrearsRespPageNum,
+              pageSize: this.pageSize,
+            })
+            .then(() => {
+              this.tableData.taxArrearsResp.taxArrearsList = [
                 {
                   row: val,
                   id: 6005,
