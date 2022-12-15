@@ -53,12 +53,14 @@
             <el-dropdown-item command="ChangeRecord">变更记录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <RegisterInfo class="margin" ref="RegisterInfo"></RegisterInfo>
-        <Shareholder class="margin" ref="Shareholder"></Shareholder>
-        <EquityChart class="margin" ref="EquityChart"></EquityChart>
-        <KeyPersonnel class="margin" ref="KeyPersonnel"></KeyPersonnel>
-        <OutInvest class="margin" ref="OutInvest"></OutInvest>
-        <ChangeRecord class="margin" ref="ChangeRecord"></ChangeRecord>
+        <div v-if="activeName == '基本信息'">
+          <RegisterInfo class="margin" ref="RegisterInfo"></RegisterInfo>
+          <Shareholder class="margin" ref="Shareholder"></Shareholder>
+          <EquityChart class="margin" ref="EquityChart"></EquityChart>
+          <KeyPersonnel class="margin" ref="KeyPersonnel"></KeyPersonnel>
+          <OutInvest class="margin" ref="OutInvest"></OutInvest>
+          <ChangeRecord class="margin" ref="ChangeRecord"></ChangeRecord>
+        </div>
       </el-tab-pane>
       <!-- 司法风险 -->
       <el-tab-pane name="司法风险">
@@ -74,11 +76,13 @@
             <el-dropdown-item command="Document">裁判文书</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <Executee class="margin" ref="Executee"></Executee>
-        <LimitConsume class="margin" ref="LimitConsume"></LimitConsume>
-        <RestrictedExit class="margin" ref="RestrictedExit"></RestrictedExit>
-        <FinalCase class="margin" ref="FinalCase"></FinalCase>
-        <Document class="margin" ref="Document"></Document>
+        <div v-if="activeName == '司法风险'">
+          <Executee class="margin" ref="Executee"></Executee>
+          <LimitConsume class="margin" ref="LimitConsume"></LimitConsume>
+          <RestrictedExit class="margin" ref="RestrictedExit"></RestrictedExit>
+          <FinalCase class="margin" ref="FinalCase"></FinalCase>
+          <Document class="margin" ref="Document"></Document>
+        </div>
       </el-tab-pane>
       <!-- 经营风险 -->
       <el-tab-pane name="经营风险">
@@ -94,11 +98,13 @@
             <el-dropdown-item command="TaxRecord">欠税公告</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <BusinessUnusual class="margin" ref="BusinessUnusual"></BusinessUnusual>
-        <SeriousIllegal class="margin" ref="SeriousIllegal"></SeriousIllegal>
-        <EquityPledge class="margin" ref="EquityPledge"></EquityPledge>
-        <AdministrationPunish class="margin" ref="AdministrationPunish"></AdministrationPunish>
-        <TaxRecord class="margin" ref="TaxRecord"></TaxRecord>
+        <div v-if="activeName == '经营风险'">
+          <BusinessUnusual class="margin" ref="BusinessUnusual"></BusinessUnusual>
+          <SeriousIllegal class="margin" ref="SeriousIllegal"></SeriousIllegal>
+          <EquityPledge class="margin" ref="EquityPledge"></EquityPledge>
+          <AdministrationPunish class="margin" ref="AdministrationPunish"></AdministrationPunish>
+          <TaxRecord class="margin" ref="TaxRecord"></TaxRecord>
+        </div>
       </el-tab-pane>
       <!-- 经营信息 -->
       <el-tab-pane name="经营信息">
@@ -114,11 +120,13 @@
             <el-dropdown-item command="LandInfo">土地信息</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <Administration class="margin" ref="Administration"></Administration>
-        <Credit class="margin" ref="Credit"></Credit>
-        <Recruitment class="margin" ref="Recruitment"></Recruitment>
-        <SocialSecurity class="margin" ref="SocialSecurity"></SocialSecurity>
-        <LandInfo class="margin" ref="LandInfo"></LandInfo>
+        <div v-if="activeName == '经营信息'">
+          <Administration class="margin" ref="Administration"></Administration>
+          <Credit class="margin" ref="Credit"></Credit>
+          <Recruitment class="margin" ref="Recruitment"></Recruitment>
+          <SocialSecurity class="margin" ref="SocialSecurity"></SocialSecurity>
+          <LandInfo class="margin" ref="LandInfo"></LandInfo>
+        </div>
       </el-tab-pane>
       <!-- 企业发展 -->
       <el-tab-pane name="企业发展">
@@ -131,8 +139,10 @@
             <el-dropdown-item command="PublicSentiment">新闻舆情</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <Contributor class="margin" ref="Contributor"></Contributor>
-        <PublicSentiment class="margin" ref="PublicSentiment"></PublicSentiment>
+        <div v-if="activeName == '企业发展'">
+          <Contributor class="margin" ref="Contributor"></Contributor>
+          <PublicSentiment class="margin" ref="PublicSentiment"></PublicSentiment>
+        </div>
       </el-tab-pane>
       <!-- 知识产权 -->
       <el-tab-pane name="知识产权">
@@ -149,11 +159,13 @@
             <el-dropdown-item command="WebsiteFiling">网站备案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <PatentInfo class="margin" ref="PatentInfo"></PatentInfo>
-        <BrandInfo class="margin" ref="BrandInfo"></BrandInfo>
-        <SoftwareRight class="margin" ref="SoftwareRight"></SoftwareRight>
-        <Copyright class="margin" ref="Copyright"></Copyright>
-        <WebsiteFiling class="margin" ref="WebsiteFiling"></WebsiteFiling>
+        <div v-if="activeName == '知识产权'">
+          <PatentInfo class="margin" ref="PatentInfo"></PatentInfo>
+          <BrandInfo class="margin" ref="BrandInfo"></BrandInfo>
+          <SoftwareRight class="margin" ref="SoftwareRight"></SoftwareRight>
+          <Copyright class="margin" ref="Copyright"></Copyright>
+          <WebsiteFiling class="margin" ref="WebsiteFiling"></WebsiteFiling>
+        </div>
       </el-tab-pane>
       <!-- 其他信息 -->
       <el-tab-pane name="其他信息">
@@ -169,11 +181,13 @@
             <el-dropdown-item command="Encyclopedias">百科介绍</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <MandatoryProducts class="margin" ref="MandatoryProducts"></MandatoryProducts>
-        <FarmProduce class="margin" ref="FarmProduce"></FarmProduce>
-        <VoluntaryProducts class="margin" ref="VoluntaryProducts"></VoluntaryProducts>
-        <BTwoBInfo class="margin" ref="BTwoBInfo"></BTwoBInfo>
-        <Encyclopedias class="margin" ref="Encyclopedias"></Encyclopedias>
+        <div v-if="activeName == '其他信息'">
+          <MandatoryProducts class="margin" ref="MandatoryProducts"></MandatoryProducts>
+          <FarmProduce class="margin" ref="FarmProduce"></FarmProduce>
+          <VoluntaryProducts class="margin" ref="VoluntaryProducts"></VoluntaryProducts>
+          <BTwoBInfo class="margin" ref="BTwoBInfo"></BTwoBInfo>
+          <Encyclopedias class="margin" ref="Encyclopedias"></Encyclopedias>
+        </div>
       </el-tab-pane>
     </el-tabs>
     <div class="backtop" v-show="isShowBacktop" @click="backtop">
