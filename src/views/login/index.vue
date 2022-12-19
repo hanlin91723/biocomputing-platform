@@ -90,8 +90,16 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
+          const params = {
+            entName: "",
+            industry: "全部",
+            pageNum: 1,
+            pageSize: 10,
+            riskLevel: "全部",
+            indexRiskLevel: "全部",
+          };
           this.$axios
-            .get("/construction/projectManager")
+            .post("/entRisk/queryEntRiskByCondition", params)
             .then(() => {
               sessionStorage.setItem("token", 123);
               sessionStorage.setItem("userId", 1);

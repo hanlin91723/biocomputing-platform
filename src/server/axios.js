@@ -6,15 +6,8 @@ import axios from "axios";
 
 const env =
   import.meta.env.MODE; //应用运行的模式
-let aaa = {
-  a: 1,
-  b: 2,
-};
-if (aaa === "1") {
-  console.log(env);
-}
-const devUrl = "/api/build"; //开发环境
-const proUrl = "/build"; //生产环境
+const devUrl = "/api/riskManager"; //开发环境
+const proUrl = "/riskManager"; //生产环境
 const baseUrl = env === "production" ? proUrl : devUrl;
 
 //基础配置

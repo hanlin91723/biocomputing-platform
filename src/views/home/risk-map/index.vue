@@ -1,45 +1,45 @@
 <template>
   <div class="wrap">
     <el-bmap
-        class="bm-view"
-        :center="[106.556901, 29.570045]"
-        :zoom="19"
-        :tilt="70"
+      class="bm-view"
+      :center="[106.556901, 29.570045]"
+      :zoom="19"
+      :tilt="70"
+      :events="{
+        init: (o) => {
+          handler(o);
+        },
+      }"
+      mapType="B_NORMAL_MAP"
+    >
+      <el-bmap-marker
+        v-for="(item, index) in pointsList"
+        :key="index"
+        :position="[item.lng, item.lat]"
+        :icon="item.dotIcon"
         :events="{
-          init: (o) => {
-            handler(o);
+          click: (e) => {
+            handlePoint(e);
           },
         }"
-        mapType="B_NORMAL_MAP"
+      ></el-bmap-marker>
+      <el-bmapv-view>
+        <el-bmapv-heat-map-layer
+          :size="80"
+          :max="60000"
+          :data="heatData"
+        ></el-bmapv-heat-map-layer>
+      </el-bmapv-view>
+    </el-bmap>
+    <div class="bm-control">
+      <el-radio-group
+        class="radio-group"
+        @change="changeRadio"
+        v-model="radioVal"
       >
-        <el-bmap-marker
-          v-for="(item, index) in pointsList"
-          :key="index"
-          :position="[item.lng, item.lat]"
-          :icon="item.dotIcon"
-          :events="{
-            click: (e) => {
-              handlePoint(e);
-            },
-          }"
-        ></el-bmap-marker>
-        <el-bmapv-view>
-          <el-bmapv-heat-map-layer
-            :size="80"
-            :max="60000"
-            :data="heatData"
-          ></el-bmapv-heat-map-layer>
-        </el-bmapv-view>
-      </el-bmap>
-      <div class="bm-control">
-        <el-radio-group
-          class="radio-group"
-          @change="changeRadio"
-          v-model="radioVal"
-        >
-          <el-radio class="radio-item" :label="1">风险热力图</el-radio>
-          <el-radio class="radio-item" :label="2">高风险企业</el-radio>
-          <!-- <el-radio
+        <el-radio class="radio-item" :label="1">风险热力图</el-radio>
+        <el-radio class="radio-item" :label="2">高风险企业</el-radio>
+        <!-- <el-radio
             :class="{ 'radio-item': true, ['radio-' + item.label]: true }"
             v-for="item in radioList"
             :key="item.label"
@@ -48,8 +48,8 @@
             <i class="el-icon-location ico"></i>
             <span>{{ item.name }}</span>
           </el-radio> -->
-        </el-radio-group>
-      </div>
+      </el-radio-group>
+    </div>
   </div>
 </template>
 
@@ -128,7 +128,7 @@ export default {
       const param = {
         type: val,
       };
-      this.$axios.get("/company/companyPosition", param).then(({ data, }) => {
+      this.$axios.get("/company/companyPosition", param).then(({ data }) => {
         this.pointsList = [];
         this.heatData = [];
         if (val === 1) {
@@ -136,7 +136,7 @@ export default {
             this.heatData.push({
               geometry: {
                 type: "Point",
-                coordinates: [item.lng, item.lat,],
+                coordinates: [item.lng, item.lat],
               },
               properties: {
                 count: item.count,
@@ -151,7 +151,7 @@ export default {
               Object.assign({}, item, {
                 dotIcon: {
                   url: require(`@/assets/images/others/weather/${iconImg}.png`),
-                  size: [16, 20,],
+                  size: [16, 20],
                 },
               })
             );
@@ -160,7 +160,7 @@ export default {
       });
     },
     handlePoint(e) {
-      const { target, } = e;
+      const { target } = e;
       this.currentCoordinates = this.pointsList.find(
         (item) =>
           item.lng === String(target.latLng.lng.toFixed(6)) &&

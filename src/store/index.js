@@ -36,8 +36,10 @@ export const useUserStore = defineStore("user", {
     getPermissionList() {
       const params = {
         userId: sessionStorage.getItem("userId"),
+        riskLevel: "全部",
+        riskType: "全部",
       };
-      return http.get("/construction/projectManager", params).then(() => {
+      return http.get("marketRisk/byCondition", params).then(() => {
         this.permissionList = ["1-1", "1-2", "2-1", "3-1", "3-2", "4-1", "4-2", ];
       });
     },
