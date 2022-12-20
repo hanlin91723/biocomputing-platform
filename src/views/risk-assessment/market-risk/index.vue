@@ -62,17 +62,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 分页器 -->
-    <el-pagination
-      background
-      layout="total, prev, pager, next"
-      :page-size="pageSize"
-      :total="total"
-      :current-page="currentPage"
-      class="pagination"
-      @current-change="handleCurrentChange"
-    >
-    </el-pagination>
   </div>
 </template>
 
@@ -81,183 +70,110 @@ export default {
   data() {
     return {
       tableData: [],
-      classifyOptions: [],
-      riskGradeOptions: [],
+      classifyOptions: [
+        {
+          value: "全部",
+          label: "全部",
+        },
+        {
+          value: "司法风险",
+          label: "司法风险",
+        },
+        {
+          value: "监管风险",
+          label: "监管风险",
+        },
+        {
+          value: "市场活力",
+          label: "市场活力",
+        },
+        {
+          value: "社会效益",
+          label: "社会效益",
+        },
+      ],
+      riskGradeOptions: [
+        {
+          value: "全部",
+          label: "全部",
+        },
+        {
+          value: "高风险",
+          label: "高风险",
+        },
+        {
+          value: "中风险",
+          label: "中风险",
+        },
+        {
+          value: "无风险",
+          label: "无风险",
+        },
+        {
+          value: "警示",
+          label: "警示",
+        },
+      ],
       // 查询数据
-      classifyValue: "1",
-      riskGradeValue: "1",
-      // 分页
-      total: 110,
-      pageSize: 11,
-      currentPage: 1,
+      classifyValue: "全部",
+      riskGradeValue: "全部",
     };
   },
   created() {
     this.getTableData();
-    this.getclassifyOptions();
-    this.getriskGradeOptions();
   },
   methods: {
+    riskTrans(num){
+      switch (num) {
+        case 0:
+          return "无风险";
+        case 1:
+          return "高风险";
+        case 2:
+          return "中风险";
+        case 3:
+          return "警示";
+        default:
+          break;
+      }
+    },
     getTableData() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.tableData = [
-        {
-          id: 1,
-          riskGrade: "高风险",
-          riskIndex: "被执行人",
-          riskClassify: "司法风险",
-          riskDescribe: "司法案件风险企业占比超过35%",
-          riskEnterpriseCount: 49885,
-        },
-        {
-          id: 2,
-          riskGrade: "中风险",
-          riskIndex: "失信信息",
-          riskClassify: "司法风险",
-          riskDescribe: "失信信息风险企业数量同比上升18%",
-          riskEnterpriseCount: 984,
-        },
-        {
-          id: 3,
-          riskGrade: "中风险",
-          riskIndex: "限制高消费",
-          riskClassify: "监管风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 894,
-        },
-        {
-          id: 4,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 5,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 6,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 7,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 8,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 9,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 10,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-        {
-          id: 11,
-          riskGrade: "警示",
-          riskIndex: "限制出境",
-          riskClassify: "司法风险",
-          riskDescribe: "限制高消费风险企业占比超过32%且数量同比上升17%",
-          riskEnterpriseCount: 954,
-        },
-      ];
-    },
-    getclassifyOptions() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.classifyOptions = [
-        {
-          value: "1",
-          label: "全部",
-        },
-        {
-          value: "2",
-          label: "司法风险",
-        },
-        {
-          value: "3",
-          label: "监管风险",
-        },
-        {
-          value: "4",
-          label: "市场活力",
-        },
-        {
-          value: "5",
-          label: "社会效益",
-        },
-      ];
-    },
-    getriskGradeOptions() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.riskGradeOptions = [
-        {
-          value: "1",
-          label: "全部",
-        },
-        {
-          value: "2",
-          label: "高风险",
-        },
-        {
-          value: "3",
-          label: "中风险",
-        },
-        {
-          value: "4",
-          label: "警示",
-        },
-      ];
+      let params = {
+        riskType:this.classifyValue,
+        riskLevel:this.riskGradeValue,
+      };
+      this.$axios.get("/marketRisk/byCondition",params).then(({data,})=>{
+        this.tableData = data.map(item=>{
+          return {
+            id: item.id,
+            riskGrade: this.riskTrans(item.riskLevel),
+            riskIndex: item.indexSmallTypeName,
+            riskClassify: item.indexLargeTypeName,
+            riskDescribe: item.desc,
+            riskEnterpriseCount: item.entNum,
+          };
+        });
+      });
     },
     // 查询
     search() {
       // 调用接口查询，拿到结果给表格
-      console.log("查询");
-      // let params = {
-      //   classifyValue:this.classifyValue,
-      //   riskGradeValue:this.riskGradeValue,
-      // };
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      let params = {
+        riskType:this.classifyValue,
+        riskLevel:this.riskGradeValue,
+      };
+      this.$axios.get("/marketRisk/byCondition",params).then(({data,})=>{
+        this.tableData = data.map(item=>{
+          return {
+            id: item.id,
+            riskGrade: this.riskTrans(item.riskLevel),
+            riskIndex: item.indexSmallTypeName,
+            riskClassify: item.indexLargeTypeName,
+            riskDescribe: item.desc,
+            riskEnterpriseCount: item.entNum,
+          };
+        });
+      });
     },
     // 风险指数
     riskColor(val) {
@@ -268,28 +184,20 @@ export default {
           return "riskColor2";
         case "警示":
           return "riskColor3";
+        case "无风险":
+          return "riskColor4";
         default:
           break;
       }
     },
     // 风险详情
     riskDetails({ id, }) {
-      console.log(id);
       this.$router.push({
         path: "/market-risk/detail",
+        query:{
+          id,
+        },
       });
-    },
-    // 分页
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
     },
     // 为表格头标题添加小图标并hover后出现提示信息
     renderCount(h, { column, }) {
@@ -346,7 +254,7 @@ export default {
   }
   .table {
     width: 100%;
-    height: 575px;
+    // height: 575px;
     margin-bottom: 10px;
     .riskColor1 {
       color: rgb(217, 0, 27);
@@ -356,6 +264,9 @@ export default {
     }
     .riskColor3 {
       color: rgb(182, 200, 76);
+    }
+    .riskColor4 {
+      color: rgba(93, 209, 140, 1);
     }
     .reset,
     .edit,

@@ -1,7 +1,9 @@
 export const rankingBar = function (name,value) {
+    let max = Math.max(...value);
+    let fullArr = new Array(value.length).fill(max+Math.floor(max*0.1));
     return {
         grid: {
-            left: "0%",
+            left: "-20%",
             right: "5%",
             bottom: "0%",
             top: "10%",
@@ -20,10 +22,8 @@ export const rankingBar = function (name,value) {
             inverse: true,
             axisLabel: {
                 show: true,
-                textStyle: {
-                    color: "#303133",
-                    fontSize: "14",
-                },
+                color: "#303133",
+                fontSize: "14",
             },
             splitLine: {
                 show: false,
@@ -43,10 +43,8 @@ export const rankingBar = function (name,value) {
             show: true,
             axisLabel: {
                 padding: [0, 0, 0, -10, ],
-                textStyle: {
-                    color: "#303133",
-                    fontSize: "14",
-                },
+                color: "#303133",
+                fontSize: "14",
                 formatter: function (value) {
                     if (value >= 10000) {
                         return (value / 10000).toLocaleString() + "万";
@@ -62,10 +60,8 @@ export const rankingBar = function (name,value) {
                 type: "bar",
                 zlevel: 1,
                 itemStyle: {
-                    normal: {
-                        barBorderRadius: 0,
-                        color: "rgba(93, 119, 255, 1)",
-                    },
+                    borderRadius: 0,
+                    color: "rgba(93, 119, 255, 1)",
                 },
                 barWidth: 12,
                 data: value,
@@ -75,12 +71,10 @@ export const rankingBar = function (name,value) {
                 type: "bar",
                 barWidth: 12,
                 barGap: "-100%",
-                data: [14000, 14000,14000,14000,14000,14000,14000,14000,14000,14000, ],
+                data: fullArr,
                 itemStyle: {
-                    normal: {
-                        color: "rgba(234, 236, 239, 1)",
-                        barBorderRadius: 0,
-                    },
+                    color: "rgba(234, 236, 239, 1)",
+                    borderRadius: 0,
                 },
             },
         ],
@@ -99,7 +93,7 @@ export const registeredScale = function(data){
         tooltip : {
             trigger: "item",
             // formatter: "{a} <br/>{b} : {c} ({d}%)",
-            formatter: "{a} <br/>{b} : {d}%",
+            formatter: "{a} <br/>{b} : {c}%",
         },
         toolbox: {
             show : false,

@@ -60,7 +60,7 @@
     <el-divider></el-divider>
     <!-- 表格 -->
     <el-table :data="tableData" border stripe class="table">
-      <el-table-column prop="id" label="序号" width="80"></el-table-column>
+      <el-table-column prop="index" label="序号" width="80"></el-table-column>
       <el-table-column
         prop="enterpriseName"
         label="企业名称"
@@ -118,227 +118,125 @@ export default {
     return {
       tableData: [],
       industryOptions: [],
-      riskGradeOptions: [],
-      earlyWarningOptions: [],
-      // 查询数据
-      industryValue: "1",
-      riskGradeValue: "1",
-      earlyWarningValue:"1",
-      enterpriseName: "",
-      // 分页
-      total: 110,
-      pageSize: 11,
-      currentPage: 1,
-    };
-  },
-  created() {
-    this.getTableData();
-    this.getIndustryOptions();
-    this.getRiskGradeOptions();
-    this.getEarlyWarningOptions();
-  },
-  methods: {
-    getTableData() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.tableData = [
+      riskGradeOptions: [
         {
-          id: 1,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          earlyWarning: 86,
-        },
-        {
-          id: 2,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 85,
-          earlyWarning: 85,
-        },
-        {
-          id: 3,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 68,
-          earlyWarning: 68,
-        },
-        {
-          id: 4,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 43,
-          earlyWarning: 43,
-        },
-        {
-          id: 5,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 12,
-          earlyWarning: 12,
-        },
-        {
-          id: 6,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 11,
-          earlyWarning: 22,
-        },
-        {
-          id: 7,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 22,
-          earlyWarning: 22,
-        },
-        {
-          id: 8,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 22,
-          earlyWarning: 22,
-        },
-        {
-          id: 9,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 22,
-          earlyWarning: 22,
-        },
-        {
-          id: 10,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 22,
-          earlyWarning: 22,
-        },
-        {
-          id: 11,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 22,
-          earlyWarning: 22,
-        },
-      ];
-    },
-    getIndustryOptions() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.industryOptions = [
-        {
-          value: "1",
+          value: "全部",
           label: "全部",
         },
         {
-          value: "2",
-          label: "农、林、牧、渔业",
-        },
-        {
-          value: "3",
-          label: "采矿业",
-        },
-        {
-          value: "4",
-          label: "制造业",
-        },
-        {
-          value: "5",
-          label: "电力、热力、燃气及水生产和供应业",
-        },
-        {
-          value: "6",
-          label: "建筑业",
-        },
-      ];
-    },
-    getRiskGradeOptions() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.riskGradeOptions = [
-        {
-          value: "1",
-          label: "全部",
-        },
-        {
-          value: "2",
+          value: "高风险",
           label: "高风险",
         },
         {
-          value: "3",
+          value: "较高风险",
           label: "较高风险",
         },
         {
-          value: "4",
+          value: "中风险",
           label: "中风险",
         },
         {
-          value: "5",
+          value: "低风险",
           label: "低风险",
         },
-      ];
-    },
-    getEarlyWarningOptions(){
-      this.earlyWarningOptions = [
+      ],
+      earlyWarningOptions: [
         {
-          value: "1",
+          value: "全部",
           label: "全部",
         },
         {
-          value: "2",
+          value: "高风险",
           label: "高风险",
         },
         {
-          value: "3",
+          value: "中风险",
           label: "中风险",
         },
         {
-          value: "4",
+          value: "无风险",
+          label: "无风险",
+        },
+        {
+          value: "警示",
           label: "警示",
         },
-      ];
+      ],
+      // 查询数据
+      industryValue: "全部",
+      riskGradeValue: "全部",
+      earlyWarningValue:"全部",
+      enterpriseName: "",
+      // 分页
+      total: 0,
+      pageSize: 10,
+      currentPage: 1,
+    };
+  },
+  props:{
+    params:{
+      type:Object,
+    },
+  },
+  watch:{
+    params(){
+      this.getTableData();
+    },
+  },
+  created() {
+    this.getIndustryOptions();
+    // this.getTableData();
+  },
+  methods: {
+    getTableData() {
+      let params = {
+        industry:this.industryValue,
+        riskLevel:this.riskGradeValue,
+        indexRiskLevel:this.earlyWarningValue,
+        entName:this.enterpriseName,
+        pageNum:this.currentPage,
+        pageSize:this.pageSize,
+        ...this.params,
+      };
+      console.log(params,"21");
+      this.$axios.post("/marketRisk/marketEntList",params).then(({data,})=>{
+        this.total = data.total;
+        this.tableData = data.list.map((item,index)=>{
+          return {
+            index: index + 1,
+            entId: item.entId,
+            enterpriseName: item.entName,
+            legalPerson: item.legalPerson,
+            creditCode: item.creditCode,
+            industry: item.industry,
+            riskIndex: item.entRiskScore,
+            earlyWarning: item.indexRisk,
+          };
+        });
+      });
+    },
+    getIndustryOptions() {
+      let params = {
+        dictType:"industry",
+      };
+      this.$axios.get("/dict/queryDictByType",params).then(({data,})=>{
+        this.industryOptions = data.map(item=>{
+          return {
+            value:item.dictName,
+            label:item.dictName,
+          };
+        });
+        this.industryOptions.unshift({
+          value:"全部",
+          label:"全部",
+        });
+      });
     },
     // 查询
     search() {
       // 调用接口查询，拿到结果给表格
-      console.log("查询");
-      // let params = {
-      //   industryValue:this.industryValue,
-      //   riskGradeValue:this.riskGradeValue,
-      //   earlyWarningValue:this.earlyWarningValue
-      //   enterpriseName:this.enterpriseName,
-      // };
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.currentPage = 1;
+      this.getTableData();
     },
     // 风险指数
     riskGrade(val) {
@@ -368,23 +266,23 @@ export default {
       }
     },
     indexRisk(val) {
-      switch (true) {
-        case val > 0 && val <= 25:
+      switch (val) {
+        case 0:
           return {
             className: "riskColor4",
-            text: "正常",
+            text: "无风险",
           };
-        case val > 25 && val <= 50:
+        case 3:
           return {
             className: "riskColor3",
             text: "警示",
           };
-        case val > 50 && val <= 75:
+        case 2:
           return {
             className: "riskColor2",
             text: "中风险",
           };
-        case val > 75 && val <= 100:
+        case 1:
           return {
             className: "riskColor1",
             text: "高风险",
@@ -409,14 +307,7 @@ export default {
     // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getTableData();
     },
   },
 };
@@ -447,7 +338,7 @@ export default {
   }
   .table {
     width: 100%;
-    height: 587px;
+    // height: 587px;
     margin-bottom: 10px;
     .riskColor1 {
       color: rgba(245, 114, 114, 1);
