@@ -37,6 +37,7 @@
           class="input"
           placeholder="请输入关键字"
           v-model="enterpriseName"
+          clearable
         ></el-input>
       </div>
       <!-- <div>

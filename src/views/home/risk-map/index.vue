@@ -2,9 +2,9 @@
   <div class="wrap">
     <el-bmap
       class="bm-view"
-      :center="[106.556901, 29.570045]"
-      :zoom="19"
-      :tilt="70"
+      :center="[120.4108269, 33.5580314]"
+      :zoom="10"
+      :tilt="50"
       :events="{
         init: (o) => {
           handler(o);
@@ -17,16 +17,11 @@
         :key="index"
         :position="[item.lng, item.lat]"
         :icon="item.dotIcon"
-        :events="{
-          click: (e) => {
-            handlePoint(e);
-          },
-        }"
+        :title="item.entName"
       ></el-bmap-marker>
       <el-bmapv-view>
         <el-bmapv-heat-map-layer
           :size="80"
-          :max="60000"
           :data="heatData"
         ></el-bmapv-heat-map-layer>
       </el-bmapv-view>
@@ -37,8 +32,9 @@
         @change="changeRadio"
         v-model="radioVal"
       >
-        <el-radio class="radio-item" :label="1">风险热力图</el-radio>
-        <el-radio class="radio-item" :label="2">高风险企业</el-radio>
+        <el-radio class="radio-item" :label="0">风险热力图</el-radio>
+        <el-radio class="radio-item radio-1" :label="1">高风险企业</el-radio>
+        <el-radio class="radio-item radio-2" :label="2">较高风险企业</el-radio>
         <!-- <el-radio
             :class="{ 'radio-item': true, ['radio-' + item.label]: true }"
             v-for="item in radioList"
@@ -54,6 +50,9 @@
 </template>
 
 <script>
+// 重庆 :center="[106.556901, 29.570045]"
+import icon1 from "@/assets/images/1.png";
+import icon2 from "@/assets/images/2.png";
 export default {
   data() {
     return {
@@ -62,7 +61,7 @@ export default {
         lat: 0,
       },
       zoom: 3,
-      radioVal: 1,
+      radioVal: 0,
       radioList: [
         {
           label: 2,
@@ -93,7 +92,7 @@ export default {
     };
   },
   created() {
-    this.getHeatData(1);
+    this.getHeatData(0);
   },
   methods: {
     handler(map) {
@@ -103,55 +102,57 @@ export default {
     },
     changeRadio(val) {
       switch (val) {
+        case 0:
+          this.getHeatData(val);
+          break;
         case 1:
           this.getHeatData(val);
           break;
         case 2:
           this.getHeatData(val);
           break;
-        case 3:
-          this.getHeatData(val);
-          break;
-        case 4:
-          this.getHeatData(val);
-          break;
-        case 5:
-          this.getHeatData(val);
-          break;
-        case 6:
-          this.getHeatData(val);
-          break;
         default:
+          break;
+      }
+    },
+    selectIcon(val){
+      switch (val) {
+        case 1:
+          return icon1;
+        case 2:
+          return icon2;
+        default:
+          break;
       }
     },
     getHeatData(val) {
       const param = {
         type: val,
       };
-      this.$axios.get("/company/companyPosition", param).then(({ data }) => {
+      this.$axios.get("/riskMap/positionType", param).then(({ data, }) => {
         this.pointsList = [];
         this.heatData = [];
-        if (val === 1) {
+        if (val === 0) {
           data.forEach((item) => {
             this.heatData.push({
               geometry: {
                 type: "Point",
-                coordinates: [item.lng, item.lat],
+                coordinates: [item.lng, item.lat,],
               },
               properties: {
-                count: item.count,
+                count: item.score,
               },
             });
           });
         } else {
           this.noPointsList = data;
-          const iconImg = String(6 - val);
+          const iconImg = val;
           this.noPointsList.map((item) => {
             this.pointsList.push(
               Object.assign({}, item, {
                 dotIcon: {
-                  url: require(`@/assets/images/others/weather/${iconImg}.png`),
-                  size: [16, 20],
+                  url: this.selectIcon(iconImg),
+                  size: [16, 20,],
                 },
               })
             );
@@ -159,15 +160,15 @@ export default {
         }
       });
     },
-    handlePoint(e) {
-      const { target } = e;
-      this.currentCoordinates = this.pointsList.find(
-        (item) =>
-          item.lng === String(target.latLng.lng.toFixed(6)) &&
-          item.lat === String(target.latLng.lat.toFixed(6))
-      );
-      this.$refs.enterpriseInfoDialog.handleOpenDialog(this.currentCoordinates);
-    },
+    // handlePoint(e) {
+    //   const { target, } = e;
+    //   this.currentCoordinates = this.pointsList.find(
+    //     (item) =>
+    //       item.lng === String(target.latLng.lng.toFixed(6)) &&
+    //       item.lat === String(target.latLng.lat.toFixed(6))
+    //   );
+    //   this.$refs.enterpriseInfoDialog.handleOpenDialog(this.currentCoordinates);
+    // },
   },
 };
 </script>
@@ -213,10 +214,10 @@ export default {
         font-size: 20px;
         vertical-align: middle;
       }
-      &.radio-2 {
+      &.radio-1 {
         color: rgba(228, 61, 61, 0.8);
       }
-      &.radio-3 {
+      &.radio-2 {
         color: rgba(255, 123, 1, 0.8);
       }
       &.radio-4 {
