@@ -10,8 +10,10 @@
         @click="changeRiskType('high')"
       >
         <div>昨日高风险企业</div>
-        <div>523家</div>
-        <div>比前日增加25家</div>
+        <div>
+          <span>{{ highEntNum }}</span>
+          <span>家</span>
+        </div>
       </div>
       <div
         :class="[
@@ -22,32 +24,17 @@
         @click="changeRiskType('medium')"
       >
         <div>昨日中风险企业</div>
-        <div>523家</div>
-        <div>比前日减少55家</div>
-      </div>
-    </div>
-    <div class="right">
-      <div class="tab-wrap flex">
-        <div
-          :class="['tab-btn', dateType === 'month' ? 'active' : '']"
-          @click="changeDateType('month')"
-        >
-          近一月
-        </div>
-        <div>/</div>
-        <div
-          :class="['tab-btn', dateType === 'year' ? 'active' : '']"
-          @click="changeDateType('year')"
-        >
-          近一年
+        <div>
+          <span>{{ middleEntNum }}</span>
+          <span>家</span>
         </div>
       </div>
-      <v-chart
-        class="enterprise-num-chart"
-        :option="enterpriseNumOption"
-        :update-options="{ notMerge: true }"
-      ></v-chart>
     </div>
+    <v-chart
+      class="enterprise-num-chart"
+      :option="enterpriseNumOption"
+      :update-options="{ notMerge: true }"
+    ></v-chart>
   </div>
 </template>
 
@@ -57,13 +44,27 @@ export default {
   data() {
     return {
       riskType: "high",
-      dateType: "month",
-      enterpriseNumData: [],
+      enterpriseNumDataObj: {},
+      highEntNum: "",
+      middleEntNum: "",
     };
   },
   computed: {
     enterpriseNumOption() {
       return enterpriseNum(this.enterpriseNumData);
+    },
+    enterpriseNumData() {
+      let data = [];
+      switch (this.riskType) {
+        case "high":
+          data = this.enterpriseNumDataObj.highList || [];
+          break;
+        case "medium":
+          data = this.enterpriseNumDataObj.middleList || [];
+          break;
+        default:
+      }
+      return data;
     },
   },
   created() {
@@ -71,38 +72,14 @@ export default {
   },
   methods: {
     getEnterpriseNumData() {
-      const params = {
-        riskType: this.riskType,
-        dateType: this.dateType,
-      };
-      this.$axios.get("/construction/projectManager", params).then(() => {
-        this.enterpriseNumData = [
-          {
-            date: "10-3",
-            value: 1048,
-          },
-          {
-            date: "10-6",
-            value: 1048,
-          },
-          {
-            date: "10-9",
-            value: 1048,
-          },
-          {
-            date: "10-12",
-            value: 1048,
-          },
-        ];
+      this.$axios.get("/statistics/entNumStatistic").then(({ data }) => {
+        this.enterpriseNumDataObj = data;
+        this.highEntNum = data.highEntNum;
+        this.middleEntNum = data.middleEntNum;
       });
     },
     changeRiskType(type) {
       this.riskType = type;
-      this.getEnterpriseNumData();
-    },
-    changeDateType(type) {
-      this.dateType = type;
-      this.getEnterpriseNumData();
     },
   },
 };

@@ -16,12 +16,9 @@ export const marketRisk = function (data) {
       type: "pie",
       radius: "50%",
       data,
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-        },
+      itemStyle: {
+        borderWidth: 2,
+        borderColor: "#fff",
       },
     }, ],
   };
@@ -35,12 +32,26 @@ export const riskIndexAnalysis = function (data) {
       left: "center",
     },
     tooltip: {
-      trigger: "item",
+      trigger: "axis",
     },
     xAxis: {
       maxInterval: 5,
+      alignTicks: false,
+      axisTick: {
+        show: false,
+      },
+      splitLine: {
+        show: false,
+      },
     },
-    yAxis: {},
+    yAxis: {
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+    },
     series: [{
       data,
       type: "line",
@@ -52,7 +63,7 @@ export const enterpriseNum = function (data) {
   return {
     xAxis: {
       type: "category",
-      data: data.map(item => item.date),
+      data: data.map(item => item.name),
       boundaryGap: false,
     },
     yAxis: {
@@ -149,11 +160,10 @@ export const wordCloud = function (data) {
       },
       emphasis: {
         focus: "self",
-
-        textStyle: {
-          textShadowBlur: 10,
-          textShadowColor: "#333",
-        },
+        // textStyle: {
+        //   textShadowBlur: 10,
+        //   textShadowColor: "#333",
+        // },
       },
 
       // 数据必须是一个数组，数组是对象，对象必须有name和value属性
@@ -186,11 +196,11 @@ export const ranking = function (data) {
     },
     yAxis: {
       type: "category",
-      data: data.map(item => item.industryName),
+      data: data.map(item => item.name),
     },
     series: [{
       type: "bar",
-      data: data.map(item => item.enterpriseNum),
+      data: data.map(item => item.value),
     }, ],
   };
 };

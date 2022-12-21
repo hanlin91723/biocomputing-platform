@@ -12,7 +12,7 @@ const baseUrl = env === "production" ? proUrl : devUrl;
 
 //基础配置
 const service = axios.create({
-  timeout: 10000,
+  timeout: 60000,
   baseURL: baseUrl,
   responseType: "json",
   headers: {

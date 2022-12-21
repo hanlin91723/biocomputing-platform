@@ -12,19 +12,31 @@
           <h3 class="title">市场主体统计</h3>
           <div class="info-wrap top">
             <h5 class="info-title">企业总数</h5>
-            <div>184,252 家</div>
+            <div>
+              <span class="info-value">{{ marketStatistics.entNum }}</span>
+              <span>家</span>
+            </div>
           </div>
           <div class="info-wrap left">
             <h5 class="info-title">本月新增</h5>
-            <div>1252 家</div>
+            <div>
+              <span class="info-value">{{ marketStatistics.newAddNum }}</span>
+              <span>家</span>
+            </div>
           </div>
           <div class="info-wrap right">
             <h5 class="info-title">同比上升</h5>
-            <div>3.5%</div>
+            <div>
+              <span class="info-value">{{ marketStatistics.prop }}</span>
+              <span>%</span>
+            </div>
           </div>
           <div class="info-wrap bottom">
             <h5 class="info-title">规上企业</h5>
-            <div>252 家</div>
+            <div>
+              <span class="info-value">{{ marketStatistics.aboveEntNum }}</span>
+              <span>家</span>
+            </div>
           </div>
         </el-card>
       </div>
@@ -76,6 +88,7 @@ export default {
   data() {
     return {
       marketRiskData: [],
+      marketStatistics: {},
       riskIndexAnalysisData: [],
       publicSentimentList: [],
       wordCloudData: [],
@@ -102,6 +115,7 @@ export default {
   },
   created() {
     this.getMarketRiskData();
+    this.getMarketStatisticsData();
     this.getRiskIndexAnalysisData();
     this.getPublicSentimentList();
     this.getWordCloudData();
@@ -109,259 +123,79 @@ export default {
     this.getDistributionData();
   },
   methods: {
+    //市场风险概况
     getMarketRiskData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.marketRiskData = [
-          {
-            name: "高风险",
-            value: 1048,
-          },
-          {
-            name: "中风险",
-            value: 1048,
-          },
-          {
-            name: "警示",
-            value: 1048,
-          },
-          {
-            name: "正常",
-            value: 1048,
-          },
-        ];
+      this.$axios.get("/statistics/marketRiskProp").then(({ data }) => {
+        this.marketRiskData = data;
       });
     },
+    //市场主体统计
+    getMarketStatisticsData() {
+      this.$axios.get("/statistics/marketMain").then(({ data }) => {
+        this.marketStatistics = data;
+      });
+    },
+    //企业综合风险指数分析
     getRiskIndexAnalysisData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.riskIndexAnalysisData = [
-          [5, 40],
-          [10, 100],
-          [15, 20],
-          [20, 40],
-          [25, 100],
-          [30, 20],
-          [35, 40],
-          [40, 100],
-          [45, 20],
-          [50, 40],
-          [55, 100],
-          [60, 20],
-          [65, 40],
-          [70, 100],
-          [75, 20],
-          [80, 40],
-          [85, 100],
-          [90, 20],
-          [95, 60],
-          [100, 30],
-        ];
+      // this.$axios.get("/statistics/marketMain").then(() => {
+      //   this.riskIndexAnalysisData = [
+      //     [0, 0],
+      //     [5, 40],
+      //     [10, 100],
+      //     [15, 20],
+      //     [20, 40],
+      //     [25, 100],
+      //     [30, 20],
+      //     [35, 40],
+      //     [40, 100],
+      //     [45, 20],
+      //     [50, 40],
+      //     [55, 100],
+      //     [60, 20],
+      //     [65, 40],
+      //     [70, 100],
+      //     [75, 20],
+      //     [80, 40],
+      //     [85, 100],
+      //     [90, 20],
+      //     [95, 60],
+      //     [100, 30],
+      //   ];
+      // });
+      this.$axios.get("/statistics/comprehensive").then(({ data }) => {
+        this.riskIndexAnalysisData = data.map((item) => [
+          item.name,
+          item.value,
+        ]);
       });
     },
+    //高风险企业舆情
     getPublicSentimentList() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.publicSentimentList = [
-          {
-            news: "浙江吉华集团股份有限管工作函的",
-            relatedEnterprise: "汉创智能显示有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有司关露监管工作函的",
-            relatedEnterprise: "汉创智能显限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股的",
-            relatedEnterprise: "汉创智）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华的",
-            relatedEnterprise: "汉创智公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限管工作函的",
-            relatedEnterprise: "汉创智能显示有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有司关露监管工作函的",
-            relatedEnterprise: "汉创智能显限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股的",
-            relatedEnterprise: "汉创智）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-          {
-            news: "浙江吉华集团股份有限公司关于上海证券交易所2021年年度报告的信息披露监管工作函的",
-            relatedEnterprise: "汉创智能显示技术（江苏）有限公司",
-            publicSentimentType: "正面",
-            publicSentimentTime: "2022-11-01 13:12:00",
-          },
-        ];
+      this.$axios.get("/statistics/highLevelEnt").then(({ data }) => {
+        this.publicSentimentList = data;
       });
     },
+    //风险指标云图
     getWordCloudData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.wordCloudData = [
-          {
-            name: "范德萨",
-            value: 866,
-          },
-          {
-            name: "范德萨发个请我",
-            value: 82,
-          },
-          {
-            name: "去问问热",
-            value: 644,
-          },
-          {
-            name: "UK发的剧",
-            value: 32,
-          },
-          {
-            name: "没内存瞎操作",
-            value: 4654,
-          },
-          {
-            name: "范德萨123",
-            value: 866,
-          },
-          {
-            name: "范德萨发个请我532",
-            value: 82,
-          },
-          {
-            name: "去问问热4312",
-            value: 644,
-          },
-          {
-            name: "UK发的剧4321",
-            value: 32,
-          },
-          {
-            name: "没内存",
-            value: 1654,
-          },
-        ];
+      this.$axios.get("/statistics/wordCount").then(({ data }) => {
+        this.wordCloudData = data;
       });
     },
+    //高风险企业十大行业排名
     getRankingData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.rankingData = [
-          {
-            industryName: "范德萨",
-            enterpriseNum: 866,
-          },
-          {
-            industryName: "范德萨发个请我",
-            enterpriseNum: 82,
-          },
-          {
-            industryName: "去问问热",
-            enterpriseNum: 644,
-          },
-          {
-            industryName: "UK伦理剧",
-            enterpriseNum: 32,
-          },
-          {
-            industryName: "没内存瞎操作",
-            enterpriseNum: 1654,
-          },
-        ];
-      });
+      this.$axios
+        .get("/statistics/highRiskIndustryRanking")
+        .then(({ data }) => {
+          this.rankingData = data.reverse();
+        });
     },
+    //高风险企业规模分布
     getDistributionData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.distributionData = [
-          {
-            name: "范德萨",
-            value: 866,
-          },
-          {
-            name: "范德萨发个请我",
-            value: 82,
-          },
-          {
-            name: "去问问热",
-            value: 644,
-          },
-          {
-            name: "UK伦理剧",
-            value: 32,
-          },
-          {
-            name: "没内存瞎操作",
-            value: 1654,
-          },
-        ];
-      });
+      this.$axios
+        .get("/statistics/highRiskRegisteredCapital")
+        .then(({ data }) => {
+          this.distributionData = data;
+        });
     },
   },
 };

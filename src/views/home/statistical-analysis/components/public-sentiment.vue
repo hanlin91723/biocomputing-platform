@@ -19,12 +19,12 @@
           :key="item.id"
         >
           <div class="index">{{ index + 1 }}</div>
-          <div class="news" :title="item.news">{{ item.news }}</div>
-          <div class="related-enterprise" :title="item.relatedEnterprise">
-            {{ item.relatedEnterprise }}
+          <div class="news" :title="item.title">{{ item.title }}</div>
+          <div class="related-enterprise" :title="item.companys">
+            {{ item.companys }}
           </div>
-          <div class="type">{{ item.publicSentimentType }}</div>
-          <div class="time">{{ item.publicSentimentTime }}</div>
+          <div class="type">{{ item.tabsEmotionLabels }}</div>
+          <div class="time">{{ item.pubTime }}</div>
         </li>
       </ul>
     </vue-seamless-scroll>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       classOption: {
-        step: 0.5,
+        step: 0.2,
         // singleHeight: 80,
       },
     };

@@ -216,8 +216,8 @@ export default {
       return this.$route.matched.filter((item) => item.meta.title);
     },
   },
-  watch:{
-    activeMenuItem(){
+  watch: {
+    activeMenuItem() {
       this.$refs.main.$el.scrollTop = 0;
     },
   },
@@ -226,7 +226,7 @@ export default {
   },
   methods: {
     getUser() {
-      this.$axios.get("/construction/projectManager").then(() => {
+      this.$axios.get("/statistics/marketRiskProp").then(() => {
         this.info = {
           name: "测试",
           phone: "13212345678",
