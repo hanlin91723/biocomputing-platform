@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -43,35 +44,26 @@
     methods:{
       // 变更记录表格数据
       getFinalCaseData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.finalCaseTotal = 2;
-          this.finalCaseData = [
-          {
-            referenceNum: "",
-          },
-          {
-            referenceNum: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.currentPage,
+          pageSize:this.pageSize,
+        };
+        this.$axios.post("/judicial/closingCase",params).then(({data,})=>{
+          this.finalCaseTotal = data.total;
+          this.finalCaseData = data.list.map(item=>{
+            return {
+              referenceNum: item.caseCode,
+            };
+          });
+        });
       },
       // 变更记录分页
       finalCaseCurrentChange(val){
       this.finalCaseCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getFinalCaseData();
       },
     },
   };

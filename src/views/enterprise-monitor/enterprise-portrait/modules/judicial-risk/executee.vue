@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="title">被执行人 {{executeeTotal}}</h3>
-    <div class="subtitle">执行标的金额总额 145,455.00 元</div>
+    <div class="subtitle">执行标的金额总额 {{formatter(totalMoney) || '--'}}元</div>
       <el-table
        :data="executeeData"
        style="width: 100%"
@@ -32,9 +32,12 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
+import { formatter } from "@/util/util";
   export default {
     data() {
       return {
+        totalMoney:0,
         executeeData:[],
         // 变更记录分页
         executeeCurrentPage:1,
@@ -48,43 +51,34 @@
     methods:{
       // 变更记录表格数据
       getExecuteeData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.executeeTotal = 2;
-          this.executeeData = [
-          {
-            referenceNum: "（2022）粤0106执21905号",
-            IDCard: "9144010172****441U",
-            filingCaseTime: "2022-09-28",
-            court: "广东省广州市天河区人民法院 ",
-            amount: "85,142.00",
-          },
-          {
-            referenceNum: "（2022）粤0106执21163号",
-            IDCard: "9144010172****441U",
-            filingCaseTime: "2022-09-13",
-            court: "广东省广州市天河区人民法院 ",
-            amount: "42,041.00",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.currentPage,
+          pageSize:this.pageSize,
+        };
+        this.$axios.post("/judicial/personSubjectedExecution",params).then(({data,total,})=>{
+          this.executeeTotal = data.total;
+          this.totalMoney = total;
+          this.executeeData = data.list.map(item=>{
+            return {
+              referenceNum: item.fssCaseNo,
+              IDCard: item.fssRegNo,
+              filingCaseTime: item.fssLasj?.split("T")[0],
+              court: item.fssCourtName,
+              amount: formatter(item.fssMoney),
+            };
+          });
+        });
       },
       // 变更记录分页
       executeeCurrentChange(val){
-      this.executeeCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.executeeCurrentPage = val;
+        this.getExecuteeData();
+      },
+      formatter(val){
+        return formatter(val);
       },
     },
   };

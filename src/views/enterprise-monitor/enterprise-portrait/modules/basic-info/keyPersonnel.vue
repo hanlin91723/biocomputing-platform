@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -81,7 +82,14 @@
     created(){
       this.getKeyPersonnelData();
       this.getOldManagerData();
-      this.defaultTab();
+    },
+    watch:{
+      keyPersonnelTotal(){
+        this.defaultTab();
+      },
+      oldManagerTotal(){
+        this.defaultTab();
+      },
     },
     methods: {
       // 每次页面刷新自动选中第一个非零tab项
@@ -96,89 +104,57 @@
       },
       // 主要人员表格数据
       getKeyPersonnelData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.keyPersonnelTotal = 3;
-          this.keyPersonnelData = [
-          {
-            fullName:"周建",
-            position:"董事长，总经理",
-          },
-          {
-            fullName:"陈方瑜",
-            position:"董事",
-          },
-          {
-            fullName:"陈奕璇",
-            position:"监事",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.keyPersonnelCurrentPage,
+          pageSize:this.keyPersonnelPageSize,
+        };
+        this.$axios.post("/entInfo/mainstaff",params).then(({data,})=>{
+          this.keyPersonnelTotal = data.total;
+          this.keyPersonnelData = data.list.map(item=>{
+            return {
+              fullName:item.staffName,
+              position:item.positionName,
+            };
+          });
+        });
       },
       // 主要人员分页
       keyPersonnelCurrentChange(val){
       this.keyPersonnelCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getKeyPersonnelData();
       },
       // 历史高管表格数据
       getOldManagerData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.oldManagerTotal = 3;
-          this.oldManagerData = [
-          {
-            fullName:"施建新",
-            position:"",
-            InductionTime:"2016-07-20",
-            quitTime:"2020-03-05",
-          },
-          {
-            fullName:"张广辉",
-            position:"",
-            InductionTime:"2014-01-03",
-            quitTime:"2020-03-05",
-          },
-          {
-            fullName:"陈浩",
-            position:"",
-            InductionTime:"2016-07-20",
-            quitTime:"2020-03-05",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.oldManagerCurrentPage,
+          pageSize:this.oldManagerPageSize,
+        };
+        this.$axios.post("/entInfo/hisExecutives",params).then(({data,})=>{
+          this.oldManagerTotal = data.total;
+          this.oldManagerData = data.list.map(item=>{
+            return {
+              fullName:item.name,
+              position:item.positionName,
+              InductionTime:item.inDate?.split("T")[0],
+              quitTime:item.outDate,
+            };
+          });
+        });
       },
       // 历史高管分页
       oldManagerCurrentChange(val){
       this.oldManagerCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getOldManagerData();
       },
       // tab切换
       handleTab(e){
-        if (e.target.className === "title" || e.target.innerText.includes("0")) return;
+        if (e.target.className === "title" || e.target.innerText.split(" ")[1] === "0") return;
         this.selectTab = e.target.innerText;
       },
     },

@@ -30,6 +30,8 @@ export const useUserStore = defineStore("user", {
     return {
       permissionList: [],
       hasPermissionRoutes: [],
+      entId:localStorage.getItem("ENTID") || "",
+      entName:localStorage.getItem("ENTNAME") || "",
     };
   },
   actions: {
@@ -45,6 +47,12 @@ export const useUserStore = defineStore("user", {
     },
     getHasPermissionRoutes(routes, permissions) {
       this.hasPermissionRoutes = filterAsyncRoutes(routes, permissions);
+    },
+    saveEntId(entId,entName){
+      this.entId = entId;
+      this.entName = entName;
+      localStorage.setItem("ENTID",entId);
+      localStorage.setItem("ENTNAME",entName);
     },
   },
 });

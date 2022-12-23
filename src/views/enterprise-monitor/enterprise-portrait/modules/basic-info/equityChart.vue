@@ -9,6 +9,7 @@
 
 <script>
 import StockTree from "./StockTree.js";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -128,7 +129,15 @@ import StockTree from "./StockTree.js";
     },
     methods:{
       initTree(){
-        this.tree = new StockTree({
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+        };
+        console.log(params);
+        this.$axios.get("/entInfo/equityPenetration",params).then(({data,})=>{
+          this.threeData = data;
+          this.tree = new StockTree({
         el: ".chart",
         originTreeData: this.threeData,
         // 节点点击事件
@@ -136,6 +145,8 @@ import StockTree from "./StockTree.js";
           console.log("当前节点的数据：",d);
         },
     });
+        });
+        
       },
       fullScreen(){
         if(this.isFullScreen){

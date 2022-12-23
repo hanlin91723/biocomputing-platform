@@ -4,27 +4,25 @@
       <div class="card">
         <img src="https://img5.tianyancha.com/logo/lll/ef99052a87d2249f6559cd98b34f2606.png@!f_200x200" alt="" class="img">
         <div class="companyInfo">
-          <h2 class="title">乐视网信息技术（北京）股份有限公司</h2>
+          <h2 class="title">{{ headerInfo.entName || '--'}}</h2>
           <div class="tag">
-            <span class="tagItem">存续</span>
-            <span class="tagItem">上市企业</span>
-            <span class="tagItem">高新技术企业</span>
+            <span class="tagItem">{{ headerInfo.entStatus || '--'}}</span>
           </div>
           <el-descriptions class="info">
-            <el-descriptions-item label="注册资本">5000万元</el-descriptions-item>
-            <el-descriptions-item label="法定代表人">周建</el-descriptions-item>
-            <el-descriptions-item label="注册日期">1997-12-10</el-descriptions-item>
-            <el-descriptions-item label="专利数量">32件</el-descriptions-item>
-            <el-descriptions-item label="从业人数">1028人</el-descriptions-item>
-            <el-descriptions-item label="利税总额">5000万元</el-descriptions-item>
+            <el-descriptions-item label="注册资本">{{ headerInfo.registeredCapital || '--'}}{{ headerInfo.registeredCapitalUnit }}</el-descriptions-item>
+            <el-descriptions-item label="法定代表人">{{ headerInfo.legalPerson || '--'}}</el-descriptions-item>
+            <el-descriptions-item label="注册日期">{{ headerInfo.incorporationDate?.split('T')[0] || '--'}}</el-descriptions-item>
+            <el-descriptions-item label="专利数量">{{headerInfo.patentNum || '--'}}件</el-descriptions-item>
+            <el-descriptions-item label="从业人数">{{headerInfo.employNum || '--'}}人</el-descriptions-item>
+            <el-descriptions-item label="利税总额">{{headerInfo.taxNum || '--'}}万元</el-descriptions-item>
           </el-descriptions>
         </div>
         <div class="card-right">
           <div class="index">
-            <div class="num">87</div>
+            <div class="num">{{ headerInfo.riskScore || '--'}}</div>
             <div class="indexName">综合风险指数</div>
           </div>
-          <div class="endUpdateTime">最后更新时间：2022-10-31</div>
+          <div class="endUpdateTime">最后更新时间：{{ headerInfo.updateTime?.split(' ')[0] || '--'}}</div>
         </div>
       </div>
     </el-card>
@@ -245,6 +243,7 @@ export default {
       tabsList:["基本信息","司法风险","经营风险","经营信息","企业发展","知识产权","其他信息",],
       isTabShow:false,
       isShowBacktop:false,
+      headerInfo:{},
     };
   },
 components:{
@@ -292,7 +291,19 @@ components:{
 mounted(){
   this.watchScroll();
 },
+created(){
+  this.getHeaderInfo();
+},
 methods:{
+  // 获取头部信息
+  getHeaderInfo(){
+    let params = {
+      entId:this.$route.params.id,
+    };
+    this.$axios.get("/entInfo/portrait",params).then(({data,})=>{
+        this.headerInfo = data;
+      });
+  },
   // 锚点链接功能
   anchorScroll(item,tabName){
     // 首先做个tab的切换

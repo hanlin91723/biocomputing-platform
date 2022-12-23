@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -46,47 +47,29 @@
     methods:{
       // 变更记录表格数据
       getChangeData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.changeTotal = 3;
-          this.changeData = [
-          {
-            changeProject: "法定代表人变更",
-            changeTime: "2022-08-23",
-            beforeInfo: "金乐亲",
-            afterInfo: "刘波",
-          },
-          {
-            changeProject: "章程备案",
-            changeTime: "2021-07-15",
-            beforeInfo: "金乐亲",
-            afterInfo: "章程",
-          },
-          {
-            changeProject: "清算组备案",
-            changeTime: "2019-11-21",
-            beforeInfo: "金乐亲",
-            afterInfo: "章程",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.changeCurrentPage,
+          pageSize:this.changePageSize,
+        };
+        this.$axios.post("/entInfo/changeRecord",params).then(({data,})=>{
+          this.changeTotal = data.total;
+          this.changeData = data.list.map(item=>{
+            return {
+              changeProject: item.altitem,
+              changeTime: item.altDate?.split(" ")[0],
+              beforeInfo: item.altbe,
+              afterInfo: item.altaf,
+            };
+          });
+        });
       },
       // 变更记录分页
       changeCurrentChange(val){
       this.changeCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getChangeData();
       },
     },
   };

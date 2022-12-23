@@ -5,11 +5,11 @@
       <div class="chart">
         <el-card class="mapChart" shadow="never">
           <h3 class="chartTitle">案由</h3>
-          <v-chart class="chartContent" :option="basicPie"></v-chart>
+          <v-chart class="chartContent" :option="causePie"></v-chart>
         </el-card>
         <el-card class="pieChart" shadow="never">
           <h3 class="chartTitle">类型</h3>
-          <v-chart class="chartContent" :option="basicPie"></v-chart>
+          <v-chart class="chartContent" :option="typePie"></v-chart>
         </el-card>
       </div>
       <el-table
@@ -40,7 +40,11 @@
         </el-table-column>
         <el-table-column prop="party" label="当事人"></el-table-column>
         <el-table-column prop="caseAmount" label="案件金额" width="132"></el-table-column>
-        <el-table-column prop="judgmentResult" label="裁判结果"></el-table-column>
+        <el-table-column prop="judgmentResult" label="裁判结果">
+          <template slot-scope="scope">
+            <span class="ellipsis">{{ scope.row.judgmentResult }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
          prop="releaseTime"
          label="发布日期"
@@ -66,10 +70,13 @@
 
 <script>
 import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         documentData:[],
+        causePieData:[],
+        typePieData:[],
         // 企业投资分页
         documentCurrentPage:1,
         documentPageSize:10,
@@ -107,78 +114,79 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
       };
     },
     computed:{
-      basicPie(){
-        return basicPie();
+      causePie(){
+        return basicPie(this.causePieData);
+      },
+      typePie(){
+        return basicPie(this.typePieData);
       },
     },
     created(){
+      this.getCausePieData();
+      this.getTypePieData();
       this.getDocumentData();
     },
     methods:{
+      getCausePieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:1,
+        };
+        this.$axios.get("/judicial/judicialInfoByType",params).then(({data,})=>{
+          this.causePieData = data.map(item=>{
+            return {
+              name: item.name,
+              value:item.value,
+            };
+          });
+        });
+      },
+      getTypePieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:2,
+        };
+        this.$axios.get("/judicial/judicialInfoByType",params).then(({data,})=>{
+          this.typePieData = data.map(item=>{
+            return {
+              name: item.name,
+              value:item.value,
+            };
+          });
+        });
+      },
       // 裁判文书表格数据
       getDocumentData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.documentTotal = 3;
-          this.documentData = [
-          {
-            referenceNum: "(2021)粤0307民初30807号",
-            documentTitle: "劳动争议民事一审调解书",
-            causeAction: "劳动争议",
-            type: "民事",
-            party: `原告-比亚迪股份有限公司
-                    被告-张*
-                    原告-诉*`,
-            caseAmount: "",
-            judgmentResult: "",
-            releaseTime:"2021-12-21",
-            judgmentTime:"2021-11-25",
-          },
-          {
-            referenceNum: "(2018)京73行初7940号",
-            documentTitle: "专利行政管理（专利）行政一审裁定书",
-            causeAction: "专利行政管理（专利）",
-            type: "民事",
-            party: `原告-刘**
-                    被告-国家知识产权局
-                    第三人-比亚迪股份有限公司`,
-            caseAmount: "",
-            judgmentResult: "准许原告刘**撤回起诉",
-            releaseTime:"2020-12-29",
-            judgmentTime:"2020-04-24",
-          },
-          {
-            referenceNum: "(2021)粤0307民初30807号",
-            documentTitle: "劳动争议民事一审调解书",
-            causeAction: "劳动争议",
-            type: "调解",
-            party: `原告-比亚迪股份有限公司
-                    被告-张*
-                    原告-诉*`,
-            caseAmount: "",
-            judgmentResult: "",
-            releaseTime:"2021-12-21",
-            judgmentTime:"2021-11-25",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.documentCurrentPage,
+          pageSize:this.documentPageSize,
+        };
+        this.$axios.post("/judicial/judicialInfo",params).then(({data,})=>{
+          this.documentTotal = data.total;
+          this.documentData = data.list.map(item=>{
+            return {
+              referenceNum: item.caseNum,
+              documentTitle: item.docType,
+              causeAction: item.otherInfo,
+              type: item.caseType,
+              party: item.party,
+              caseAmount: "",
+              judgmentResult: item.judgmentResult,
+              releaseTime: item.updated,
+              judgmentTime: item.judgmentDate,
+            };
+          });
+        });
       },
       // 裁判文书分页
       documentCurrentChange(val){
-      this.documentCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.documentCurrentPage = val;
+        this.getDocumentData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];
@@ -214,6 +222,14 @@ import { basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options
     margin-bottom: 8px;
   }
   
+}
+
+.ellipsis{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
 }
 .pagination{
     display: flex;

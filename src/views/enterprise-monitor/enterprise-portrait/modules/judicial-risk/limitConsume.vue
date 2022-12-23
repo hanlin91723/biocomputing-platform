@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -64,45 +65,31 @@
     methods:{
       // 变更记录表格数据
       getLimitConsumeData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.limitConsumeTotal = 2;
-          this.limitConsumeData = [
-          {
-            referenceNum: "",
-            limitObjects: "",
-            associatedObjects: "",
-            applicant: " ",
-            filingCaseTime: "",
-            releaseTime: "",
-          },
-          {
-            referenceNum: "",
-            limitObjects: "",
-            associatedObjects: "",
-            applicant: " ",
-            filingCaseTime: "",
-            releaseTime: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.currentPage,
+          pageSize:this.pageSize,
+        };
+        this.$axios.post("/judicial/limitConsumption",params).then(({data,})=>{
+          this.limitConsumeTotal = data.total;
+          this.limitConsumeData = data.list.map(item=>{
+            return {
+              referenceNum: item.caseNo,
+              limitObjects: item.qyInfo,
+              associatedObjects: item.xname,
+              applicant: " ",
+              filingCaseTime: item.filingDate,
+              releaseTime: item.publishDate,
+            };
+          });
+        });
       },
       // 变更记录分页
       limitConsumeCurrentChange(val){
-      this.limitConsumeCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.limitConsumeCurrentPage = val;
+        this.getLimitConsumeData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];

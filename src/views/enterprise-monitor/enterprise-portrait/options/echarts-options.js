@@ -279,7 +279,7 @@ export const mapAndBar = function(data){
   };
 };
 
-export const investPie = function(){
+export const investPie = function(data){
   return {
     color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
     tooltip : {
@@ -295,7 +295,6 @@ export const investPie = function(){
         left: "60%",
         align:"left",
         top:"middle",
-        data: ["信息传输、软件和信息技术服务业", "科学研究和技术服务业", "制造业", "金融业", "文化、体育和娱乐行业","批发和零售业",],
     },
     series: [
         {
@@ -318,14 +317,7 @@ export const investPie = function(){
             labelLine: {
                 show: false,
             },
-            data: [
-                {value: 335, name: "信息传输、软件和信息技术服务业",},
-                {value: 310, name: "科学研究和技术服务业",},
-                {value: 234, name: "制造业",},
-                {value: 135, name: "金融业",},
-                {value: 1548, name: "文化、体育和娱乐行业",},    
-                {value: 600, name: "批发和零售业",},    
-            ],
+            data,
         },
     ],
 };
@@ -615,7 +607,7 @@ export const recruit = function(){
 };
 };
 
-export const basicPie = function(){
+export const basicPie = function(data){
   return {
     color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
     tooltip : {
@@ -631,7 +623,6 @@ export const basicPie = function(){
         left: "60%",
         align:"left",
         top:"middle",
-        data: ["信息传输、软件和信息技术服务业", "科学研究和技术服务业", "制造业", "金融业", "文化、体育和娱乐行业","批发和零售业",],
     },
     series: [
         {
@@ -654,14 +645,7 @@ export const basicPie = function(){
             labelLine: {
                 show: false,
             },
-            data: [
-                {value: 335, name: "信息传输、软件和信息技术服务业",},
-                {value: 310, name: "科学研究和技术服务业",},
-                {value: 234, name: "制造业",},
-                {value: 135, name: "金融业",},
-                {value: 1548, name: "文化、体育和娱乐行业",},    
-                {value: 600, name: "批发和零售业",},    
-            ],
+            data,
         },
     ],
 };

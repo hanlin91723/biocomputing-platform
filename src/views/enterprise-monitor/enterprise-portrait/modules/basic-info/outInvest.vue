@@ -97,12 +97,14 @@
 
 <script>
 import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         enterpriseInvestData:[],
         personInvestData:[],
         mapAndBarData:[],
+        investPieData:[],
         // 企业投资分页
         enterpriseInvestCurrentPage:1,
         enterpriseInvestPageSize:10,
@@ -111,16 +113,7 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
         personInvestCurrentPage:1,
         personInvestPageSize:10,
         personInvestTotal:0,
-        filterData:[
-          {
-            text: "在营（开业）企业",
-            value: "在营（开业）企业",
-          },
-          {
-            text: "注销",
-            value: "注销",
-          },
-        ],
+        filterData:[],
       };
     },
     computed:{
@@ -128,207 +121,113 @@ import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-port
         return mapAndBar(this.mapAndBarData);
       },
       investPie(){
-        return investPie();
+        return investPie(this.investPieData);
       },
     },
     created(){
-      this.getmapData();
+      this.getStatusFilterData();
+      this.getMapData();
+      this.getInvestPieData();
       this.getEnterpriseInvestData();
       this.getPersonInvestData();
     },
     methods:{
-      getmapData(){
-        // this.$aixos.get('/aa').then(({data})=>{
-        //   console.log(data);
-        // });
-        this.mapAndBarData = [
-          {
-            name: "北京市",
-            value: 13,
-          },
-          {
-            name: "广东省",
-            value: 8,
-          },
-          {
-            name: "浙江省",
-            value: 6,
-          },
-          {
-            name: "重庆市",
-            value: 5,
-          },
-          {
-            name: "天津市",
-            value: 2,
-          },
-        ];
+      getStatusFilterData(){
+        let params = {
+          dictType:"entStatus",
+        };
+        this.$axios.get("/dict/queryDictByType",params).then(({data,})=>{
+          this.filterData = data.map(item=>{
+            return {
+              text: item.dictName,
+              value: item.dictName,
+            };
+          });
+        });
+      },
+      getMapData(){
+        const userStore = useUserStore();
+        let params = {
+          entName:userStore.entName,
+        };
+        this.$axios.get("/entInfo/foreignInvestArea",params).then(({data,})=>{
+          this.mapAndBarData = data.map(item=>{
+            return {
+              name:item.regionName,
+              value:item.num,
+            };
+          });
+        });
+        // this.mapAndBarData = [
+        //   {
+        //     name: "北京市",
+        //     value: 13,
+        //   },
+        //   {
+        //     name: "广东省",
+        //     value: 8,
+        //   },
+        //   {
+        //     name: "浙江省",
+        //     value: 6,
+        //   },
+        //   {
+        //     name: "重庆市",
+        //     value: 5,
+        //   },
+        //   {
+        //     name: "天津市",
+        //     value: 2,
+        //   },
+        // ];
+      },
+      getInvestPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entName:userStore.entName,
+        };
+        this.$axios.get("/entInfo/foreignInvestIndustry",params).then(({data,})=>{
+          this.investPieData = data.map(item=>{
+            return {
+              name:item.industry,
+              value:item.num,
+            };
+          });
+        });
       },
       // 企业投资表格数据
       getEnterpriseInvestData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.enterpriseInvestTotal = 10;
-          this.enterpriseInvestData = [
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-          {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            dutyType: "",
-            mainType: "",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.enterpriseInvestCurrentPage,
+          pageSize:this.enterpriseInvestPageSize,
+        };
+        this.$axios.post("/entInfo/foreignInvestmentEnt",params).then(({data,})=>{
+          this.enterpriseInvestTotal = data.total;
+          this.enterpriseInvestData = data.list.map(item=>{
+            return {
+              enterpriseName: item.entName,
+              registerState: item.entStatus,
+              legalPerson: item.legalPerson,
+              dutyType: item.respForm,
+              mainType: item.infoTypeName,
+              contribution: item.conam + "万元人民币",
+              contributionTime: item.condate,
+              contributionMode:item.conformName,
+              contributionScale:item.conprop,
+              shouldQuota: item.subconam,
+              actualQuota: item.acconam,
+              area: item.countryName,
+            };
+          });
+        });
       },
       // 企业投资分页
       enterpriseInvestCurrentChange(val){
-      this.enterpriseInvestCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.enterpriseInvestCurrentPage = val;
+        this.getEnterpriseInvestData();
       },
       // 法人投资表格数据
       getPersonInvestData(){

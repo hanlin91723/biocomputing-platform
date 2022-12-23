@@ -113,6 +113,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
 export default {
   data() {
     return {
@@ -198,7 +199,6 @@ export default {
         pageSize:this.pageSize,
         ...this.params,
       };
-      console.log(params,"21");
       this.$axios.post("/marketRisk/marketEntList",params).then(({data,})=>{
         this.total = data.total;
         this.tableData = data.list.map((item,index)=>{
@@ -292,10 +292,11 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id, }) {
+    portrait({ entId,enterpriseName, }) {
       //  提示
-      console.log(id);
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${id}`);
+      const userStore = useUserStore();
+      userStore.saveEntId(entId,enterpriseName);
+      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
     // 风险详情
     riskDetails({ id, }) {
