@@ -16,15 +16,15 @@
       <div class="chart">
         <el-card class="itemChart" shadow="never">
           <h3 class="chartTitle">学历要求</h3>
-          <v-chart class="chartContent" :option="ringPie"></v-chart>
+          <v-chart class="chartContent" :option="diplomaPie"></v-chart>
         </el-card>
         <el-card class="itemChart" shadow="never">
           <h3 class="chartTitle">薪酬范围</h3>
-          <v-chart class="chartContent" :option="ringPie"></v-chart>
+          <v-chart class="chartContent" :option="payPie"></v-chart>
         </el-card>
         <el-card class="itemChart" shadow="never">
           <h3 class="chartTitle">区域分布</h3>
-          <v-chart class="chartContent" :option="ringPie"></v-chart>
+          <v-chart class="chartContent" :option="areaPie"></v-chart>
         </el-card>
       </div>
       <el-table
@@ -77,10 +77,17 @@
 
 <script>
 import { recruit,basicPie,ringPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         recruitmentData:[],
+        recruitName:[],
+        recruitValue:[],
+        basicPieData:[],
+        diplomaPieData:[],
+        payPieData:[],
+        areaPieData:[],
         // 企业投资分页
         recruitmentCurrentPage:1,
         recruitmentPageSize:10,
@@ -123,124 +130,115 @@ import { recruit,basicPie,ringPie } from "@/views/enterprise-monitor/enterprise-
     },
     computed:{
       recruit(){
-        return recruit();
+        return recruit(this.recruitName,this.recruitValue);
       },
       basicPie(){
-        return basicPie();
+        return basicPie(this.basicPieData);
       },
-      ringPie(){
-        return ringPie();
+      diplomaPie(){
+        return ringPie(this.diplomaData);
+      },
+      payPie(){
+        return ringPie(this.payPieData);
+      },
+      areaPie(){
+        return ringPie(this.areaPieData);
       },
     },
     created(){
+      this.getRecruitData();
+      this.getbasicPieData();
+      this.getDiplomaData();
+      this.getPayData();
+      this.getAreaData();
       this.getRecruitmentData();
     },
     methods:{
+      // 获取招聘时间数据
+      getRecruitData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:1,
+        };
+        this.$axios.get("/businessInfo/recruitmentByType",params).then(({data,})=>{
+          data.forEach(item=>{
+            this.recruitName.push(item.name);
+            this.recruitValue.push(item.value);
+          });
+        });
+      },
+      // 获取职位数据
+      getbasicPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:2,
+        };
+        this.$axios.get("/businessInfo/recruitmentByType",params).then(({data,})=>{
+          this.basicPieData = data;
+        });
+      },
+      // 获取学历要求数据
+      getDiplomaData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:3,
+        };
+        this.$axios.get("/businessInfo/recruitmentByType",params).then(({data,})=>{
+          this.diplomaPieData = data;
+        });
+      },
+      // 获取薪酬范围数据
+      getPayData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:4,
+        };
+        this.$axios.get("/businessInfo/recruitmentByType",params).then(({data,})=>{
+          this.payPieData = data;
+        });
+      },
+      // 获取区域分布数据
+      getAreaData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:5,
+        };
+        this.$axios.get("/businessInfo/recruitmentByType",params).then(({data,})=>{
+          this.areaPieData = data;
+        });
+      },
       // 裁判文书表格数据
       getRecruitmentData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.recruitmentTotal = 10;
-          this.recruitmentData = [
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "天津市",
-          },
-          {
-            position: "科技管理岗",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "西安市",
-          },
-          {
-            position: "经营计划专员",
-            recruitTime: "2022-02-05",
-            educationRequire: "本科",
-            workExperience: "",
-            wages: "面议",
-            area: "西安市",
-          },
-          {
-            position: "数据分析岗J14495",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "乌鲁木齐市",
-          },
-          {
-            position: "科技管理岗",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "天津市",
-          },
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "西安市",
-          },
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "天津市",
-          },
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "天津市",
-          },
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "乌鲁木齐市",
-          },
-          {
-            position: "科研类特聘专家岗位",
-            recruitTime: "2022-02-05",
-            educationRequire: "博士",
-            workExperience: "",
-            wages: "面议",
-            area: "乌鲁木齐市",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.recruitmentCurrentPage,
+          pageSize:this.recruitmentPageSize,
+        };
+        this.$axios.post("/businessInfo/recruitment",params).then(({data,})=>{
+          this.recruitmentTotal = data.total;
+          this.recruitmentData = data.list.map(item=>{
+            return {
+              position: item.title,
+              recruitTime: item.startDate,
+              educationRequire: item.education,
+              workExperience: item.experience,
+              wages: item.salary,
+              area: item.city,
+            };
+          });
+        });
       },
       // 裁判文书分页
       recruitmentCurrentChange(val){
-      this.recruitmentCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.recruitmentCurrentPage = val;
+        this.getRecruitmentData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];

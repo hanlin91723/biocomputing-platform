@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -49,37 +50,31 @@
     methods:{
       // 变更记录表格数据
       getTaxRecordData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.taxRecordTotal = 1;
-          this.taxRecordData = [
-          {
-            releaseTime: "2021-04-27",
-            number: "91440101721917441U",
-            taxCategory: "企业所得税、印花税",
-            newBalance: " ",
-            balance: "27940092.73元",
-            taxAuthority: "国家税务总局广州市税务局",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.taxRecordCurrentPage,
+          pageSize:this.taxRecordPageSize,
+        };
+        this.$axios.post("/businessRisk/taxArrears",params).then(({data,})=>{
+          this.taxRecordTotal = data.total;
+          this.taxRecordData = data.list.map(item=>{
+            return {
+              releaseTime: item.pubTime,
+              number: item.qNum,
+              taxCategory: item.taxType,
+              newBalance: item.cAmount,
+              balance: item.debt,
+              taxAuthority: item.taxOrg,
+            };
+          });
+        });
       },
       // 变更记录分页
       taxRecordCurrentChange(val){
-      this.taxRecordCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.taxRecordCurrentPage = val;
+        this.getTaxRecordData();
       },
     },
   };

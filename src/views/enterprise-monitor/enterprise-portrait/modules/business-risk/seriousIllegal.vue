@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -45,34 +46,28 @@
     methods:{
       // 变更记录表格数据
       getSeriousIllegalData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.seriousIllegalTotal = 1;
-          this.seriousIllegalData = [
-          {
-            inclusionTime: "",
-            office: "",
-            inclusionReason: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.seriousIllegalCurrentPage,
+          pageSize:this.seriousIllegalPageSize,
+        };
+        this.$axios.post("/businessRisk/breachTrust",params).then(({data,})=>{
+          this.seriousIllegalTotal = data.total;
+          this.seriousIllegalData = data.list.map(item=>{
+            return {
+              inclusionTime: item.inDate,
+              office: item.inOrg,
+              inclusionReason: item.inReason,
+            };
+          });
+        });
       },
       // 变更记录分页
       seriousIllegalCurrentChange(val){
       this.seriousIllegalCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getSeriousIllegalData();
       },
     },
   };

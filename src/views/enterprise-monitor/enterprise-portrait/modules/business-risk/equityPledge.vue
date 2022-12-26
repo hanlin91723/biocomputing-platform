@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -66,38 +67,32 @@
     methods:{
       // 变更记录表格数据
       getEquityPledgeData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.equityPledgeTotal = 1;
-          this.equityPledgeData = [
-          {
-            registerNum: "",
-            pledgor: "",
-            pledgorEnterprise: "",
-            pledgee: " ",
-            pledgeAmount: "",
-            pledgeFilingTime: "",
-            status: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.equityPledgeCurrentPage,
+          pageSize:this.equityPledgePageSize,
+        };
+        this.$axios.post("/businessRisk/pledgeEquity",params).then(({data,})=>{
+          this.equityPledgeTotal = data.total;
+          this.equityPledgeData = data.list.map(item=>{
+            return {
+              registerNum: "",
+              pledgor: item.pledgor,
+              pledgorEnterprise: item.relatedCompany,
+              pledgee: item.impOrg,
+              pledgeAmount: item.impAm,
+              pledgeFilingTime: item.impOnRecDate,
+              status: item.exeState,
+            };
+          });
+        });
       },
       // 变更记录分页
       equityPledgeCurrentChange(val){
-      this.equityPledgeCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.equityPledgeCurrentPage = val;
+        this.getEquityPledgeData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];

@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -50,49 +51,33 @@
     methods:{
       // 变更记录表格数据
       getLandInfoData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.landInfoTotal = 2;
-          this.landInfoData = [
-          {
-            projectName: "",
-            projectposition: "",
-            district: "",
-            area: " ",
-            transactionPrice: "",
-            landUse: "",
-            company:"",
-            signingDate:"",
-          },
-          {
-            projectName: "",
-            projectposition: "",
-            district: "",
-            area: " ",
-            transactionPrice: "",
-            landUse: "",
-            company:"",
-            signingDate:"",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.landInfoCurrentPage,
+          pageSize:this.landInfoPageSize,
+        };
+        this.$axios.post("/businessInfo/landInfo",params).then(({data,})=>{
+          this.landInfoTotal = data.total;
+          this.landInfoData = data.list.map(item=>{
+            return {
+              projectName: item.pname,
+              projectposition: item.address,
+              district: item.city,
+              area: item.darea,
+              transactionPrice: item.dprice,
+              landUse: item.duse,
+              company: item.authorg,
+              signingDate: item.tdate,
+            };
+          });
+        });
       },
       // 变更记录分页
       landInfoCurrentChange(val){
-      this.landInfoCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.landInfoCurrentPage = val;
+        this.getLandInfoData();
       },
     },
   };

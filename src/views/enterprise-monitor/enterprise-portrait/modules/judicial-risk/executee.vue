@@ -55,7 +55,7 @@ import { formatter } from "@/util/util";
         let params = {
           entId:userStore.entId,
           entName:userStore.entName,
-          pageNum:this.currentPage,
+          pageNum:this.executeeCurrentPage,
           pageSize:this.pageSize,
         };
         this.$axios.post("/judicial/personSubjectedExecution",params).then(({data,total,})=>{
@@ -65,7 +65,7 @@ import { formatter } from "@/util/util";
             return {
               referenceNum: item.fssCaseNo,
               IDCard: item.fssRegNo,
-              filingCaseTime: item.fssLasj?.split("T")[0],
+              filingCaseTime: item.fssLasj,
               court: item.fssCourtName,
               amount: formatter(item.fssMoney),
             };

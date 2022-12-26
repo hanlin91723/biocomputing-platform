@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -48,45 +49,31 @@
     methods:{
       // 变更记录表格数据
       getAdministrationData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.administrationTotal = 2;
-          this.administrationData = [
-          {
-            permitNumber: "",
-            permitName: "",
-            validBegin: "",
-            validEnd: " ",
-            licensingAuthority: "",
-            licensingContent: "",
-          },
-          {
-            permitNumber: "",
-            permitName: "",
-            validBegin: "",
-            validEnd: " ",
-            licensingAuthority: "",
-            licensingContent: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.administrationCurrentPage,
+          pageSize:this.administrationPageSize,
+        };
+        this.$axios.post("/businessInfo/administrativeLicense",params).then(({data,})=>{
+          this.administrationTotal = data.total;
+          this.administrationData = data.list.map(item=>{
+            return {
+              permitNumber: item.licCode,
+              permitName: item.licName,
+              validBegin: item.valForm,
+              validEnd: item.valTo,
+              licensingAuthority: item.licAnth,
+              licensingContent: item.licContent,
+            };
+          });
+        });
       },
       // 变更记录分页
       administrationCurrentChange(val){
-      this.administrationCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.administrationCurrentPage = val;
+        this.getAdministrationData();
       },
     },
   };

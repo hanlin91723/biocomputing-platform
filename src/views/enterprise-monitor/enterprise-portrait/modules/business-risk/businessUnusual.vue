@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -81,7 +82,14 @@
     created(){
       this.getBusinessUnusualData();
       this.getOldBusinessUnusualData();
-      this.defaultTab();
+    },
+    watch:{
+      businessUnusualTotal(){
+        this.defaultTab();
+      },
+      oldBusinessUnusualTotal(){
+        this.defaultTab();
+      },
     },
     methods: {
       // 每次页面刷新自动选中第一个非零tab项
@@ -96,65 +104,53 @@
       },
       // 经营异常表格数据
       getBusinessUnusualData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.businessUnusualTotal = 1;
-          this.businessUnusualData = [
-          {
-            inclusionTime:"2022-02-28",
-            office:"重庆市江北区市场监督管理局",
-            inclusionReason:"通过登记的住所或者经营场所无法联系",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.businessUnusualCurrentPage,
+          pageSize:this.businessUnusualPageSize,
+        };
+        this.$axios.post("/businessRisk/abnormalOperation",params).then(({data,})=>{
+          this.businessUnusualTotal = data.total;
+          this.businessUnusualData = data.list.map(item=>{
+            return {
+              inclusionTime:item.inDate,
+              office:item.yrRegorg,
+              inclusionReason:item.inReason,
+            };
+          });
+        });
       },
       // 经营异常分页
       businessUnusualCurrentChange(val){
-      this.businessUnusualCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.businessUnusualCurrentPage = val;
+        this.getBusinessUnusualData();
       },
       // 历史经营异常表格数据
       getOldBusinessUnusualData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.oldBusinessUnusualTotal = 1;
-          this.oldBusinessUnusualData = [
-          {
-            removeTime:"",
-            office:"",
-            removeReason:"",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.oldBusinessUnusualCurrentPage,
+          pageSize:this.oldBusinessUnusualPageSize,
+        };
+        this.$axios.post("/businessRisk/abnormalOperationList",params).then(({data,})=>{
+          this.oldBusinessUnusualTotal = data.total;
+          this.oldBusinessUnusualData = data.list.map(item=>{
+            return {
+              removeTime:item.outDate,
+              office:item.ycRegorg,
+              removeReason:item.outReason,
+            };
+          });
+        });
       },
       // 历史经营异常分页
       oldBusinessUnusualCurrentChange(val){
-      this.oldBusinessUnusualCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.oldBusinessUnusualCurrentPage = val;
+        this.getOldBusinessUnusualData();
       },
       // tab切换
       handleTab(e){

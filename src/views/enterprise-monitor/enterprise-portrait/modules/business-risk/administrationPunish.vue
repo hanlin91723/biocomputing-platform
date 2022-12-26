@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -48,37 +49,31 @@
     methods:{
       // 变更记录表格数据
       getAdministrationPunishData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.administrationPunishTotal = 1;
-          this.administrationPunishData = [
-          {
-            punishTime: "2019-09-05",
-            documentNum: "首次公开发行股票配售对象黑名单公告（2019年第2号）",
-            punishReason: "违反《首次公开发行股票承销业务规范》第四十五条、四十六条规定",
-            punishResult: "列入黑名单",
-            punishCompany: "中国证券业协会",
-            dataSources: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.administrationPunishCurrentPage,
+          pageSize:this.administrationPunishPageSize,
+        };
+        this.$axios.post("/businessRisk/pledgeEquity",params).then(({data,})=>{
+          this.administrationPunishTotal = data.total;
+          this.administrationPunishData = data.list.map(item=>{
+            return {
+              punishTime: item.penDecIssDate,
+              documentNum: item.penDecNo,
+              punishReason: item.caseType,
+              punishResult: item.penResult || item.content,
+              punishCompany: item.penAuthName,
+              dataSources: item.dataSource,
+            };
+          });
+        });
       },
       // 变更记录分页
       administrationPunishCurrentChange(val){
-      this.administrationPunishCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.administrationPunishCurrentPage = val;
+        this.getAdministrationPunishData();
       },
     },
   };

@@ -458,7 +458,7 @@ export const trendChange = function() {
   };
 };
 
-export const ringPie = function(){
+export const ringPie = function(data){
   return {
     color: ["#1990FF","#8DDAF8","#7ACC8B","#FFB355","#F96E5F","#896EF5",],
     tooltip : {
@@ -475,7 +475,6 @@ export const ringPie = function(){
         // left: "60%",
         // align:"left",
         // top:"middle",
-        data: ["信息传输、软件和信息技术服务业", "科学研究和技术服务业", "制造业", "金融业", "文化、体育和娱乐行业","批发和零售业",],
     },
     series: [
         {
@@ -498,20 +497,13 @@ export const ringPie = function(){
             labelLine: {
                 show: false,
             },
-            data: [
-                {value: 335, name: "信息传输、软件和信息技术服务业",},
-                {value: 310, name: "科学研究和技术服务业",},
-                {value: 234, name: "制造业",},
-                {value: 135, name: "金融业",},
-                {value: 1548, name: "文化、体育和娱乐行业",},    
-                {value: 600, name: "批发和零售业",},    
-            ],
+            data,
         },
     ],
 };
 };
 
-export const recruit = function(){
+export const recruit = function(name,value){
   return {
     
     tooltip: {
@@ -528,7 +520,7 @@ export const recruit = function(){
     },
     xAxis: [{
         type: "category",
-        data: ["2022", "2021", "2020","2019","2018","2017",],
+        data: name,
         axisLine: {
             show:false,
             lineStyle: {
@@ -567,7 +559,7 @@ export const recruit = function(){
     },],
     series: [{
         type: "bar",
-        data: [3000, 2600, 1300, 1300, 1250, 1500, 2000, 3000, 1250, 1500, 2000, 3000,],
+        data: value,
         barWidth: "20px",
         itemStyle: {
                 // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
