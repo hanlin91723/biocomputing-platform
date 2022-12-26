@@ -87,7 +87,7 @@
     <!-- </transition> -->
     <el-form inline class="btn-form">
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="getTableData">查询</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="reset">重置条件</el-button>
@@ -97,7 +97,7 @@
       </el-form-item>
     </el-form>
     <div class="filter-list-wrap flex">
-      <h3 class="filter-list-title">已选条件：</h3>
+      <div class="filter-list-title">已选条件：</div>
       <el-tag
         class="filter-item"
         v-for="item in searchFormDataTemp"
@@ -112,24 +112,27 @@
       </el-tag>
     </div>
     <el-divider></el-divider>
-    <el-table :data="tableData" border stripe class="table" id="outTable">
-      <el-table-column prop="id" label="序号" width="80"></el-table-column>
+    <el-table :data="tableData" stripe class="table" id="outTable">
       <el-table-column
-        prop="enterpriseName"
-        label="企业名称"
-        width="240"
+        type="index"
+        :index="indexMethod"
+        label="序号"
+        width="50"
       ></el-table-column>
+      <el-table-column prop="entName" label="企业名称"></el-table-column>
+      <el-table-column prop="entStatus" label="经营状态"></el-table-column>
+      <el-table-column prop="legalPerson" label="法人代表"></el-table-column>
+      <el-table-column prop="registeredCapital" label="注册资本">
+        <template slot-scope="{ row }">
+          <span>{{ row.registeredCapital + row.registeredCapitalUnit }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="legalPerson"
-        label="法人"
-        width="90"
-      ></el-table-column>
-      <el-table-column
-        prop="creditCode"
-        label="统一社会信用代码"
-        width="200"
+        prop="incorporationDate"
+        label="成立日期"
       ></el-table-column>
       <el-table-column prop="industry" label="行业"></el-table-column>
+      <el-table-column prop="highTechEnt" label="特色标签"></el-table-column>
       <el-table-column prop="riskIndex" label="综合风险指数">
         <template slot-scope="scope">
           <span :class="{ [riskGrade(scope.row.riskIndex).className]: true }">{{
@@ -137,10 +140,6 @@
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="riskStatistics"
-        label="风险统计（条）"
-      ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <span class="delete" @click="portrait(scope.row)">企业画像</span>
@@ -181,7 +180,7 @@ const searchFormList = [
   },
   {
     formLabel: "企业名称",
-    prop: "enterpriseName",
+    prop: "entName",
     value: "",
     formType: "input",
     isMultiple: false,
@@ -189,15 +188,15 @@ const searchFormList = [
   },
   {
     formLabel: "特色标签",
-    prop: "tag",
+    prop: "highTechEnt",
     value: [],
     formType: "select",
     isMultiple: true,
-    optsName: "tagOpts",
+    optsName: "highTechEntOpts",
   },
   {
     formLabel: "统一信用代码",
-    prop: "code",
+    prop: "creditCode",
     value: "",
     formType: "input",
     isMultiple: false,
@@ -213,7 +212,7 @@ const searchFormList = [
   },
   {
     formLabel: "企业经营范围",
-    prop: "businessScope",
+    prop: "businessDesc",
     value: "",
     formType: "input",
     isMultiple: false,
@@ -229,11 +228,11 @@ const searchFormList = [
   },
   {
     formLabel: "企业类型",
-    prop: "enterpriseType",
+    prop: "entType",
     value: [],
     formType: "select",
     isMultiple: true,
-    optsName: "enterpriseTypeOpts",
+    optsName: "entTypeOpts",
   },
   {
     formLabel: "员工数量",
@@ -254,95 +253,74 @@ export default {
       searchFormList,
       searchFormData,
       optsObj: {
-        industryOpts: [
-          {
-            id: "选项1",
-            name: "黄金糕",
-          },
-          {
-            id: "选项2",
-            name: "双皮奶",
-          },
-          {
-            id: "选项3",
-            name: "蚵仔煎",
-          },
-          {
-            id: "选项4",
-            name: "龙须面",
-          },
-          {
-            id: "选项5",
-            name: "北京烤鸭",
-          },
-        ],
+        industryOpts: [],
         registerCapitalOpts: [
           {
-            id: "选项1",
-            name: "黄金糕",
+            id: "100万以内",
+            name: "100万以内",
           },
           {
-            id: "选项2",
-            name: "双皮奶",
+            id: "100-200万",
+            name: "100-200万",
           },
           {
-            id: "选项3",
-            name: "蚵仔煎",
+            id: "200-500万",
+            name: "200-500万",
           },
           {
-            id: "选项4",
-            name: "龙须面",
+            id: "500-1000万",
+            name: "500-1000万",
           },
           {
-            id: "选项5",
-            name: "北京烤鸭",
+            id: "1000万以上",
+            name: "1000万以上",
           },
         ],
-        tagOpts: [
+        highTechEntOpts: [
           {
             name: "高新技术企业",
-            id: 1,
+            id: "高新技术企业",
           },
           {
             name: "独角兽企业",
-            id: 2,
+            id: "独角兽企业",
           },
           {
             name: "瞪羚企业",
-            id: 3,
+            id: "瞪羚企业",
           },
           {
             name: "上市企业",
-            id: 4,
+            id: "上市企业",
           },
           {
             name: "专精特新企业",
-            id: 5,
+            id: "专精特新企业",
           },
         ],
         durationOpts: [
           {
-            id: "选项1",
-            name: "黄金糕",
+            id: "1年内",
+            name: "1年内",
           },
           {
-            id: "选项2",
-            name: "双皮奶",
+            id: "1-5年",
+            name: "1-5年",
           },
           {
-            id: "选项3",
-            name: "蚵仔煎",
+            id: "5-10年",
+            name: "5-10年",
           },
           {
-            id: "选项4",
-            name: "龙须面",
+            id: "10-15年",
+            name: "10-15年",
           },
           {
-            id: "选项5",
-            name: "北京烤鸭",
+            id: "15年以上",
+            name: "15年以上",
           },
         ],
-        enterpriseTypeOpts: [
+        entTypeOpts: [
           {
             id: "选项1",
             name: "黄金糕",
@@ -366,30 +344,39 @@ export default {
         ],
         staffNumOpts: [
           {
-            id: "选项1",
-            name: "黄金糕",
+            id: "小于50人",
+            name: "小于50人",
           },
           {
-            id: "选项2",
-            name: "双皮奶",
+            id: "50-99人",
+            name: "50-99人",
           },
           {
-            id: "选项3",
-            name: "蚵仔煎",
+            id: "100-499人",
+            name: "100-499人",
           },
           {
-            id: "选项4",
-            name: "龙须面",
+            id: "500-999人",
+            name: "500-999人",
           },
           {
-            id: "选项5",
-            name: "北京烤鸭",
+            id: "1000-4999人",
+            name: "1000-4999人",
+          },
+          {
+            id: "5000-9999人",
+            name: "5000-9999人",
+          },
+          {
+            id: "10000人以上",
+            name: "10000人以上",
           },
         ],
       },
       moreFlag: false,
-      total: 110,
-      pageSize: 11,
+      tableData: [],
+      total: 0,
+      pageSize: 10,
       currentPage: 1,
     };
   },
@@ -414,117 +401,106 @@ export default {
   },
   created() {
     const routeParams = this.$route.params;
-    this.searchFormData.tag = routeParams.tag ? [routeParams.tag,] : [];
-    this.searchFormData.enterpriseName = routeParams.enterpriseName || "";
+    this.searchFormData.highTechEnt = routeParams.highTechEnt
+      ? [routeParams.highTechEnt]
+      : [];
+    this.searchFormData.entName = routeParams.entName || "";
+    this.getIndustryList();
     this.getTableData();
   },
   methods: {
     getTableData() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.tableData = [
-        {
-          id: 1,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-        {
-          id: 2,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 85,
-          riskStatistics: 13548,
-        },
-        {
-          id: 3,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 68,
-          riskStatistics: 13548,
-        },
-        {
-          id: 4,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 43,
-          riskStatistics: 13548,
-        },
-        {
-          id: 5,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 12,
-          riskStatistics: 13548,
-        },
-        {
-          id: 6,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 11,
-          riskStatistics: 13548,
-        },
-        {
-          id: 7,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-        {
-          id: 8,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-        {
-          id: 9,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-        {
-          id: 10,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-        {
-          id: 11,
-          enterpriseName: "江苏商务集团有限公司",
-          legalPerson: "张强",
-          creditCode: "9132092314052XXXXX",
-          industry: "商务服务业",
-          riskIndex: 86,
-          riskStatistics: 13548,
-        },
-      ];
+      let params = Object.assign({}, this.searchFormData, {
+        pageSize: this.pageSize,
+        pageNum: this.currentPage,
+      });
+      switch (this.searchFormData.registerCapital) {
+        case "100万以内":
+          params.endRegisteredCapital = 100;
+          break;
+        case "100-200万":
+          params.startRegisteredCapital = 100;
+          params.endRegisteredCapital = 200;
+          break;
+        case "200-500万":
+          params.startRegisteredCapital = 200;
+          params.endRegisteredCapital = 500;
+          break;
+        case "500-1000万":
+          params.startRegisteredCapital = 500;
+          params.endRegisteredCapital = 1000;
+          break;
+        case "1000万以上":
+          params.startRegisteredCapital = 1000;
+          break;
+        default:
+      }
+      switch (this.searchFormData.duration) {
+        case "1年内":
+          params.incorporationStartDate = this.getDate(1);
+          break;
+        case "1-5年":
+          params.incorporationStartDate = this.getDate(5);
+          params.incorporationEndDate = this.getDate(1);
+          break;
+        case "5-10年":
+          params.incorporationStartDate = this.getDate(10);
+          params.incorporationEndDate = this.getDate(5);
+          break;
+        case "10-15年":
+          params.incorporationStartDate = this.getDate(15);
+          params.incorporationEndDate = this.getDate(10);
+          break;
+        case "15年以上":
+          params.incorporationEndDate = this.getDate(15);
+          break;
+        default:
+      }
+      switch (this.searchFormData.staffNum) {
+        case "小于50人":
+          params.personEndNum = 50;
+          break;
+        case "50-99人":
+          params.personStartNum = 50;
+          params.personEndNum = 99;
+          break;
+        case "100-499人":
+          params.personStartNum = 100;
+          params.personEndNum = 499;
+          break;
+        case "500-999人":
+          params.personStartNum = 500;
+          params.personEndNum = 999;
+          break;
+        case "1000-4999人":
+          params.personStartNum = 1000;
+          params.personEndNum = 4999;
+          break;
+        case "5000-9999人":
+          params.personStartNum = 5000;
+          params.personEndNum = 9999;
+          break;
+        case "10000人以上":
+          params.personStartNum = 10000;
+          break;
+        default:
+      }
+      this.$axios.post("/entInfo/condition", params).then(({ data }) => {
+        this.total = data.total;
+        this.tableData = data.list;
+      });
+    },
+    getIndustryList() {
+      this.$axios
+        .get("/dict/queryDictByType", {
+          dictType: "industry",
+        })
+        .then(({ data }) => {
+          this.optsObj.industryOpts = data.map((item) => ({
+            id: item.dictName,
+            name: item.dictName,
+          }));
+        });
     },
     // 风险指数
     riskGrade(val) {
@@ -554,21 +530,14 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id, }) {
+    portrait({ entId }) {
       //  提示
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${id}`);
+      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
     // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getTableData();
     },
     onSubmit() {
       exportTableAsXLSX("outTable");
@@ -585,12 +554,18 @@ export default {
     handleCloseFilter(item) {
       this.searchFormData[item.prop] = Array.isArray(item.value) ? [] : "";
     },
+    indexMethod(index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1;
+    },
     getName(item) {
       const nameArr = item.value.map((itemTemp1) => {
         const arr = this.optsObj[item.prop + "Opts"];
         return arr.find((itemTemp2) => itemTemp2.id === itemTemp1).name;
       });
       return nameArr.join("，");
+    },
+    getDate(num) {
+      return this.$dayjs().subtract(num, "year").format("YYYY-MM-DD");
     },
   },
 };
@@ -635,8 +610,6 @@ export default {
     }
   }
   .table {
-    width: 100%;
-    height: 575px;
     margin-bottom: 10px;
     .riskColor1 {
       color: rgba(245, 114, 114, 1);

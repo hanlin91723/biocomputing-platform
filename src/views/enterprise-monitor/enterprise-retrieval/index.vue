@@ -6,7 +6,7 @@
       v-model="searchVal"
       :trigger-on-focus="false"
       select-when-unmatched
-      placeholder="请输入企业名称、法人代表、注册地址、经营范围关键字"
+      placeholder="请输入企业名称"
       :fetch-suggestions="querySearchAsync"
       @select="handleSelect"
     >
@@ -33,23 +33,23 @@ export default {
       tagList: [
         {
           name: "高新技术企业",
-          id: 1,
+          id: "高新技术企业",
         },
         {
           name: "独角兽企业",
-          id: 2,
+          id: "独角兽企业",
         },
         {
           name: "瞪羚企业",
-          id: 3,
+          id: "瞪羚企业",
         },
         {
           name: "上市企业",
-          id: 4,
+          id: "上市企业",
         },
         {
           name: "专精特新企业",
-          id: 5,
+          id: "专精特新企业",
         },
       ],
     };
@@ -60,53 +60,28 @@ export default {
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          tag: item.id,
+          highTechEnt: item.id,
         },
       });
     },
     querySearchAsync(queryString, cb) {
       this.$axios
-        .get("/construction/projectManager", {
-          enterpriseName: queryString,
+        .get("/entInfo/infoName", {
+          entName: queryString,
         })
-        .then(() => {
-          const searchResultList = [
-            { value: "三全鲜食（北新泾店）", name: "长宁区新渔路144号", },
-            {
-              value: "Hot honey 首尔炸鸡（仙霞路）",
-              name: "上海市长宁区淞虹路661号",
-            },
-            {
-              value: "新旺角茶餐厅",
-              name: "上海市普陀区真北路988号创邑金沙谷6号楼113",
-            },
-            { value: "泷千家(天山西路店)", name: "天山西路438号", },
-            {
-              value: "胖仙女纸杯蛋糕（上海凌空店）",
-              name: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101",
-            },
-            {
-              value: "浮生若茶（凌空soho店）",
-              name: "上海长宁区金钟路968号9号楼地下一层",
-            },
-            { value: "枪会山", name: "上海市普陀区棕榈路", },
-            { value: "纵食", name: "元丰天山花园(东门) 双流路267号", },
-            { value: "钱记", name: "上海市长宁区天山西路", },
-            { value: "壹杯加", name: "上海市长宁区通协路", },
-            {
-              value: "唦哇嘀咖",
-              name: "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元",
-            },
-          ];
+        .then(({ data }) => {
+          const searchResultList = data.map((item) => ({
+            name: item.entId,
+            value: item.entName,
+          }));
           cb(searchResultList);
         });
     },
     handleSelect(item) {
-      console.log(item);
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          enterpriseName: item.value,
+          entName: item.value,
         },
       });
     },
@@ -114,7 +89,7 @@ export default {
       this.$router.push({
         name: "EnterpriseList",
         params: {
-          enterpriseName: this.searchVal,
+          entName: this.searchVal,
         },
       });
     },
