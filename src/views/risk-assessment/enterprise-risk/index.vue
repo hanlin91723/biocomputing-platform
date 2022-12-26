@@ -3,11 +3,7 @@
     <div class="header">
       <div>
         <label for="" class="label">行业：</label>
-        <el-select
-          v-model="industryValue"
-          placeholder="请选择"
-          class="user-select"
-        >
+        <el-select v-model="industry" placeholder="请选择" class="user-select">
           <el-option
             v-for="item in industryOptions"
             :key="item.value"
@@ -36,7 +32,7 @@
         <el-input
           class="input"
           placeholder="请输入关键字"
-          v-model="enterpriseName"
+          v-model="entName"
           clearable
         ></el-input>
       </div>
@@ -53,39 +49,35 @@
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" border stripe class="table">
-      <el-table-column prop="index" label="序号" width="80"></el-table-column>
+    <el-table :data="tableData" stripe class="table">
       <el-table-column
-        prop="enterpriseName"
-        label="企业名称"
-        width="240"
+        type="index"
+        :index="indexMethod"
+        label="序号"
+        width="50"
       ></el-table-column>
-      <el-table-column
-        prop="legalPerson"
-        label="法人"
-        width="90"
-      ></el-table-column>
+      <el-table-column prop="entName" label="企业名称"></el-table-column>
+      <el-table-column prop="legalPerson" label="法人"></el-table-column>
       <el-table-column
         prop="creditCode"
         label="统一社会信用代码"
-        width="200"
       ></el-table-column>
       <el-table-column prop="industry" label="行业"></el-table-column>
-      <el-table-column prop="riskIndex" label="综合风险指数">
-        <template slot-scope="scope">
-          <span :class="{ [riskGrade(scope.row.riskIndex).className]: true }">{{
-            riskGrade(scope.row.riskIndex).text
+      <el-table-column prop="entRiskScore" label="综合风险指数">
+        <template slot-scope="{ row }">
+          <span :class="{ [riskGrade(row.entRiskScore).className]: true }">{{
+            riskGrade(row.entRiskScore).text
           }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="riskStatistics"
+        prop="entRiskNum"
         label="风险统计（条）"
       ></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
-          <span class="edit" @click="riskDetails(scope.row)">风险详情</span>
-          <span class="delete" @click="portrait(scope.row)">企业画像</span>
+        <template slot-scope="{ row }">
+          <span class="edit" @click="riskDetails(row)">风险详情</span>
+          <span class="delete" @click="portrait(row)">企业画像</span>
         </template>
       </el-table-column>
     </el-table>
@@ -131,9 +123,9 @@ export default {
         },
       ],
       // 查询数据
-      industryValue: "全部",
+      industry: "全部",
       riskGradeValue: "全部",
-      enterpriseName: "",
+      entName: "",
       // 分页
       total: 0,
       pageSize: 10,
@@ -147,144 +139,32 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        industry:this.industryValue,
-        riskLevel:this.riskGradeValue,
-        indexRiskLevel:"全部",
-        entName:this.enterpriseName,
-        pageNum:this.currentPage,
-        pageSize:this.pageSize,
+        industry: this.industry,
+        riskLevel: this.riskGradeValue,
+        indexRiskLevel: "全部",
+        entName: this.entName,
+        pageNum: this.currentPage,
+        pageSize: this.pageSize,
       };
-      this.$axios.post("/entRisk/queryEntRiskByCondition",params).then(({data,})=>{
-        this.total = data.total;
-        this.tableData = data.list.map((item,index)=>{
-          return {
-            index: index + 1,
-            entId: item.entId,
-            enterpriseName: item.entName,
-            legalPerson: item.legalPerson,
-            creditCode: item.creditCode,
-            industry: item.industry,
-            riskIndex: item.entRiskScore,
-            riskStatistics: item.entRiskNum,
-          };
+      this.$axios
+        .post("/entRisk/queryEntRiskByCondition", params)
+        .then(({ data }) => {
+          this.total = data.total;
+          this.tableData = data.list;
         });
-      });
-      // this.tableData = [
-      //   {
-      //     id: 1,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 2,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 85,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 3,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 68,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 4,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 43,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 5,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 12,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 6,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 11,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 7,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 8,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 9,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 10,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      //   {
-      //     id: 11,
-      //     enterpriseName: "江苏商务集团有限公司",
-      //     legalPerson: "张强",
-      //     creditCode: "9132092314052XXXXX",
-      //     industry: "商务服务业",
-      //     riskIndex: 86,
-      //     riskStatistics: 13548,
-      //   },
-      // ];
     },
     getIndustryOptions() {
       let params = {
-        dictType:"industry",
+        dictType: "industry",
       };
-      this.$axios.get("/dict/queryDictByType",params).then(({data,})=>{
-        this.industryOptions = data.map(item=>{
-          return {
-            value:item.dictName,
-            label:item.dictName,
-          };
-        });
+      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
+        this.industryOptions = data.map((item) => ({
+          value: item.dictName,
+          label: item.dictName,
+        }));
         this.industryOptions.unshift({
-          value:"全部",
-          label:"全部",
+          value: "全部",
+          label: "全部",
         });
       });
     },
@@ -322,21 +202,23 @@ export default {
       }
     },
     // 企业画像
-    portrait({ id, }) {
+    portrait({ entId }) {
       //  提示
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${id}`);
+      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
     // 风险详情
-    riskDetails({ id, }) {
-      console.log(id);
+    riskDetails({ entId }) {
       this.$router.push({
-        path: "/enterprise-risk/detail/1",
+        path: `/enterprise-risk/detail/${entId}`,
       });
     },
     // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getTableData();
+    },
+    indexMethod(index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1;
     },
   },
 };

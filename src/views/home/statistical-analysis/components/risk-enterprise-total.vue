@@ -9,9 +9,9 @@
         ]"
         @click="changeRiskType('high')"
       >
-        <div>昨日高风险企业</div>
-        <div>
-          <span>{{ highEntNum }}</span>
+        <h4>高风险企业（昨日）</h4>
+        <div class="num">
+          <span class="value">{{ highEntNum }}</span>
           <span>家</span>
         </div>
       </div>
@@ -23,9 +23,9 @@
         ]"
         @click="changeRiskType('medium')"
       >
-        <div>昨日中风险企业</div>
-        <div>
-          <span>{{ middleEntNum }}</span>
+        <h4>中风险企业（昨日）</h4>
+        <div class="num">
+          <span class="value">{{ middleEntNum }}</span>
           <span>家</span>
         </div>
       </div>
@@ -94,26 +94,57 @@ export default {
     justify-content: center;
     width: 180px;
     height: 100px;
-    text-align: center;
-    background: #f5f7fa;
+    padding-left: 20px;
+    text-align: left;
+    color: rgb(30, 41, 59);
+    background: rgb(234, 236, 239);
+    border-left: 10px solid transparent;
     cursor: pointer;
-    &.medium-risk-enterprise {
-      margin-top: 20px;
+    &.high-risk-enterprise {
+      .value {
+        font-size: 36px;
+        font-weight: 700;
+        color: rgb(245, 114, 114);
+      }
     }
-    &.active {
-      color: #fff;
-      background: #66b1ff;
-      &::after {
+    &.high-risk-enterprise.active {
+      background: rgb(250, 251, 253);
+      border-left: 10px solid rgb(245, 114, 114);
+      &::before {
         position: absolute;
-        right: 0;
+        left: 0;
         top: 50%;
         transform: translateY(-50%);
         content: "";
         width: 0;
         height: 0;
-        border-top: 20px solid transparent;
-        border-bottom: 20px solid transparent;
-        border-right: 20px solid #409eff;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid rgb(245, 114, 114);
+      }
+    }
+    &.medium-risk-enterprise {
+      margin-top: 20px;
+      .value {
+        font-size: 36px;
+        font-weight: 700;
+        color: rgb(244, 165, 47);
+      }
+    }
+    &.medium-risk-enterprise.active {
+      background: rgb(250, 251, 253);
+      border-left: 10px solid rgb(244, 165, 47);
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        content: "";
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid rgb(244, 165, 47);
       }
     }
   }
