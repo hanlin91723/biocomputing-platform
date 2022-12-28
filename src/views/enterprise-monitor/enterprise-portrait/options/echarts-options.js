@@ -323,7 +323,7 @@ export const investPie = function(data){
 };
 };
 
-export const trendChange = function() {
+export const trendChange = function(data) {
   return {
     tooltip: {
       trigger: "axis",
@@ -355,7 +355,7 @@ export const trendChange = function() {
     },
     xAxis: {
       type: "category",
-      data: ["2021.11","2021.12","2022.01","2022.02","2022.03","2022.04","2022.05","2022.06","2022.07","2022.08","2022.09","2022.10",],
+      data: data.dateList,
       axisTick: {
         show: false,
       },
@@ -396,7 +396,7 @@ export const trendChange = function() {
         emphasis: {
           focus: "series",
         },
-        data: [320, 80, 301, 334, 390, 330, 320, 390, 330, 320, 390, 390,],
+        data: data.positiveList,
       },
       {
         // name: "P",
@@ -411,7 +411,7 @@ export const trendChange = function() {
         emphasis: {
           focus: "series",
         },
-        data: [120, 132, 101, 134, 90, 230, 210, 302, 301, 334, 390, 330,],
+        data: data.middleList,
       },
       {
         // name: "A",
@@ -429,7 +429,7 @@ export const trendChange = function() {
         emphasis: {
           focus: "series",
         },
-        data: [150, 212, 201, 154, 190, 330, 410, 182, 191, 234, 290, 330,],
+        data: data.negativeList,
       },
       {
         name: "趋势",
@@ -452,7 +452,7 @@ export const trendChange = function() {
             borderWidth: 2,
         },
       
-        data: [ 1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,1200,],
+        data: data.totalList,
     },
     ],
   };

@@ -61,12 +61,13 @@
 
 <script>
 import { investPie,trendChange } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         publicSentimentData:[],
-        personInvestData:[],
-        mapAndBarData:[],
+        pieData:[],
+        barData:[],
         // 企业投资分页
         publicSentimentCurrentPage:1,
         publicSentimentPageSize:10,
@@ -99,104 +100,63 @@ import { investPie,trendChange } from "@/views/enterprise-monitor/enterprise-por
     },
     computed:{
       investPie(){
-        return investPie();
+        return investPie(this.pieData);
       },
       trendChange(){
-        return trendChange();
+        return trendChange(this.barData);
       },
     },
     created(){
-      this.getmapData();
+      this.getPieData();
+      this.getBarData();
       this.getPublicSentimentData();
     },
     methods:{
-      getmapData(){
-        // this.$aixos.get('/aa').then(({data})=>{
-        //   console.log(data);
-        // });
-        this.mapAndBarData = [
-          {
-            name: "北京市",
-            value: 13,
-          },
-          {
-            name: "广东省",
-            value: 8,
-          },
-          {
-            name: "浙江省",
-            value: 6,
-          },
-          {
-            name: "重庆市",
-            value: 5,
-          },
-          {
-            name: "天津市",
-            value: 2,
-          },
-        ];
+      getPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:1,
+        };
+        this.$axios.get("/develop/publicInfoByType",params).then(({data,})=>{
+          this.pieData = data;
+        });
+      },
+      getBarData(){
+        const userStore = useUserStore();
+        let params = {
+          entId: userStore.entId,
+        };
+        this.$axios.get("/develop/publicInfoChangeTrend",params).then((data)=>{
+          this.barData = data;
+        });
       },
       // 企业投资表格数据
       getPublicSentimentData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.publicSentimentTotal = 5;
-          this.publicSentimentData = [
-          {
-            title: "金融“活水”涌流 激发市场主体活力",
-            time: "2022-10-09",
-            classify: "积极",
-            keyword: "长光卫星技术有限公司，华润",
-            source: "新华网",
-          },
-          {
-            title: "前瞻全球产业头条：诺贝尔奖明起揭晓，国庆档新片总票房突破5亿，尼日利亚考虑购买中国C919大型客机",
-            time: "2022-10-03",
-            classify: "中立",
-            keyword: "苹果研发（北京）有限公司，红土创新基金管理有限公司，中国进出口银行，浙江见识创业投资管理有限公司，特变电工股份有限公司，瑞达基金管理有限公司，宝盈基金管理有限公司，富荣基金管理有限公司，北信瑞丰基金管理有限公司，上海携程商务有限公司",
-            source: "搜狐财经",
-          },
-          {
-            title: "【中国财富报道】市值300亿的公司，近2个月宣布将砸1000多亿，全部'锁定'这一材料",
-            time: "2022-10-02",
-            classify: "积极",
-            keyword: "特变电工股份有限公司，新特能源股份有限公司，双良节能系统股份有限公司",
-            source: "新浪",
-          },
-          {
-            title: "金融“活水”涌流 激发市场主体活力",
-            time: "2022-10-09",
-            classify: "积极",
-            keyword: "长光卫星技术有限公司，华润",
-            source: "新华网",
-          },
-          {
-            title: "前瞻全球产业头条：诺贝尔奖明起揭晓，国庆档新片总票房突破5亿，尼日利亚考虑购买中国C919大型客机",
-            time: "2022-10-03",
-            classify: "中立",
-            keyword: "苹果研发（北京）有限公司，红土创新基金管理有限公司，中国进出口银行，浙江见识创业投资管理有限公司，特变电工股份有限公司，瑞达基金管理有限公司，宝盈基金管理有限公司，富荣基金管理有限公司，北信瑞丰基金管理有限公司，上海携程商务有限公司",
-            source: "搜狐财经",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.publicSentimentCurrentPage,
+          pageSize:this.publicSentimentPageSize,
+        };
+        this.$axios.post("/develop/publicInfo",params).then(({data,})=>{
+          this.publicSentimentTotal = data.total;
+          this.publicSentimentData = data.list.map(item=>{
+            return {
+              title: item.title,
+              time: item.pubTime,
+              classify: item.tabsEmotionLabels,
+              keyword: item.tabsEventLabels,
+              source: item.webSite,
+            };
+          });
+        });
       },
       // 企业投资分页
       publicSentimentCurrentChangee(val){
-      this.publicSentimentCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.publicSentimentCurrentPage = val;
+        this.getPublicSentimentData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];

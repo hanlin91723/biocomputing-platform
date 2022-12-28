@@ -14,11 +14,11 @@
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="shareholderName" label="股东名称"></el-table-column>
       <el-table-column prop="AccumulatedShouldAmount" label="累计认缴额" width="170"></el-table-column>
-      <el-table-column prop="shouldTime" label="认缴出资日期" width="170"></el-table-column>
-      <el-table-column prop="shouldMode" label="认缴出资方式" width="170"></el-table-column>
+      <el-table-column prop="conprop" label="出资比例" width="170"></el-table-column>
+      <!-- <el-table-column prop="shouldMode" label="认缴出资方式" width="170"></el-table-column> -->
       <el-table-column prop="AccumulatedActualAmount" label="累计实缴额" width="170"></el-table-column>
       <el-table-column prop="actualTime" label="实缴出资日期" width="170"></el-table-column>
-      <el-table-column prop="actualMode" label="实缴出资方式" width="171"></el-table-column>
+      <!-- <el-table-column prop="actualMode" label="实缴出资方式" width="171"></el-table-column> -->
     </el-table>
     <!-- 分页器 -->
     <el-pagination background
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -50,58 +51,30 @@
     methods:{
       // 变更记录表格数据
       getContributorData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.contributorTotal = 1;
-          this.contributorData = [
-          {
-            shareholderName: "2020年报",
-            AccumulatedShouldAmount: "",
-            shouldTime: "",
-            shouldMode: "",
-            AccumulatedActualAmount: "",
-            actualTime: "",
-            actualMode: "",
-            children:[
-              {
-                shareholderName: "A股股东",
-                AccumulatedShouldAmount: "500.0万元",
-                shouldTime: "2036-07-28",
-                shouldMode: "",
-                AccumulatedActualAmount: "",
-                actualTime: "",
-                actualMode: "",
-              },
-              {
-                shareholderName: "境外上市外资股",
-                AccumulatedShouldAmount: "500.0万元",
-                shouldTime: "2036-07-28",
-                shouldMode: "",
-                AccumulatedActualAmount: "",
-                actualTime: "",
-                actualMode: "",
-              },
-            ],
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.contributorCurrentPage,
+          pageSize:this.contributorPageSize,
+        };
+        this.$axios.post("/develop/contribution",params).then(({data,})=>{
+          this.contributorTotal = data.total;
+          this.contributorData = data.list.map(item=>{
+            return {
+              shareholderName: item.inv,
+              AccumulatedShouldAmount: item.subconam,
+              conprop: item.conprop,
+              AccumulatedActualAmount: item.acconam,
+              actualTime: item.condate,
+            };
+          });
+        });
       },
       // 变更记录分页
       contributorCurrentChange(val){
-      this.contributorCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.contributorCurrentPage = val;
+        this.getContributorData();
       },
     },
   };

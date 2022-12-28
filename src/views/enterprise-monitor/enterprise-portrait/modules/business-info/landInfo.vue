@@ -64,7 +64,7 @@ import { useUserStore } from "@/store/index.js";
             return {
               projectName: item.pname,
               projectposition: item.address,
-              district: item.city,
+              district: item.province+item.city,
               area: item.darea,
               transactionPrice: item.dprice,
               landUse: item.duse,
