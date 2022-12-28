@@ -2,7 +2,8 @@
   <div class="portrait" ref="portrait">
     <el-card>
       <div class="card">
-        <img src="https://img5.tianyancha.com/logo/lll/ef99052a87d2249f6559cd98b34f2606.png@!f_200x200" alt="" class="img">
+        <img :src="headerInfo.src" alt="" class="img" v-if="headerInfo.src">
+        <div class="img default" v-else>{{ headerInfo.entName[0] }}</div>
         <div class="companyInfo">
           <h2 class="title">{{ headerInfo.entName || '--'}}</h2>
           <div class="tag">
@@ -356,6 +357,16 @@ methods:{
     height: 100px;
     border-radius: 6px;
     margin-right: 20px;
+    &.default{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      font-weight: 700;
+      font-family: 'KaiTi';
+      background-color: #F5F7FA;
+      
+    }
   }
     .companyInfo{
       width: 73%;

@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -49,47 +50,32 @@
     methods:{
       // 变更记录表格数据
       getFarmProduceData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.farmProduceTotal = 2;
-          this.farmProduceData = [
-          {
-            projectName: "",
-            productName: "",
-            certificateStatus: "",
-            issuingAuthority: " ",
-            standard: "",
-            certificationTime: "",
-            certificateExpireTime: "",
-          },
-          {
-            projectName: "",
-            productName: "",
-            certificateStatus: "",
-            issuingAuthority: " ",
-            standard: "",
-            certificationTime: "",
-            certificateExpireTime: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.farmProduceCurrentPage,
+          pageSize:this.farmProducePageSize,
+        };
+        this.$axios.post("/other/foodCert",params).then(({data,})=>{
+          this.farmProduceTotal = data.total;
+          this.farmProduceData = data.list.map(item=>{
+            return {
+              projectName: item.certProject,
+              productName: item.productName,
+              certificateStatus: item.certStatus,
+              issuingAuthority: item.orgNum,
+              standard: item.certBasis,
+              certificationTime: item.awardDate,
+              certificateExpireTime: item.expireDate,
+            };
+          });
+        });
       },
       // 变更记录分页
       farmProduceCurrentChange(val){
-      this.farmProduceCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.farmProduceCurrentPage = val;
+        this.getFarmProduceData();
       },
     },
   };

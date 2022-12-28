@@ -134,7 +134,6 @@ import { useUserStore } from "@/store/index.js";
           entId:userStore.entId,
           entName:userStore.entName,
         };
-        console.log(params);
         this.$axios.get("/entInfo/equityPenetration",params).then(({data,})=>{
           this.threeData = data;
           this.tree = new StockTree({

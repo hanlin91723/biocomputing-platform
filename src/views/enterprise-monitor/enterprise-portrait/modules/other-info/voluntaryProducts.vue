@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -50,49 +51,33 @@
     methods:{
       // 变更记录表格数据
       getVoluntaryProductsData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.voluntaryProductsTotal = 2;
-          this.voluntaryProductsData = [
-          {
-            projectName: "",
-            productName: "",
-            certificateStatus: "",
-            issuingAuthority: " ",
-            approvalMark: "",
-            standard: "",
-            certificationTime: "",
-            certificateExpireTime: "",
-          },
-          {
-            projectName: "",
-            productName: "",
-            certificateStatus: "",
-            issuingAuthority: " ",
-            approvalMark: "",
-            standard: "",
-            certificationTime: "",
-            certificateExpireTime: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.voluntaryProductsCurrentPage,
+          pageSize:this.voluntaryProductsPageSize,
+        };
+        this.$axios.post("/other/voluntary",params).then(({data,})=>{
+          this.voluntaryProductsTotal = data.total;
+          this.voluntaryProductsData = data.list.map(item=>{
+            return {
+              projectName: item.certProject,
+              productName: item.productName,
+              certificateStatus: item.certStatus,
+              issuingAuthority: item.orgNum,
+              approvalMark: item.approvalMark,
+              standard: item.certificateBasis,
+              certificationTime: item.awardDate,
+              certificateExpireTime: item.expireDate,
+            };
+          });
+        });
       },
       // 变更记录分页
       voluntaryProductsCurrentChange(val){
-      this.voluntaryProductsCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.voluntaryProductsCurrentPage = val;
+        this.getVoluntaryProductsData();
       },
     },
   };

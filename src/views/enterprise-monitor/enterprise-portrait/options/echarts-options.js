@@ -355,7 +355,7 @@ export const trendChange = function(data) {
     },
     xAxis: {
       type: "category",
-      data: data.dateList,
+      data: data?.dateList,
       axisTick: {
         show: false,
       },
@@ -396,7 +396,7 @@ export const trendChange = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.positiveList,
+        data: data?.positiveList,
       },
       {
         // name: "P",
@@ -411,7 +411,7 @@ export const trendChange = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.middleList,
+        data: data?.middleList,
       },
       {
         // name: "A",
@@ -429,7 +429,7 @@ export const trendChange = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.negativeList,
+        data: data?.negativeList,
       },
       {
         name: "趋势",
@@ -452,7 +452,7 @@ export const trendChange = function(data) {
             borderWidth: 2,
         },
       
-        data: data.totalList,
+        data: data?.totalList,
     },
     ],
   };
@@ -674,7 +674,7 @@ export const patentBar = function(data) {
     },
     xAxis: {
       type: "category",
-      data: data.dateSet,
+      data: data?.dateSet,
       axisTick: {
         show: false,
       },
@@ -715,7 +715,7 @@ export const patentBar = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.fmggList,
+        data: data?.fmggList,
       },
       {
         // name: "E",
@@ -735,7 +735,7 @@ export const patentBar = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.fmsqList,
+        data: data?.fmsqList,
       },
       {
         // name: "P",
@@ -750,7 +750,7 @@ export const patentBar = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.wgList,
+        data: data?.wgList,
       },
       {
         // name: "A",
@@ -768,7 +768,7 @@ export const patentBar = function(data) {
         emphasis: {
           focus: "series",
         },
-        data: data.syList,
+        data: data?.syList,
       },
     ],
   };
