@@ -95,7 +95,14 @@ import { useUserStore } from "@/store/index.js";
     created(){
       this.getWebsiteFilingData();
       this.getOldWebsiteFilingData();
-      this.defaultTab();
+    },
+    watch:{
+      websiteFilingTotal(){
+        this.defaultTab();
+      },
+      oldWebsiteFilingTotal(){
+        this.defaultTab();
+      },
     },
     methods: {
       // 每次页面刷新自动选中第一个非零tab项
