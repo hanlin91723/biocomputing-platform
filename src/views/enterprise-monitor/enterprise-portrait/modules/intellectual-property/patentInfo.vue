@@ -38,13 +38,13 @@
          :filters="filterTypeData"
          :filter-method="filterHandler">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
          prop="patentStatus"
          label="专利状态"
          width="149"
          :filters="filterStatusData"
          :filter-method="filterHandler">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="applyNum" label="申请号" width="149"></el-table-column>
         <el-table-column prop="openNum" label="公开号" width="149"></el-table-column>
         <el-table-column
@@ -72,10 +72,13 @@
 
 <script>
 import { patentBar,basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         patentInfoData:[],
+        pieData:[],
+        patentBarData:[],
         // 企业投资分页
         patentInfoCurrentPage:1,
         patentInfoPageSize:10,
@@ -124,111 +127,68 @@ import { patentBar,basicPie } from "@/views/enterprise-monitor/enterprise-portra
     },
     computed:{
       patentBar(){
-        return patentBar();
+        return patentBar(this.patentBarData);
       },
       basicPie(){
-        return basicPie();
+        return basicPie(this.pieData);
       },
     },
     created(){
+      this.getPatentBarData();
+      this.getBasicPieData();
       this.getPatentInfoData();
     },
     methods:{
+      // 获取专利申请趋势数据
+      getPatentBarData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+        };
+        this.$axios.get("/knowledge/patentApplyTrend",params).then(({data,})=>{
+          this.patentBarData = data;
+        });
+      },
+      // 获取专利类型数据
+      getBasicPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:2,
+        };
+        this.$axios.get("/knowledge/patentType",params).then(({data,})=>{
+          this.pieData = data;
+        });
+      },
       // 裁判文书表格数据
       getPatentInfoData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.patentInfoTotal = 7;
-          this.patentInfoData = [
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种机热一体化立方星主承力结构及组装方法",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "申明、孔林、谭陆洋、孙强强",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种微小卫星热管理仿真系统及平台",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "赵相禹、杨睿光、赵春娟、郑小石、张亮、袁梓馨、陈善搏、高飞、张雷",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种焦平面的指示棱镜标定方法",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "张长帅、丛杉珊、朱春雨、王晨、孙美娇",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "基于边缘检测的建筑物语义分割后处理方法、系统以及设备",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "特日根",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种机热一体化立方星主承力结构及组装方法",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "赵相禹、杨睿光、赵春娟、郑小石、张亮、袁梓馨、陈善搏、高飞、张雷",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种机热一体化立方星主承力结构及组装方法",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "赵相禹、杨睿光、赵春娟、郑小石、张亮、袁梓馨、陈善搏、高飞、张雷",
-          },
-          {
-            applyDate: "2022-08-08",
-            patentName: "一种机热一体化立方星主承力结构及组装方法",
-            patentType: "发明专利",
-            patentStatus: "公开",
-            applyNum: "CN202210942094.9",
-            openNum: "CN115158702A",
-            openDate: "2022-10-11 ",
-            inventor: "赵相禹、杨睿光、赵春娟、郑小石、张亮、袁梓馨、陈善搏、高飞、张雷",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.patentInfoCurrentPage,
+          pageSize:this.patentInfoPageSize,
+        };
+        this.$axios.post("/develop/publicInfo",params).then(({data,})=>{
+          this.patentInfoTotal = data.total;
+          this.patentInfoData = data.list.map(item=>{
+            return {
+              applyDate: item.sqrq,
+              patentName: item.patname,
+              patentType: item.ptypeName,
+              // patentStatus: "公开",
+              applyNum: item.sgh,
+              openNum: item.gkggh,
+              openDate: item.gkggr,
+              inventor: item.fmr,
+            };
+          });
+        });
       },
       // 裁判文书分页
       patentInfoCurrentChange(val){
-      this.patentInfoCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.patentInfoCurrentPage = val;
+        this.getPatentInfoData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];

@@ -643,7 +643,7 @@ export const basicPie = function(data){
 };
 };
 
-export const patentBar = function() {
+export const patentBar = function(data) {
   return {
     tooltip: {
       trigger: "axis",
@@ -674,7 +674,7 @@ export const patentBar = function() {
     },
     xAxis: {
       type: "category",
-      data: ["2021.11","2021.12","2022.01","2022.02","2022.03","2022.04","2022.05","2022.06","2022.07","2022.08","2022.09","2022.10",],
+      data: data.dateSet,
       axisTick: {
         show: false,
       },
@@ -698,7 +698,7 @@ export const patentBar = function() {
     series: [
       {
         // name: "E",
-        name: "发明专利",
+        name: "发明公告",
         type: "bar",
         stack: "total",
         label: {
@@ -715,7 +715,27 @@ export const patentBar = function() {
         emphasis: {
           focus: "series",
         },
-        data: [320, 80, 301, 334, 390, 330, 320, 390, 330, 320, 390, 390,],
+        data: data.fmggList,
+      },
+      {
+        // name: "E",
+        name: "发明授权",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: function (e) {
+            return e.value ? e.seriesName : "";
+          },
+        },
+        itemStyle: {
+          borderRadius: [0, 0, 4, 4,],
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: data.fmsqList,
       },
       {
         // name: "P",
@@ -730,7 +750,7 @@ export const patentBar = function() {
         emphasis: {
           focus: "series",
         },
-        data: [120, 132, 101, 134, 90, 230, 210, 302, 301, 334, 390, 330,],
+        data: data.wgList,
       },
       {
         // name: "A",
@@ -748,7 +768,7 @@ export const patentBar = function() {
         emphasis: {
           focus: "series",
         },
-        data: [150, 212, 201, 154, 190, 330, 410, 182, 191, 234, 290, 330,],
+        data: data.syList,
       },
     ],
   };
