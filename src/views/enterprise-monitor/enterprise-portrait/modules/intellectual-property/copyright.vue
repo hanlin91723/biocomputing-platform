@@ -45,10 +45,14 @@
 
 <script>
 import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         copyrightData:[],
+        recruitName:[],
+        recruitValue:[],
+        basicPieData:[],
         // 企业投资分页
         copyrightCurrentPage:1,
         copyrightPageSize:10,
@@ -57,57 +61,70 @@ import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait
     },
     computed:{
       recruit(){
-        return recruit();
+        return recruit(this.recruitName,this.recruitValue);
       },
       basicPie(){
-        return basicPie();
+        return basicPie(this.basicPieData);
       },
     },
     created(){
+      this.getRecruitData();
+      this.getBasicPieData();
       this.getCopyrightData();
     },
     methods:{
+      // 获取作品申请趋势数据
+      getRecruitData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:1,
+        };
+        this.$axios.get("/knowledge/copyrightWorksType",params).then(({data,})=>{
+          data.forEach(item=>{
+            this.recruitName.push(item.name);
+            this.recruitValue.push(item.value);
+          });
+        });
+      },
+      // 获取作品类型数据
+      getBasicPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:2,
+        };
+        this.$axios.get("/knowledge/copyrightWorksType",params).then(({data,})=>{
+          this.basicPieData = data;
+        });
+      },
       // 裁判文书表格数据
       getCopyrightData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.copyrightTotal = 2;
-          this.copyrightData = [
-          {
-            workName: "长光LOGO",
-            registerNum: "国作登字-2019-F-00813310",
-            workCategory: "美术作品",
-            finishDate: "2018-09-01",
-            registerDate: "2019-06-21",
-            firstPublishDate: "2018-09-01",
-          },
-          {
-            workName: "风车电缆组合",
-            registerNum: "新作登字-2014-G-00000404",
-            workCategory: "摄影",
-            finishDate: "2013-03-15",
-            registerDate: "2014-03-14",
-            firstPublishDate: "2018-09-01",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.copyrightCurrentPage,
+          pageSize:this.copyrightPageSize,
+        };
+        this.$axios.post("/knowledge/copyrightWorksInfo",params).then(({data,})=>{
+          this.copyrightTotal = data.total;
+          this.copyrightData = data.list.map(item=>{
+            return {
+              workName: item.wname,
+              registerNum: item.wnum,
+              workCategory: item.wtype,
+              finishDate: item.cDate,
+              registerDate: item.rDate,
+              firstPublishDate: item.fDate,
+            };
+          });
+        });
       },
       // 裁判文书分页
       copyrightCurrentChange(val){
-      this.copyrightCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.copyrightCurrentPage = val;
+        this.getCopyrightData();
       },
     },
   };

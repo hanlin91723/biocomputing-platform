@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -48,61 +49,31 @@
     methods:{
       // 变更记录表格数据
       getSoftwareRightData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.softwareRightTotal = 4;
-          this.softwareRightData = [
-          {
-            approvalTime: "2022-09-27",
-            FullName: "基于OSM数据的建筑物识别数据集生产系统",
-            abbreviation: "",
-            registerNum: "2022SR1375617",
-            versionNum: "1.0",
-            firstPublishDate: "",
-          },
-          {
-            approvalTime: "2022-09-5",
-            FullName: "智慧农业综合指挥平台系统",
-            abbreviation: "",
-            registerNum: "2022SR1346770",
-            versionNum: "1.0",
-            firstPublishDate: "",
-          },
-          {
-            approvalTime: "2022-09-15",
-            FullName: "基于K8S技术的切片调度管理系统 ",
-            abbreviation: "",
-            registerNum: "2022SR1375617",
-            versionNum: "1.0",
-            firstPublishDate: "",
-          },
-          {
-            approvalTime: "2022-09-10",
-            FullName: "智慧农业综合指挥平台系统 ",
-            abbreviation: "",
-            registerNum: "2022SR1375617",
-            versionNum: "1.0",
-            firstPublishDate: "",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.softwareRightCurrentPage,
+          pageSize:this.softwareRightPageSize,
+        };
+        this.$axios.post("/knowledge/softwareWorks",params).then(({data,})=>{
+          this.softwareRightTotal = data.total;
+          this.softwareRightData = data.list.map(item=>{
+            return {
+              approvalTime: item.rdate,
+              FullName: item.sname,
+              abbreviation: item.shortName,
+              registerNum: item.snum,
+              versionNum: item.vnum,
+              firstPublishDate: item.pdate,
+            };
+          });
+        });
       },
       // 变更记录分页
       softwareRightCurrentChange(val){
-      this.softwareRightCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.softwareRightCurrentPage = val;
+        this.getSoftwareRightData();
       },
     },
   };

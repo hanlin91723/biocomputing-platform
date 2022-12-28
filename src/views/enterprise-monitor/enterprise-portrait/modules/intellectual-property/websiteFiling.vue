@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
@@ -109,100 +110,58 @@
       },
       // 网站备案表格数据
       getWebsiteFilingData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.websiteFilingTotal = 3;
-          this.websiteFilingData = [
-          {
-            auditDate:"2022-03-13",
-            homePage:"202.111.178.13",
-            domainName:"202.111.178.13",
-            websiteFiling:"吉ICP备15001825号-4",
-            registerAuthority:"",
-          },
-          {
-            auditDate:"2022-03-13",
-            homePage:"www.600089.com.cn",
-            domainName:"600089.com.cn",
-            websiteFiling:"吉ICP备15001825号-4",
-            registerAuthority:"",
-          },
-          {
-            auditDate:"2022-03-13",
-            homePage:"202.111.178.13",
-            domainName:"202.111.178.13",
-            websiteFiling:"吉ICP备15001825号-4",
-            registerAuthority:"",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.websiteFilingCurrentPage,
+          pageSize:this.websiteFilingPageSize,
+        };
+        this.$axios.post("/knowledge/filingInfo",params).then(({data,})=>{
+          this.websiteFilingTotal = data.total;
+          this.websiteFilingData = data.list.map(item=>{
+            return {
+              auditDate:item.shDate,
+              homePage:item.hostName,
+              domainName:item.hostName,
+              websiteFiling:item.icpNum,
+              registerAuthority:item.beiAnDi,
+            };
+          });
+        });
       },
       // 网站备案分页
       websiteFilingCurrentChange(val){
-      this.websiteFilingCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.websiteFilingCurrentPage = val;
+        this.getWebsiteFilingData();
       },
       // 历史网站备案表格数据
       getOldWebsiteFilingData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.oldWebsiteFilingTotal = 3;
-          this.oldWebsiteFilingData = [
-          {
-            auditDate:"2022-03-13",
-            homePage:"202.111.178.13",
-            domainName:"202.111.178.13",
-            websiteFiling:"吉ICP备15001825号-4",
-            logoutDate:"",
-            registerAuthority:"",
-          },
-          {
-            auditDate:"2022-03-13",
-            homePage:"www.600089.com.cn",
-            domainName:"600089.com.cn",
-            websiteFiling:"吉ICP备15001825号-4",
-            logoutDate:"",
-            registerAuthority:"",
-          },
-          {
-            auditDate:"2022-03-13",
-            homePage:"202.111.178.13",
-            domainName:"202.111.178.13",
-            websiteFiling:"吉ICP备15001825号-4",
-            logoutDate:"",
-            registerAuthority:"",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.oldWebsiteFilingCurrentPage,
+          pageSize:this.oldWebsiteFilingPageSize,
+        };
+        this.$axios.post("/knowledge/filingInfoCancel",params).then(({data,})=>{
+          this.oldWebsiteFilingTotal = data.total;
+          this.oldWebsiteFilingData = data.list.map(item=>{
+            return {
+              auditDate:item.shDate,
+              homePage:item.hostName,
+              domainName:item.hostName,
+              websiteFiling:item.icpNum,
+              logoutDate:item.delIme,
+              registerAuthority:item.beiAnDi,
+            };
+          });
+        });
       },
       // 历史网站备案分页
       oldWebsiteFilingCurrentChange(val){
-      this.oldWebsiteFilingCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.oldWebsiteFilingCurrentPage = val;
+        this.getOldWebsiteFilingData();
       },
       // tab切换
       handleTab(e){

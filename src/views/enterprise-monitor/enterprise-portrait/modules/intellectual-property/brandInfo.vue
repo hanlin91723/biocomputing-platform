@@ -52,12 +52,12 @@
          :filters="filterTypeData"
          :filter-method="filterHandler">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
          prop="brandStatus"
          label="商标状态"
          :filters="filterStatusData"
          :filter-method="filterHandler">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="registerDate" label="注册公告日期" width="170"></el-table-column>
       </el-table>
        <!-- 分页器 -->
@@ -76,10 +76,14 @@
 
 <script>
 import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import { useUserStore } from "@/store/index.js";
   export default {
     data() {
       return {
         brandInfoData:[],
+        recruitName:[],
+        recruitValue:[],
+        basicPieData:[],
         // 企业投资分页
         brandInfoCurrentPage:1,
         brandInfoPageSize:10,
@@ -118,59 +122,71 @@ import { recruit,basicPie } from "@/views/enterprise-monitor/enterprise-portrait
     },
     computed:{
       recruit(){
-        return recruit();
+        return recruit(this.recruitName,this.recruitValue);
       },
       basicPie(){
-        return basicPie();
+        return basicPie(this.basicPieData);
       },
     },
     created(){
+      this.getRecruitData();
+      this.getBasicPieData();
       this.getBrandInfoData();
     },
     methods:{
+      // 获取商标申请趋势数据
+      getRecruitData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:1,
+        };
+        this.$axios.get("/knowledge/trademarkType",params).then(({data,})=>{
+          data.forEach(item=>{
+            this.recruitName.push(item.name);
+            this.recruitValue.push(item.value);
+          });
+        });
+      },
+      // 获取商标类型数据
+      getBasicPieData(){
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          type:2,
+        };
+        this.$axios.get("/knowledge/trademarkType",params).then(({data,})=>{
+          this.basicPieData = data;
+        });
+      },
       // 裁判文书表格数据
       getBrandInfoData(){
-        // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
-          this.brandInfoTotal = 2;
-          this.brandInfoData = [
-          {
-            applyDate: "2021-07-01",
-            brand: "https://img5.tianyancha.com/logo/lll/ef99052a87d2249f6559cd98b34f2606.png@!f_200x200",
-            brandName: "TB·ECLOUD",
-            registerNum: "57349917",
-            classify: "09类-科学仪器",
-            brandStatus: "初审公告",
-            registerDate: "2021-12-10",
-          },
-          {
-            applyDate: "2021-03-02",
-            brand: "https://img5.tianyancha.com/logo/lll/ef99052a87d2249f6559cd98b34f2606.png@!f_200x200",
-            brandName: "TB·ECLOUD",
-            registerNum: "53956830",
-            classify: "37类-建筑修理",
-            brandStatus: "商标已注册",
-            registerDate: "2021-12-28",
-          },
-        ];
+        const userStore = useUserStore();
+        let params = {
+          entId:userStore.entId,
+          entName:userStore.entName,
+          pageNum:this.brandInfoCurrentPage,
+          pageSize:this.brandInfoPageSize,
+        };
+        this.$axios.post("/knowledge/trademarkInfo",params).then(({data,})=>{
+          this.brandInfoTotal = data.total;
+          this.brandInfoData = data.list.map(item=>{
+            return {
+              applyDate: item.applicationDate,
+              brand: item.pic,
+              brandName: item.tname,
+              registerNum: item.tnum,
+              classify: item.ttype,
+              // brandStatus: "初审公告",
+              registerDate: item.registerDate,
+            };
+          });
+        });
       },
       // 裁判文书分页
       brandInfoCurrentChange(val){
-      this.brandInfoCurrentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+        this.brandInfoCurrentPage = val;
+        this.getBrandInfoData();
       },
       filterHandler(value, row, column) {
         const property = column["property"];
