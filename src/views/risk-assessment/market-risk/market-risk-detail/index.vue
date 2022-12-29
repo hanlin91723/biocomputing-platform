@@ -216,6 +216,7 @@ export default {
       width: 58%;
       .content {
         display: flex;
+        justify-content: space-around;
         text-align: center;
         .content-left {
           width: 450px;

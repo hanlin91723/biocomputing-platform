@@ -180,6 +180,7 @@ import { useUserStore } from "@/store/index.js";
   table-layout: fixed;
   // border-collapse: collapse;
   border-collapse: separate;
+  width: 100%;
   // border-spacing: 0 2px;
   .security-title {
     width: 1389px;

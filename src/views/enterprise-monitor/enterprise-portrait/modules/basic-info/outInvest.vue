@@ -52,7 +52,7 @@
        @current-change="enterpriseInvestCurrentChange">
       </el-pagination>
     </div>
-    <div>
+    <!-- <div>
       <h3 class="title">法定代表人对外投资信息 {{personInvestTotal}}</h3>
       <el-table
        :data="personInvestData"
@@ -80,9 +80,9 @@
         <el-table-column prop="shouldQuota" label="认缴出资额" width="100"></el-table-column>
         <el-table-column prop="actualQuota" label="实缴出资额" width="100"></el-table-column>
         <el-table-column prop="area" label="地区" width="100"></el-table-column>
-    </el-table>
+    </el-table> -->
     <!-- 分页器 -->
-    <el-pagination background
+    <!-- <el-pagination background
        v-show="personInvestTotal > 10"
        layout="total, prev, pager, next"
        :page-size="personInvestPageSize"
@@ -91,7 +91,7 @@
        class="pagination"
        @current-change="personInvestCurrentChange">
       </el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -129,7 +129,7 @@ import { useUserStore } from "@/store/index.js";
       this.getMapData();
       this.getInvestPieData();
       this.getEnterpriseInvestData();
-      this.getPersonInvestData();
+      // this.getPersonInvestData();
     },
     methods:{
       getStatusFilterData(){

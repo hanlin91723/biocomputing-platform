@@ -2,8 +2,8 @@
   <div class="portrait" ref="portrait">
     <el-card>
       <div class="card">
-        <img :src="headerInfo.src" alt="" class="img" v-if="headerInfo.src">
-        <div class="img default" v-else>{{ headerInfo.entName[0] }}</div>
+        <!-- <img :src="headerInfo.cname" alt="" class="img" v-if="headerInfo.cname"> -->
+        <div class="img default">{{ headerInfo.cname }}</div>
         <div class="companyInfo">
           <h2 class="title">{{ headerInfo.entName || '--'}}</h2>
           <div class="tag">
@@ -154,7 +154,6 @@
             <el-dropdown-item command="BrandInfo">商标信息</el-dropdown-item>
             <el-dropdown-item command="SoftwareRight">软件著作权</el-dropdown-item>
             <el-dropdown-item command="Copyright">作品著作权</el-dropdown-item>
-            <el-dropdown-item command="Administration">科技成果</el-dropdown-item>
             <el-dropdown-item command="WebsiteFiling">网站备案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -352,6 +351,7 @@ methods:{
 .portrait{
   .card{
     display: flex;
+    justify-content: space-around;
     .img{
     width: 100px;
     height: 100px;
@@ -361,7 +361,7 @@ methods:{
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 40px;
+      font-size: 24px;
       font-weight: 700;
       font-family: 'KaiTi';
       background-color: #F5F7FA;
