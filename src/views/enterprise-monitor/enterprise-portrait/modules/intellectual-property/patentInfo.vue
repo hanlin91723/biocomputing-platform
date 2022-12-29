@@ -169,7 +169,7 @@ import { useUserStore } from "@/store/index.js";
           pageNum:this.patentInfoCurrentPage,
           pageSize:this.patentInfoPageSize,
         };
-        this.$axios.post("/develop/publicInfo",params).then(({data,})=>{
+        this.$axios.post("/knowledge/patentInfo",params).then(({data,})=>{
           this.patentInfoTotal = data.total;
           this.patentInfoData = data.list.map(item=>{
             return {

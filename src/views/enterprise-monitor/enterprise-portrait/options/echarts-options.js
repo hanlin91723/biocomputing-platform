@@ -266,7 +266,7 @@ export const mapAndBar = function(data){
                 },
             };
         }),
-        barWidth:"45%",
+        barWidth:18,
         label: {
             show: true,
             position: "right",

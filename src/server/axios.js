@@ -47,6 +47,9 @@ service.interceptors.response.use(
     //   sessionStorage.clear();
     //   return;
     // }
+    if(result.config.responseType === "blob"){
+      return result;
+    }
     if (result.data.code === "0") {
       return result.config.responseType === "arraybuffer" ||
         result.config.responseType === "blob" ?

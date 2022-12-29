@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { exportTableAsXLSX } from "@/util/util";
+// import { exportTableAsXLSX } from "@/util/util";
 const searchFormList = [
   {
     formLabel: "所属行业",
@@ -402,7 +402,7 @@ export default {
   created() {
     const routeParams = this.$route.params;
     this.searchFormData.highTechEnt = routeParams.highTechEnt
-      ? [routeParams.highTechEnt]
+      ? [routeParams.highTechEnt,]
       : [];
     this.searchFormData.entName = routeParams.entName || "";
     this.getIndustryList();
@@ -485,7 +485,7 @@ export default {
           break;
         default:
       }
-      this.$axios.post("/entInfo/condition", params).then(({ data }) => {
+      this.$axios.post("/entInfo/condition", params).then(({ data, }) => {
         this.total = data.total;
         this.tableData = data.list;
       });
@@ -495,7 +495,7 @@ export default {
         .get("/dict/queryDictByType", {
           dictType: "industry",
         })
-        .then(({ data }) => {
+        .then(({ data, }) => {
           this.optsObj.industryOpts = data.map((item) => ({
             id: item.dictName,
             name: item.dictName,
@@ -530,7 +530,7 @@ export default {
       }
     },
     // 企业画像
-    portrait({ entId }) {
+    portrait({ entId, }) {
       //  提示
       this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
@@ -540,7 +540,143 @@ export default {
       this.getTableData();
     },
     onSubmit() {
-      exportTableAsXLSX("outTable");
+      // exportTableAsXLSX("outTable");
+      let params = Object.assign({}, this.searchFormData, {
+        pageSize: 2000,
+        pageNum: 1,
+      });
+      switch (this.searchFormData.registerCapital) {
+        case "100万以内":
+          params.endRegisteredCapital = 100;
+          break;
+        case "100-200万":
+          params.startRegisteredCapital = 100;
+          params.endRegisteredCapital = 200;
+          break;
+        case "200-500万":
+          params.startRegisteredCapital = 200;
+          params.endRegisteredCapital = 500;
+          break;
+        case "500-1000万":
+          params.startRegisteredCapital = 500;
+          params.endRegisteredCapital = 1000;
+          break;
+        case "1000万以上":
+          params.startRegisteredCapital = 1000;
+          break;
+        default:
+      }
+      switch (this.searchFormData.duration) {
+        case "1年内":
+          params.incorporationStartDate = this.getDate(1);
+          break;
+        case "1-5年":
+          params.incorporationStartDate = this.getDate(5);
+          params.incorporationEndDate = this.getDate(1);
+          break;
+        case "5-10年":
+          params.incorporationStartDate = this.getDate(10);
+          params.incorporationEndDate = this.getDate(5);
+          break;
+        case "10-15年":
+          params.incorporationStartDate = this.getDate(15);
+          params.incorporationEndDate = this.getDate(10);
+          break;
+        case "15年以上":
+          params.incorporationEndDate = this.getDate(15);
+          break;
+        default:
+      }
+      switch (this.searchFormData.staffNum) {
+        case "小于50人":
+          params.personEndNum = 50;
+          break;
+        case "50-99人":
+          params.personStartNum = 50;
+          params.personEndNum = 99;
+          break;
+        case "100-499人":
+          params.personStartNum = 100;
+          params.personEndNum = 499;
+          break;
+        case "500-999人":
+          params.personStartNum = 500;
+          params.personEndNum = 999;
+          break;
+        case "1000-4999人":
+          params.personStartNum = 1000;
+          params.personEndNum = 4999;
+          break;
+        case "5000-9999人":
+          params.personStartNum = 5000;
+          params.personEndNum = 9999;
+          break;
+        case "10000人以上":
+          params.personStartNum = 10000;
+          break;
+        default:
+      }
+      // 创建当前时间字符串，生成文件名称时使用
+      const time = this.getCurentTime();
+      this.$axios.post("/entInfo/exportEnt", params,{responseType: "blob",}).then((res) => {
+        // 转化为blob对象
+      let blob = new Blob([res.data,], {
+        type: "application/octet-stream",
+      });
+      let filename = time + ".xls";
+      // 将blob对象转为一个URL
+      var blobURL = window.URL.createObjectURL(blob);
+      // 创建一个a标签
+      var tempLink = document.createElement("a");
+      // 隐藏a标签
+      tempLink.style.display = "none";
+      // 设置a标签的href属性为blob对象转化的URL
+      tempLink.href = blobURL;
+      // 给a标签添加下载属性
+      tempLink.setAttribute("download", filename);
+      if (typeof tempLink.download === "undefined") {
+        tempLink.setAttribute("target", "_blank");
+      }
+      // 将a标签添加到body当中
+      document.body.appendChild(tempLink);
+      // 启动下载
+      tempLink.click();
+      // 下载完毕删除a标签
+      document.body.removeChild(tempLink);
+      window.URL.revokeObjectURL(blobURL);
+      this.$message({
+        message: "导出成功~",
+        type: "success",
+      });
+        });
+    },
+    getCurentTime() {
+      var date = new Date();
+      //以下代码依次是获取当前时间的年月日时分秒
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      var minute = date.getMinutes();
+      var hour = date.getHours();
+      var second = date.getSeconds();
+      //固定时间格式
+      if (month >= 1 && month <= 9) {
+      month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+      }
+      if (hour >= 0 && hour <= 9) {
+        hour = "0" + hour;
+      }
+      if (minute >= 0 && minute <= 9) {
+        minute = "0" + minute;
+      }
+      if (second >= 0 && second <= 9) {
+        second = "0" + second;
+      }
+      var currentdate = "_" + year + month + strDate + hour + minute + second;
+      return currentdate;
     },
     reset() {
       for (const keyName in this.searchFormData) {
