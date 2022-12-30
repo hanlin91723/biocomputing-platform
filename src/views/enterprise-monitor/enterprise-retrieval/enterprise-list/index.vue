@@ -161,6 +161,7 @@
 
 <script>
 // import { exportTableAsXLSX } from "@/util/util";
+import { useUserStore } from "@/store/index.js";
 const searchFormList = [
   {
     formLabel: "所属行业",
@@ -530,8 +531,10 @@ export default {
       }
     },
     // 企业画像
-    portrait({ entId, }) {
+    portrait({ entId,entName, }) {
       //  提示
+      const userStore = useUserStore();
+      userStore.saveEntId(entId,entName);
       this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
     // 分页

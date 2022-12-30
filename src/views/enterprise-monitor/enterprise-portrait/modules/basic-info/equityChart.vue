@@ -3,6 +3,7 @@
     <h3 class="title">股权穿透图</h3>
     <div class="chart" ref="chart">
       <el-button class="icon" icon="el-icon-full-screen" @click="fullScreen">{{isFullScreen ? '退出全屏' : '全屏查看' }}</el-button>
+      <el-button class="icon" icon="el-icon-download" @click="download">保存图片</el-button>
     </div>
   </div>
 </template>
@@ -157,6 +158,29 @@ import { useUserStore } from "@/store/index.js";
           this.$refs.chart.requestFullscreen();
           this.isFullScreen = true;
         }
+      },
+      download(){
+        let serializer = new XMLSerializer();
+        let source = serializer.serializeToString(this.tree.svg.node());
+        
+        source = "<?xml version=\"1.0\" standalone=\"no\"?>\r\n" + source;
+        let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+   
+        let canvas = document.createElement("canvas");
+        canvas.width = this.tree.config.width*2/3;
+        canvas.height = this.tree.config.height;
+   
+        let context = canvas.getContext("2d");
+        let image = new Image;
+        image.src = url;
+        image.onload = function() {
+         context.drawImage(image, 0, 0);
+         const userStore = useUserStore();
+         let a = document.createElement("a");
+         a.download = userStore.entName + "-股权穿透图.png";
+         a.href = canvas.toDataURL("image/png",1);
+         a.click();
+       };
       },
     },
   };
