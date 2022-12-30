@@ -312,7 +312,7 @@ export default class StockTree {
       })
       .text((d) => {
         if (d.depth !== 0) {
-          return d.data.percent;
+          return d.data.percent+"%";
         }
       })
       .attr("fill", "#000000")
@@ -569,7 +569,7 @@ export default class StockTree {
         })
         .text((d) => {
           if (d.depth !== 0) {
-            return d.data.percent;
+            return d.data.percent+"%";
           }
         })
         .attr("fill", "#000000")
