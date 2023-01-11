@@ -60,9 +60,6 @@ export default {
 
 <style lang="less" scoped>
 .risk-warning {
-  /deep/ .header-row {
-    background: #f0f7fc;
-  }
   .riskColor1 {
     color: rgb(217, 0, 27);
   }

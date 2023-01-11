@@ -85,9 +85,6 @@
             <el-dropdown-item command="LimitConsume"
               >限制高消费</el-dropdown-item
             >
-            <el-dropdown-item command="RestrictedExit"
-              >限制出境</el-dropdown-item
-            >
             <el-dropdown-item command="FinalCase">终本案件</el-dropdown-item>
             <el-dropdown-item command="Document">裁判文书</el-dropdown-item>
           </el-dropdown-menu>
@@ -95,7 +92,6 @@
         <div v-if="activeName == '司法风险'">
           <Executee class="margin" ref="Executee"></Executee>
           <LimitConsume class="margin" ref="LimitConsume"></LimitConsume>
-          <RestrictedExit class="margin" ref="RestrictedExit"></RestrictedExit>
           <FinalCase class="margin" ref="FinalCase"></FinalCase>
           <Document class="margin" ref="Document"></Document>
         </div>
@@ -277,10 +273,6 @@ const LimitConsume = () =>
   import(
     "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/limitConsume.vue"
   );
-const RestrictedExit = () =>
-  import(
-    "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/restrictedExit.vue"
-  );
 const FinalCase = () =>
   import(
     "@/views/enterprise-monitor/enterprise-portrait/modules/judicial-risk/finalCase.vue"
@@ -412,7 +404,6 @@ export default {
     // 司法风险
     Executee,
     LimitConsume,
-    RestrictedExit,
     FinalCase,
     Document,
     // 经营风险

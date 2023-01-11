@@ -3,13 +3,8 @@
     <h3 class="title">限制高消费 {{ limitConsumeTotal }}</h3>
     <el-table
       :data="limitConsumeData"
-      style="width: 100%"
-      border
-      :cell-style="{ 'text-align': 'center' }"
-      :header-cell-style="{
-        backgroundColor: '#f0f7fc',
-        'text-align': 'center',
-      }"
+      size="small"
+      header-cell-class-name="header-row"
     >
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="referenceNum" label="案号"></el-table-column>

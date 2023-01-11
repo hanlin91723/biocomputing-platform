@@ -204,10 +204,16 @@ export default {
     },
     // 企业画像
     portrait({ entId, entName }) {
-      //  提示
       const userStore = useUserStore();
       userStore.saveEntId(entId, entName);
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      // this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      //新窗口打开企业画像
+      const routeData = this.$router.resolve({
+        path: `${
+          import.meta.env.BASE_URL
+        }enterprise-retrieval/enterprise-portrait/${entId}`,
+      });
+      window.open(routeData.location.path, "_blank");
     },
     // 风险详情
     riskDetails({ entId }) {

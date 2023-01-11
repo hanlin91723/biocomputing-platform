@@ -13,56 +13,87 @@
         </el-card>
       </div>
       <el-table
-         :data="enterpriseInvestData"
-         style="width: 100%"
-         border
-         :cell-style="{'text-align':'center'}"
-         :header-cell-style="{
-          backgroundColor:'#f0f7fc',
-          'text-align':'center'
-          }">
+        :data="enterpriseInvestData"
+        size="small"
+        header-cell-class-name="header-row"
+      >
         <el-table-column label="序号" width="50" type="index"></el-table-column>
-        <el-table-column prop="enterpriseName" label="被投企业名称"></el-table-column>
         <el-table-column
-         prop="registerState"
-         label="企业登记状态"
-         width="100"
-         :filters="filterData"
-         :filter-method="filterHandler">
+          prop="enterpriseName"
+          label="被投企业名称"
+        ></el-table-column>
+        <el-table-column
+          prop="registerState"
+          label="企业登记状态"
+          :filters="filterData"
+          :filter-method="filterHandler"
+        >
         </el-table-column>
-        <el-table-column prop="legalPerson" label="被投资企业法定代表人" width="96"></el-table-column>
-        <el-table-column prop="dutyType" label="责任类型" width="100"></el-table-column>
-        <el-table-column prop="mainType" label="主体类型" width="100"></el-table-column>
-        <el-table-column prop="contribution" label="出资额" width="100"></el-table-column>
-        <el-table-column prop="contributionTime" label="出资日期" width="100"></el-table-column>
-        <el-table-column prop="contributionMode" label="出资方式" width="100"></el-table-column>
-        <el-table-column prop="contributionScale" label="出资比例" width="90"></el-table-column>
-        <el-table-column prop="shouldQuota" label="认缴出资额" width="100"></el-table-column>
-        <el-table-column prop="actualQuota" label="实缴出资额" width="100"></el-table-column>
+        <el-table-column
+          prop="legalPerson"
+          label="被投资企业法定代表人"
+        ></el-table-column>
+        <el-table-column
+          prop="dutyType"
+          label="责任类型"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="mainType"
+          label="主体类型"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="contribution"
+          label="出资额"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="contributionTime"
+          label="出资日期"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="contributionMode"
+          label="出资方式"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="contributionScale"
+          label="出资比例"
+          width="90"
+        ></el-table-column>
+        <el-table-column
+          prop="shouldQuota"
+          label="认缴出资额"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="actualQuota"
+          label="实缴出资额"
+          width="100"
+        ></el-table-column>
         <el-table-column prop="area" label="地区" width="100"></el-table-column>
       </el-table>
-       <!-- 分页器 -->
-       <el-pagination background
-       v-show="enterpriseInvestTotal > 10"
-       layout="total, prev, pager, next"
-       :page-size="enterpriseInvestPageSize"
-       :total="enterpriseInvestTotal" 
-       :current-page="enterpriseInvestCurrentPage"
-       class="pagination"
-       @current-change="enterpriseInvestCurrentChange">
+      <!-- 分页器 -->
+      <el-pagination
+        background
+        v-show="enterpriseInvestTotal > 10"
+        layout="total, prev, pager, next"
+        :page-size="enterpriseInvestPageSize"
+        :total="enterpriseInvestTotal"
+        :current-page="enterpriseInvestCurrentPage"
+        class="pagination"
+        @current-change="enterpriseInvestCurrentChange"
+      >
       </el-pagination>
     </div>
     <!-- <div>
       <h3 class="title">法定代表人对外投资信息 {{personInvestTotal}}</h3>
       <el-table
        :data="personInvestData"
-       style="width: 100%"
-       border
-       :cell-style="{'text-align':'center'}"
-       :header-cell-style="{
-        backgroundColor:'#f0f7fc',
-        'text-align':'center'
-        }">
+       size="small"
+        header-cell-class-name="header-row">
         <el-table-column label="序号" width="50" type="index"></el-table-column>
         <el-table-column prop="enterpriseName" label="被投企业名称"></el-table-column>
         <el-table-column
@@ -96,117 +127,124 @@
 </template>
 
 <script>
-import { mapAndBar, investPie } from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
+import {
+  mapAndBar,
+  investPie,
+} from "@/views/enterprise-monitor/enterprise-portrait/options/echarts-options";
 import { useUserStore } from "@/store/index.js";
-  export default {
-    data() {
-      return {
-        enterpriseInvestData:[],
-        personInvestData:[],
-        mapAndBarData:[],
-        investPieData:[],
-        // 企业投资分页
-        enterpriseInvestCurrentPage:1,
-        enterpriseInvestPageSize:10,
-        enterpriseInvestTotal:0,
-        // 企业投资分页
-        personInvestCurrentPage:1,
-        personInvestPageSize:10,
-        personInvestTotal:0,
-        filterData:[],
+export default {
+  data() {
+    return {
+      enterpriseInvestData: [],
+      personInvestData: [],
+      mapAndBarData: [],
+      investPieData: [],
+      // 企业投资分页
+      enterpriseInvestCurrentPage: 1,
+      enterpriseInvestPageSize: 10,
+      enterpriseInvestTotal: 0,
+      // 企业投资分页
+      personInvestCurrentPage: 1,
+      personInvestPageSize: 10,
+      personInvestTotal: 0,
+      filterData: [],
+    };
+  },
+  computed: {
+    mapAndBar() {
+      return mapAndBar(this.mapAndBarData);
+    },
+    investPie() {
+      return investPie(this.investPieData);
+    },
+  },
+  created() {
+    this.getStatusFilterData();
+    this.getMapData();
+    this.getInvestPieData();
+    this.getEnterpriseInvestData();
+    // this.getPersonInvestData();
+  },
+  methods: {
+    getStatusFilterData() {
+      let params = {
+        dictType: "entStatus",
       };
+      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
+        this.filterData = data.map((item) => {
+          return {
+            text: item.dictName,
+            value: item.dictName,
+          };
+        });
+      });
     },
-    computed:{
-      mapAndBar(){
-        return mapAndBar(this.mapAndBarData);
-      },
-      investPie(){
-        return investPie(this.investPieData);
-      },
+    getMapData() {
+      const userStore = useUserStore();
+      let params = {
+        entName: userStore.entName,
+      };
+      this.$axios.get("/entInfo/foreignInvestArea", params).then(({ data }) => {
+        this.mapAndBarData = data.map((item) => {
+          return {
+            name: item.regionName,
+            value: item.num,
+          };
+        });
+      });
+      // this.mapAndBarData = [
+      //   {
+      //     name: "北京市",
+      //     value: 13,
+      //   },
+      //   {
+      //     name: "广东省",
+      //     value: 8,
+      //   },
+      //   {
+      //     name: "浙江省",
+      //     value: 6,
+      //   },
+      //   {
+      //     name: "重庆市",
+      //     value: 5,
+      //   },
+      //   {
+      //     name: "天津市",
+      //     value: 2,
+      //   },
+      // ];
     },
-    created(){
-      this.getStatusFilterData();
-      this.getMapData();
-      this.getInvestPieData();
-      this.getEnterpriseInvestData();
-      // this.getPersonInvestData();
-    },
-    methods:{
-      getStatusFilterData(){
-        let params = {
-          dictType:"entStatus",
-        };
-        this.$axios.get("/dict/queryDictByType",params).then(({data,})=>{
-          this.filterData = data.map(item=>{
+    getInvestPieData() {
+      const userStore = useUserStore();
+      let params = {
+        entName: userStore.entName,
+      };
+      this.$axios
+        .get("/entInfo/foreignInvestIndustry", params)
+        .then(({ data }) => {
+          this.investPieData = data.map((item) => {
             return {
-              text: item.dictName,
-              value: item.dictName,
+              name: item.industry,
+              value: item.num,
             };
           });
         });
-      },
-      getMapData(){
-        const userStore = useUserStore();
-        let params = {
-          entName:userStore.entName,
-        };
-        this.$axios.get("/entInfo/foreignInvestArea",params).then(({data,})=>{
-          this.mapAndBarData = data.map(item=>{
-            return {
-              name:item.regionName,
-              value:item.num,
-            };
-          });
-        });
-        // this.mapAndBarData = [
-        //   {
-        //     name: "北京市",
-        //     value: 13,
-        //   },
-        //   {
-        //     name: "广东省",
-        //     value: 8,
-        //   },
-        //   {
-        //     name: "浙江省",
-        //     value: 6,
-        //   },
-        //   {
-        //     name: "重庆市",
-        //     value: 5,
-        //   },
-        //   {
-        //     name: "天津市",
-        //     value: 2,
-        //   },
-        // ];
-      },
-      getInvestPieData(){
-        const userStore = useUserStore();
-        let params = {
-          entName:userStore.entName,
-        };
-        this.$axios.get("/entInfo/foreignInvestIndustry",params).then(({data,})=>{
-          this.investPieData = data.map(item=>{
-            return {
-              name:item.industry,
-              value:item.num,
-            };
-          });
-        });
-      },
-      // 企业投资表格数据
-      getEnterpriseInvestData(){
-        const userStore = useUserStore();
-        let params = {
-          entId:userStore.entId,
-          entName:userStore.entName,
-          pageNum:this.enterpriseInvestCurrentPage,
-          pageSize:this.enterpriseInvestPageSize,
-        };
-        this.$axios.post("/entInfo/foreignInvestmentEnt",params).then(({data,})=>{
+    },
+    // 企业投资表格数据
+    getEnterpriseInvestData() {
+      const userStore = useUserStore();
+      let params = {
+        entId: userStore.entId,
+        entName: userStore.entName,
+        pageNum: this.enterpriseInvestCurrentPage,
+        pageSize: this.enterpriseInvestPageSize,
+      };
+      this.$axios
+        .post("/entInfo/foreignInvestmentEnt", params)
+        .then(({ data }) => {
           this.enterpriseInvestTotal = data.total;
-          this.enterpriseInvestData = data.list.map(item=>{
+          this.enterpriseInvestData = data.list.map((item) => {
             return {
               enterpriseName: item.entName,
               registerState: item.entStatus,
@@ -215,23 +253,23 @@ import { useUserStore } from "@/store/index.js";
               mainType: item.infoTypeName,
               contribution: item.conam + "万元人民币",
               contributionTime: item.condate,
-              contributionMode:item.conformName,
-              contributionScale:item.conprop,
+              contributionMode: item.conformName,
+              contributionScale: item.conprop,
               shouldQuota: item.subconam,
               actualQuota: item.acconam,
               area: item.countryName,
             };
           });
         });
-      },
-      // 企业投资分页
-      enterpriseInvestCurrentChange(val){
-        this.enterpriseInvestCurrentPage = val;
-        this.getEnterpriseInvestData();
-      },
-      // 法人投资表格数据
-      getPersonInvestData(){
-        // let params = {
+    },
+    // 企业投资分页
+    enterpriseInvestCurrentChange(val) {
+      this.enterpriseInvestCurrentPage = val;
+      this.getEnterpriseInvestData();
+    },
+    // 法人投资表格数据
+    getPersonInvestData() {
+      // let params = {
       //   currentPage:this.currentPage,
       //   pageSize:this.pageSize,
       // }
@@ -239,36 +277,36 @@ import { useUserStore } from "@/store/index.js";
       //   console.log(data);
       //   this.tableData = data;
       // });
-          this.personInvestTotal = 2;
-          this.personInvestData = [
+      this.personInvestTotal = 2;
+      this.personInvestData = [
         {
-            enterpriseName: "石河子市欧拓通信软件有限公司",
-            registerState: "在营（开业）企业",
-            legalPerson: "朱高领",
-            contribution: "10000万元人民币",
-            contributionTime: "2016-07-28",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "新疆维吾尔自治区",
-          },
-          {
-            enterpriseName: "哲库科技（广东）有限公司",
-            registerState: "注销",
-            legalPerson: "刘君",
-            contribution: "10000万元人民币",
-            contributionTime: "2013-10-21",
-            contributionMode:"",
-            contributionScale:"100%",
-            shouldQuota: "",
-            actualQuota: "",
-            area: "广东",
-          },
-        ];
-      },
-      // 法人投资分页
-      personInvestCurrentChange(val){
+          enterpriseName: "石河子市欧拓通信软件有限公司",
+          registerState: "在营（开业）企业",
+          legalPerson: "朱高领",
+          contribution: "10000万元人民币",
+          contributionTime: "2016-07-28",
+          contributionMode: "",
+          contributionScale: "100%",
+          shouldQuota: "",
+          actualQuota: "",
+          area: "新疆维吾尔自治区",
+        },
+        {
+          enterpriseName: "哲库科技（广东）有限公司",
+          registerState: "注销",
+          legalPerson: "刘君",
+          contribution: "10000万元人民币",
+          contributionTime: "2013-10-21",
+          contributionMode: "",
+          contributionScale: "100%",
+          shouldQuota: "",
+          actualQuota: "",
+          area: "广东",
+        },
+      ];
+    },
+    // 法人投资分页
+    personInvestCurrentChange(val) {
       this.personInvestCurrentPage = val;
       // let params = {
       //   currentPage:this.currentPage,
@@ -278,47 +316,47 @@ import { useUserStore } from "@/store/index.js";
       //   console.log(data);
       //   this.tableData = data;
       // });
-      },
-      filterHandler(value, row, column) {
-        const property = column["property"];
-        return row[property] === value;
-      },
     },
-  };
+    filterHandler(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-.outInvest{
-  .title{
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
-  .enterpriseInvest{
-    margin-bottom: 30px;
-.chart{
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  .mapChart,.pieChart{
-    width: 49%;
-    text-align: center;
-    .chartContent{
-    width: 569px;
-    height: 263px;
-    // border: 1px solid #cfcfcf;
-  }
-  }
-  .chartTitle{
+.outInvest {
+  .title {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
-  
-}
-.pagination{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
+  .enterpriseInvest {
+    margin-bottom: 30px;
+    .chart {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      .mapChart,
+      .pieChart {
+        width: 49%;
+        text-align: center;
+        .chartContent {
+          width: 569px;
+          height: 263px;
+          // border: 1px solid #cfcfcf;
+        }
+      }
+      .chartTitle {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+    }
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
   }
 }
 </style>

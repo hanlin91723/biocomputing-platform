@@ -299,9 +299,6 @@ export default {
   .select {
     width: 100%;
   }
-  /deep/ .header-row {
-    background: #f0f7fc;
-  }
   .pagination {
     display: flex;
     justify-content: flex-end;

@@ -72,9 +72,16 @@ export default {
     handleEnterpriseInfo(row) {
       const userStore = useUserStore();
       userStore.saveEntId(row.entId, row.entName);
-      this.$router.push(
-        `/enterprise-retrieval/enterprise-portrait/${row.entId}`
-      );
+      // this.$router.push(
+      //   `/enterprise-retrieval/enterprise-portrait/${row.entId}`
+      // );
+      //新窗口打开企业画像
+      const routeData = this.$router.resolve({
+        path: `${
+          import.meta.env.BASE_URL
+        }enterprise-retrieval/enterprise-portrait/${row.entId}`,
+      });
+      window.open(routeData.location.path, "_blank");
     },
   },
 };
@@ -104,9 +111,6 @@ export default {
     border: 1px solid rgba(182, 200, 76, 0.3);
     background-color: rgba(182, 200, 76, 0.1);
     color: rgba(182, 200, 76, 1);
-  }
-  /deep/ .header-row {
-    background: #f0f7fc;
   }
 }
 </style>

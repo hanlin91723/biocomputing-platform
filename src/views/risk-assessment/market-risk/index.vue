@@ -106,12 +106,12 @@ export default {
           label: "中风险",
         },
         {
-          value: "无风险",
-          label: "无风险",
-        },
-        {
           value: "警示",
           label: "警示",
+        },
+        {
+          value: "无风险",
+          label: "无风险",
         },
       ],
       // 查询数据
@@ -123,7 +123,7 @@ export default {
     this.getTableData();
   },
   methods: {
-    riskTrans(num){
+    riskTrans(num) {
       switch (num) {
         case 0:
           return "无风险";
@@ -139,11 +139,11 @@ export default {
     },
     getTableData() {
       let params = {
-        riskType:this.classifyValue,
-        riskLevel:this.riskGradeValue,
+        riskType: this.classifyValue,
+        riskLevel: this.riskGradeValue,
       };
-      this.$axios.get("/marketRisk/byCondition",params).then(({data,})=>{
-        this.tableData = data.map(item=>{
+      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
+        this.tableData = data.map((item) => {
           return {
             id: item.id,
             riskGrade: this.riskTrans(item.riskLevel),
@@ -159,11 +159,11 @@ export default {
     search() {
       // 调用接口查询，拿到结果给表格
       let params = {
-        riskType:this.classifyValue,
-        riskLevel:this.riskGradeValue,
+        riskType: this.classifyValue,
+        riskLevel: this.riskGradeValue,
       };
-      this.$axios.get("/marketRisk/byCondition",params).then(({data,})=>{
-        this.tableData = data.map(item=>{
+      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
+        this.tableData = data.map((item) => {
           return {
             id: item.id,
             riskGrade: this.riskTrans(item.riskLevel),
@@ -191,16 +191,16 @@ export default {
       }
     },
     // 风险详情
-    riskDetails({ id, }) {
+    riskDetails({ id }) {
       this.$router.push({
         path: "/market-risk/detail",
-        query:{
+        query: {
           id,
         },
       });
     },
     // 为表格头标题添加小图标并hover后出现提示信息
-    renderCount(h, { column, }) {
+    renderCount(h, { column }) {
       // h 是一个渲染函数       column 是一个对象表示当前列      $index 第几列
       return h("div", [
         h("span", column.label + "  ", {

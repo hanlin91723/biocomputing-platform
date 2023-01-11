@@ -66,7 +66,11 @@
         label="企业名称"
         width="240"
       ></el-table-column>
-      <el-table-column prop="legalPerson" label="法人" width="90"></el-table-column>
+      <el-table-column
+        prop="legalPerson"
+        label="法人"
+        width="90"
+      ></el-table-column>
       <el-table-column
         prop="creditCode"
         label="统一社会信用代码"
@@ -87,9 +91,10 @@
         width="185"
       >
         <template slot-scope="scope">
-          <span :class="{ [indexRisk(scope.row.earlyWarning).className]: true }">{{
-            indexRisk(scope.row.earlyWarning).text
-          }}</span>
+          <span
+            :class="{ [indexRisk(scope.row.earlyWarning).className]: true }"
+            >{{ indexRisk(scope.row.earlyWarning).text }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -166,7 +171,7 @@ export default {
       // 查询数据
       industryValue: "全部",
       riskGradeValue: "全部",
-      earlyWarningValue:"全部",
+      earlyWarningValue: "全部",
       enterpriseName: "",
       // 分页
       total: 0,
@@ -174,13 +179,13 @@ export default {
       currentPage: 1,
     };
   },
-  props:{
-    params:{
-      type:Object,
+  props: {
+    params: {
+      type: Object,
     },
   },
-  watch:{
-    params(){
+  watch: {
+    params() {
       this.getTableData();
     },
   },
@@ -191,17 +196,17 @@ export default {
   methods: {
     getTableData() {
       let params = {
-        industry:this.industryValue,
-        riskLevel:this.riskGradeValue,
-        indexRiskLevel:this.earlyWarningValue,
-        entName:this.enterpriseName,
-        pageNum:this.currentPage,
-        pageSize:this.pageSize,
+        industry: this.industryValue,
+        riskLevel: this.riskGradeValue,
+        indexRiskLevel: this.earlyWarningValue,
+        entName: this.enterpriseName,
+        pageNum: this.currentPage,
+        pageSize: this.pageSize,
         ...this.params,
       };
-      this.$axios.post("/marketRisk/marketEntList",params).then(({data,})=>{
+      this.$axios.post("/marketRisk/marketEntList", params).then(({ data }) => {
         this.total = data.total;
-        this.tableData = data.list.map((item,index)=>{
+        this.tableData = data.list.map((item, index) => {
           return {
             index: index + 1,
             entId: item.entId,
@@ -217,18 +222,18 @@ export default {
     },
     getIndustryOptions() {
       let params = {
-        dictType:"industry",
+        dictType: "industry",
       };
-      this.$axios.get("/dict/queryDictByType",params).then(({data,})=>{
-        this.industryOptions = data.map(item=>{
+      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
+        this.industryOptions = data.map((item) => {
           return {
-            value:item.dictName,
-            label:item.dictName,
+            value: item.dictName,
+            label: item.dictName,
           };
         });
         this.industryOptions.unshift({
-          value:"全部",
-          label:"全部",
+          value: "全部",
+          label: "全部",
         });
       });
     },
@@ -244,22 +249,22 @@ export default {
         case val > 0 && val <= 25:
           return {
             className: "riskColor4",
-            text:val + "（低风险）",
+            text: val + "（低风险）",
           };
         case val > 25 && val <= 50:
           return {
             className: "riskColor3",
-            text:val + "（中风险）",
+            text: val + "（中风险）",
           };
         case val > 50 && val <= 75:
           return {
             className: "riskColor2",
-            text:val + "（较高风险）",
+            text: val + "（较高风险）",
           };
         case val > 75 && val <= 100:
           return {
             className: "riskColor1",
-            text:val + "（高风险）",
+            text: val + "（高风险）",
           };
         default:
           break;
@@ -292,14 +297,20 @@ export default {
       }
     },
     // 企业画像
-    portrait({ entId,enterpriseName, }) {
-      //  提示
+    portrait({ entId, enterpriseName }) {
       const userStore = useUserStore();
-      userStore.saveEntId(entId,enterpriseName);
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      userStore.saveEntId(entId, enterpriseName);
+      // this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      //新窗口打开企业画像
+      const routeData = this.$router.resolve({
+        path: `${
+          import.meta.env.BASE_URL
+        }enterprise-retrieval/enterprise-portrait/${entId}`,
+      });
+      window.open(routeData.location.path, "_blank");
     },
     // 风险详情
-    riskDetails({ id, }) {
+    riskDetails({ id }) {
       console.log(id);
       this.$router.push({
         path: "/enterprise-risk/detail/1",
@@ -322,16 +333,16 @@ export default {
     // width: 1150px;
     width: 100%;
     margin-bottom: 20px;
-    .item{
+    .item {
       display: flex;
       align-items: center;
-      .user-select{
-      width: 170px;
-    }
-    .input {
-      width: 270px;
-      // margin: 0 30px;
-    }
+      .user-select {
+        width: 170px;
+      }
+      .input {
+        width: 270px;
+        // margin: 0 30px;
+      }
     }
     .search {
       width: 100px;

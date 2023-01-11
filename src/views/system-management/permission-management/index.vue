@@ -324,9 +324,6 @@ export default {
   .edit-btn {
     margin-right: 10px;
   }
-  /deep/ .header-row {
-    background: #f0f7fc;
-  }
   .pagination {
     display: flex;
     justify-content: flex-end;

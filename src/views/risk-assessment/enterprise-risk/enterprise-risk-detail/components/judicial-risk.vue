@@ -561,8 +561,5 @@ export default {
     padding: 10px 0;
     text-align: right;
   }
-  /deep/ .header-row {
-    background: #f0f7fc;
-  }
 }
 </style>

@@ -403,7 +403,7 @@ export default {
   created() {
     const routeParams = this.$route.params;
     this.searchFormData.highTechEnt = routeParams.highTechEnt
-      ? [routeParams.highTechEnt,]
+      ? [routeParams.highTechEnt]
       : [];
     this.searchFormData.entName = routeParams.entName || "";
     this.getIndustryList();
@@ -486,7 +486,7 @@ export default {
           break;
         default:
       }
-      this.$axios.post("/entInfo/condition", params).then(({ data, }) => {
+      this.$axios.post("/entInfo/condition", params).then(({ data }) => {
         this.total = data.total;
         this.tableData = data.list;
       });
@@ -496,7 +496,7 @@ export default {
         .get("/dict/queryDictByType", {
           dictType: "industry",
         })
-        .then(({ data, }) => {
+        .then(({ data }) => {
           this.optsObj.industryOpts = data.map((item) => ({
             id: item.dictName,
             name: item.dictName,
@@ -531,11 +531,17 @@ export default {
       }
     },
     // 企业画像
-    portrait({ entId,entName, }) {
-      //  提示
+    portrait({ entId, entName }) {
       const userStore = useUserStore();
-      userStore.saveEntId(entId,entName);
-      this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      userStore.saveEntId(entId, entName);
+      // this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
+      //新窗口打开企业画像
+      const routeData = this.$router.resolve({
+        path: `${
+          import.meta.env.BASE_URL
+        }enterprise-retrieval/enterprise-portrait/${entId}`,
+      });
+      window.open(routeData.location.path, "_blank");
     },
     // 分页
     handleCurrentChange(val) {
@@ -621,36 +627,38 @@ export default {
       }
       // 创建当前时间字符串，生成文件名称时使用
       const time = this.getCurentTime();
-      this.$axios.post("/entInfo/exportEnt", params,{responseType: "blob",}).then((res) => {
-        // 转化为blob对象
-      let blob = new Blob([res.data,], {
-        type: "application/octet-stream",
-      });
-      let filename = time + ".xls";
-      // 将blob对象转为一个URL
-      var blobURL = window.URL.createObjectURL(blob);
-      // 创建一个a标签
-      var tempLink = document.createElement("a");
-      // 隐藏a标签
-      tempLink.style.display = "none";
-      // 设置a标签的href属性为blob对象转化的URL
-      tempLink.href = blobURL;
-      // 给a标签添加下载属性
-      tempLink.setAttribute("download", filename);
-      if (typeof tempLink.download === "undefined") {
-        tempLink.setAttribute("target", "_blank");
-      }
-      // 将a标签添加到body当中
-      document.body.appendChild(tempLink);
-      // 启动下载
-      tempLink.click();
-      // 下载完毕删除a标签
-      document.body.removeChild(tempLink);
-      window.URL.revokeObjectURL(blobURL);
-      this.$message({
-        message: "导出成功~",
-        type: "success",
-      });
+      this.$axios
+        .post("/entInfo/exportEnt", params, { responseType: "blob" })
+        .then((res) => {
+          // 转化为blob对象
+          let blob = new Blob([res.data], {
+            type: "application/octet-stream",
+          });
+          let filename = time + ".xls";
+          // 将blob对象转为一个URL
+          var blobURL = window.URL.createObjectURL(blob);
+          // 创建一个a标签
+          var tempLink = document.createElement("a");
+          // 隐藏a标签
+          tempLink.style.display = "none";
+          // 设置a标签的href属性为blob对象转化的URL
+          tempLink.href = blobURL;
+          // 给a标签添加下载属性
+          tempLink.setAttribute("download", filename);
+          if (typeof tempLink.download === "undefined") {
+            tempLink.setAttribute("target", "_blank");
+          }
+          // 将a标签添加到body当中
+          document.body.appendChild(tempLink);
+          // 启动下载
+          tempLink.click();
+          // 下载完毕删除a标签
+          document.body.removeChild(tempLink);
+          window.URL.revokeObjectURL(blobURL);
+          this.$message({
+            message: "导出成功~",
+            type: "success",
+          });
         });
     },
     getCurentTime() {
@@ -664,10 +672,10 @@ export default {
       var second = date.getSeconds();
       //固定时间格式
       if (month >= 1 && month <= 9) {
-      month = "0" + month;
+        month = "0" + month;
       }
       if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
+        strDate = "0" + strDate;
       }
       if (hour >= 0 && hour <= 9) {
         hour = "0" + hour;
