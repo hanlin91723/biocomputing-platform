@@ -149,7 +149,7 @@ export default {
       };
       this.$axios
         .post("/entRisk/queryEntRiskByCondition", params)
-        .then(({ data, }) => {
+        .then(({ data }) => {
           this.total = data.total;
           this.tableData = data.list;
         });
@@ -158,7 +158,7 @@ export default {
       let params = {
         dictType: "industry",
       };
-      this.$axios.get("/dict/queryDictByType", params).then(({ data, }) => {
+      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
         this.industryOptions = data.map((item) => ({
           value: item.dictName,
           label: item.dictName,
@@ -203,14 +203,14 @@ export default {
       }
     },
     // 企业画像
-    portrait({ entId,entName, }) {
+    portrait({ entId, entName }) {
       //  提示
       const userStore = useUserStore();
-      userStore.saveEntId(entId,entName);
+      userStore.saveEntId(entId, entName);
       this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
     },
     // 风险详情
-    riskDetails({ entId, }) {
+    riskDetails({ entId }) {
       this.$router.push({
         path: `/enterprise-risk/detail/${entId}`,
       });

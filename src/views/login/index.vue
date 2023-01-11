@@ -11,7 +11,7 @@
         <el-form-item class="form-item" prop="username">
           <el-input
             class="input"
-            placeholder="请输入账号"
+            placeholder="请输入用户名"
             prefix-icon="el-icon-user"
             v-model="loginForm.username"
           ></el-input>
@@ -57,7 +57,7 @@ export default {
         username: [
           {
             required: true,
-            message: "请输入账号",
+            message: "请输入用户名",
             trigger: "blur",
           },
         ],
@@ -90,19 +90,10 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          const params = {
-            entName: "",
-            industry: "全部",
-            pageNum: 1,
-            pageSize: 10,
-            riskLevel: "全部",
-            indexRiskLevel: "全部",
-          };
           this.$axios
-            .post("/entRisk/queryEntRiskByCondition", params)
-            .then(() => {
-              sessionStorage.setItem("token", 123);
-              sessionStorage.setItem("userId", 1);
+            .post("/login", this.loginForm)
+            .then((res) => {
+              sessionStorage.setItem("token", res.token);
               this.$router.push({
                 path: this.$route.query.redirect || "/risk-map",
               });

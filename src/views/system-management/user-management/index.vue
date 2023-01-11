@@ -2,7 +2,12 @@
   <div class="user">
     <div class="header">
       <div class="header-left">
-        <el-select v-model="value" placeholder="请选择" class="user-select">
+        <el-select
+          v-model="roleVal"
+          placeholder="请选择角色"
+          class="user-select"
+          clearable
+        >
           <el-option
             v-for="item in roleOptions"
             :key="item.value"
@@ -12,40 +17,54 @@
         </el-select>
         <el-input
           class="input"
-          placeholder="请输入用户名/手机号"
-          v-model="nameOrnumber"
+          placeholder="请输入用户名"
+          v-model="userName"
           clearable
         ></el-input>
-        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="getTableData">查询</el-button>
       </div>
-      <el-button type="primary" icon="el-icon-plus" @click="addUser"
+      <el-button type="primary" icon="el-icon-plus" @click="handleEdit()"
         >添加用户</el-button
       >
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" border stripe class="table">
-      <el-table-column prop="id" label="序号" width="80"></el-table-column>
+    <el-table :data="tableData" stripe header-cell-class-name="header-row">
+      <el-table-column
+        type="index"
+        :index="indexMethod"
+        label="序号"
+        width="80"
+      ></el-table-column>
       <el-table-column
         prop="userName"
         label="用户名"
         width="180"
       ></el-table-column>
-      <el-table-column prop="mobile" label="手机"></el-table-column>
-      <el-table-column prop="remarks" label="用户身份备注"></el-table-column>
-      <el-table-column prop="time" label="注册时间"></el-table-column>
-      <el-table-column prop="role" label="角色"></el-table-column>
+      <el-table-column prop="phonenumber" label="手机"></el-table-column>
+      <el-table-column prop="remark" label="用户身份备注"></el-table-column>
+      <el-table-column prop="createTime" label="注册时间"></el-table-column>
+      <el-table-column prop="roleNameList" label="角色"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
+        <template slot-scope="{ row }">
           <!-- 重置密码 -->
           <el-popconfirm
+            hide-icon
             title="确定要重置密码吗？"
-            @confirm="handlePassword(scope.row)"
+            @confirm="handlePassword(row)"
           >
-            <span class="reset" slot="reference">重置密码</span>
+            <el-button type="text" slot="reference">重置密码</el-button>
           </el-popconfirm>
-          <span class="edit" @click="handleEdit(scope.row)">编辑</span>
-          <span class="delete" @click="deleteUser(scope.row)">删除</span>
+          <el-button class="edit-btn" type="text" @click="handleEdit(row)"
+            >编辑</el-button
+          >
+          <el-popconfirm
+            hide-icon
+            title="确认删除该用户吗？"
+            @confirm="deleteUser(row)"
+          >
+            <el-button type="text" slot="reference">删除</el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -62,9 +81,9 @@
     </el-pagination>
     <!-- 编辑和添加用户弹窗 -->
     <el-dialog
-      :title="userId == -1 ? '添加用户' : '编辑用户'"
+      :title="isEdit ? '编辑用户' : '添加用户'"
       :visible="showUserDialog"
-      width="40%"
+      width="500px"
       @close="isCancel"
     >
       <el-form
@@ -74,33 +93,40 @@
         ref="userInfo"
       >
         <el-form-item label="用户名" prop="userName">
-          <el-input placeholder="请输入用户名" v-model="userInfo.userName" />
-        </el-form-item>
-        <el-form-item label="手机号" prop="mobile">
-          <el-input placeholder="请输入手机号" v-model="userInfo.mobile" />
-        </el-form-item>
-        <el-form-item
-          label="初始密码"
-          prop="oldPassword"
-          v-if="userId == -1 ? true : false"
-        >
           <el-input
-            placeholder="请输入初始密码"
-            v-model="userInfo.oldPassword"
+            placeholder="请输入用户名"
+            v-model="userInfo.userName"
+            :disabled="isEdit"
           />
         </el-form-item>
-        <el-form-item label="用户身份备注" prop="remarks">
-          <el-input placeholder="请输入身份备注" v-model="userInfo.remarks" />
+        <el-form-item label="手机号" prop="phonenumber">
+          <el-input placeholder="请输入手机号" v-model="userInfo.phonenumber" />
         </el-form-item>
-        <el-form-item label="用户权限" prop="role">
-          <el-select placeholder="请选择用户权限" v-model="userInfo.role" />
+        <el-form-item label="用户身份备注" prop="remark">
+          <el-input placeholder="请输入身份备注" v-model="userInfo.remark" />
+        </el-form-item>
+        <el-form-item label="用户权限" prop="roleIds">
+          <el-select
+            class="select"
+            placeholder="请选择用户权限"
+            v-model="userInfo.roleIds"
+            clearable
+            multiple
+          >
+            <el-option
+              v-for="item in roleOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <!-- footer插槽 -->
       <template v-slot:footer>
         <el-row type="flex" justify="center">
           <el-col :span="8">
-            <el-button size="medium" type="primary" @click="isOk"
+            <el-button size="medium" type="primary" @click="submitForm"
               >确定</el-button
             >
             <el-button size="medium" @click="isCancel">取消</el-button>
@@ -117,27 +143,22 @@ export default {
     return {
       tableData: [],
       roleOptions: [],
-      value: "1",
-      nameOrnumber: "",
+      roleVal: "",
+      userName: "",
       showUserDialog: false,
-      userId: -1,
+      isEdit: false,
+      userId: "", //当前编辑的userId
       userInfo: {
         userName: "",
-        mobile: "",
-        oldPassword: "",
-        remarks: "",
-        role: "",
+        phonenumber: "",
+        remark: "",
+        roleIds: [],
       },
       userInfoRules: {
-        username: [
+        userName: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
-          {
-            min: 1,
-            max: 4,
-            message: "用户名为1-4位",
-          },
         ],
-        mobile: [
+        phonenumber: [
           { required: true, message: "手机号不能为空", trigger: "blur" },
           {
             pattern: /^1[3-9]\d{9}$/,
@@ -145,24 +166,16 @@ export default {
             trigger: "blur",
           },
         ],
-        oldPassword: [
-          { required: true, message: "初始密码不能为空", trigger: "blur" },
-          {
-            pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\W]{6,18}$/,
-            message: "密码格式不正确",
-            trigger: "blur",
-          },
-        ],
-        remarks: [
+        remark: [
           { required: true, message: "用户身份备注不能为空", trigger: "blur" },
         ],
-        role: [
+        roleIds: [
           { required: true, message: "用户权限不能为空", trigger: "change" },
         ],
       },
       // 分页
-      total: 110,
-      pageSize: 11,
+      total: 0,
+      pageSize: 10,
       currentPage: 1,
     };
   },
@@ -172,231 +185,93 @@ export default {
   },
   methods: {
     getTableData() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.tableData = [
-        {
-          id: 1,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 2,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 3,
-          userName: "芳芳",
-          mobile: "13898761234",
-          remarks: "访客",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 4,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 5,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 6,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 7,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 8,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 8,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 10,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-        {
-          id: 11,
-          userName: "王小虎",
-          mobile: "13898761234",
-          remarks: "后台管理员",
-          time: "2022-09-01  12:12:00",
-          role: "普通管理员",
-        },
-      ];
+      const params = {
+        pageSize: this.pageSize,
+        pageNum: this.currentPage,
+        roleId: this.roleVal,
+        userName: this.userName,
+      };
+      this.$axios.get("/system/user/list", params).then(({ data }) => {
+        this.tableData = data.list.map((item) => ({
+          ...item,
+          roleNameList: item.roles.map((item) => item.roleName).join("、"),
+        }));
+        this.total = data.total;
+      });
     },
     getRoleOptions() {
-      // this.$axios.get("/construction/projectManager").then(({data,})=>{
-      //   console.log(data);
-
-      // });
-      this.roleOptions = [
-        {
-          value: "1",
-          label: "全部",
-        },
-        {
-          value: "2",
-          label: "访客",
-        },
-        {
-          value: "3",
-          label: "普通管理员",
-        },
-        {
-          value: "4",
-          label: "高级管理员",
-        },
-        {
-          value: "5",
-          label: "锁定",
-        },
-      ];
-    },
-    // 查询
-    search() {
-      // 调用接口查询，拿到结果给表格
-      console.log("查询");
-      // let params = {
-      //   roleValue:this.value,
-      //   nameOrnumber:this.nameOrnumber,
-      // };
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.$axios.get("/system/role/optionselect").then(({ data }) => {
+        this.roleOptions = data.map((item) => ({
+          label: item.roleName,
+          value: item.roleId,
+        }));
+      });
     },
     // 删除用户
-    async deleteUser({ id }) {
-      //  提示
-      try {
-        await this.$confirm("确认删除该角色吗");
-        // 只有点击了确定 才能进入到下方
-        // await deleteUser(id) // 调用删除接口
-        console.log(id);
-        // this.getRoleList(); // 重新加载数据
-        this.$message.success("删除角色成功");
-      } catch (error) {
-        console.log(error);
-      }
+    deleteUser(row) {
+      this.$axios.delete(`/system/user/${row.userId}`).then(() => {
+        this.$message.success("删除成功！");
+        this.getTableData();
+      });
     },
     // 重置密码
     handlePassword(row) {
-      this.$axios.post("/reset", { id: row.id }).then(({ data }) => {
-        console.log(data);
-      });
-      this.$message.success("重置密码成功！");
-    },
-    // 添加用户
-    addUser() {
-      this.showUserDialog = true;
-    },
-    // 编辑
-    handleEdit({ id, userName, mobile, remarks, role }) {
-      this.userInfo = {
-        userName,
-        mobile,
-        remarks,
-        role,
+      const params = {
+        userId: row.userId,
       };
-      this.userId = id;
+      this.$axios.put("/system/user/resetPwd", params).then(() => {
+        this.$message.success("重置密码成功！");
+      });
+    },
+    // 添加/编辑用户
+    handleEdit(row) {
+      this.isEdit = Boolean(row);
+      if (this.isEdit) {
+        this.userInfo = {
+          userName: row.userName,
+          phonenumber: row.phonenumber,
+          remark: row.remark,
+          roleIds: row.roleIds,
+        };
+        this.userId = row.userId;
+      }
       this.showUserDialog = true;
     },
-    // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
-      // let params = {
-      //   currentPage:this.currentPage,
-      //   pageSize:this.pageSize,
-      // }
-      // this.$axios.post("/construction/projectManager",params).then(({data,})=>{
-      //   console.log(data);
-      //   this.tableData = data;
-      // });
+      this.getTableData();
     },
-    // 确定
-    async isOk() {
-      // 两种，一是确定添加用户，二是确定编辑用户
-      if (this.userId !== -1) {
-        // 编辑用户
-        try {
-          await this.$refs.userInfo.validate();
-          // 调用接口
-          // await addEmployee(this.formData) // 编辑用户
-          this.$message.success("编辑用户成功！");
-        } catch (error) {
-          this.$message.error("编辑用户失败~");
-        } finally {
-          this.isCancel();
+    submitForm() {
+      this.$refs.userInfo.validate((valid) => {
+        if (valid) {
+          let params = {
+            userName: this.userInfo.userName,
+            phonenumber: this.userInfo.phonenumber,
+            remark: this.userInfo.remark,
+            roleIds: this.userInfo.roleIds,
+          };
+          if (this.isEdit) {
+            params.userId = this.userId;
+          }
+          this.$axios[this.isEdit ? "put" : "post"](
+            "/system/user",
+            params
+          ).then(() => {
+            this.$message.success(`${this.isEdit ? "修改" : "添加"}成功！`);
+            this.getTableData();
+            this.isCancel();
+          });
         }
-      } else {
-        // 添加用户
-        try {
-          await this.$refs.userInfo.validate();
-          // 调用接口
-          // await addEmployee(this.formData) // 添加用户
-          this.$message.success("添加用户成功！");
-        } catch (error) {
-          this.$message.error("添加用户失败~");
-        } finally {
-          this.isCancel();
-        }
-      }
+      });
     },
     // 取消
     isCancel() {
-      this.userInfo = {
-        userName: "",
-        mobile: "",
-        oldPassword: "",
-        remarks: "",
-        role: "",
-      };
+      this.userId = "";
       this.$refs.userInfo.resetFields(); // 重置校验结果
       this.showUserDialog = false;
-      this.userId = -1;
+    },
+    indexMethod(index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1;
     },
   },
 };
@@ -418,22 +293,14 @@ export default {
       }
     }
   }
-  .table {
+  .edit-btn {
+    margin: 0 10px;
+  }
+  .select {
     width: 100%;
-    height: 575px;
-    margin-bottom: 10px;
-    .reset,
-    .edit,
-    .delete {
-      color: rgb(3, 167, 240);
-      cursor: pointer;
-    }
-    .edit {
-      margin: 0 20px;
-    }
-    .delete {
-      color: orange;
-    }
+  }
+  /deep/ .header-row {
+    background: #f0f7fc;
   }
   .pagination {
     display: flex;

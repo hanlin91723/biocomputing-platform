@@ -3,11 +3,21 @@
     <div class="left">
       <v-chart class="chart" :option="comprehensiveRiskOption"></v-chart>
       <div class="comprehensive-risk-score">
-        综合风险指数：<span class="score">{{ comprehensiveRiskScore }}</span
+        综合风险指数：<span
+          :class="{
+            score: true,
+            [riskIndexFormatter(entRiskScore).className]: true,
+          }"
+          >{{ entRiskScore }}</span
         >分
       </div>
       <div class="comprehensive-risk-detail">
-        该企业风险等级<span class="level">{{ enterpriseRiskLevel }}</span
+        该企业风险等级<span
+          :class="{
+            level: true,
+            [riskIndexFormatter(entRiskScore).className]: true,
+          }"
+          >{{ riskIndexFormatter(entRiskScore).name }}</span
         >，其中<span class="aspect">{{
           aspectListFormatter(this.aspectList)
         }}</span
@@ -25,10 +35,20 @@
         @cell-mouse-leave="handleCellMouseLeave"
         border
       >
-        <el-table-column prop="type" label="分类" width="180"></el-table-column>
+        <el-table-column prop="type" label="分类" width="180">
+          <template slot-scope="{ row }"
+            >{{ row.type }}（{{ row.sum }}）</template
+          >
+        </el-table-column>
         <el-table-column prop="total" label="分类评价得分"></el-table-column>
         <el-table-column prop="subType" label="评价指标"></el-table-column>
-        <el-table-column prop="level" label="预警等级"></el-table-column>
+        <el-table-column prop="level" label="预警等级">
+          <template slot-scope="{ row }">
+            <span :class="{ [levelFormatter(row.level).className]: true }">{{
+              levelFormatter(row.level).name
+            }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="score" label="指标评价得分"></el-table-column>
       </el-table>
     </div>
@@ -40,204 +60,46 @@ import { comprehensiveRisk } from "../options/echarts-options.js";
 export default {
   data() {
     return {
-      comprehensiveRiskScore: "",
-      enterpriseRiskLevel: "",
+      comprehensiveRiskRadarData: [],
       aspectList: [],
       tableData: [],
       cellIndex: -1,
     };
   },
+  props: {
+    entRiskScore: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+  },
   computed: {
     comprehensiveRiskOption() {
-      return comprehensiveRisk();
+      return comprehensiveRisk(this.comprehensiveRiskRadarData);
     },
   },
   created() {
-    this.comprehensiveRiskScore = 76;
-    this.enterpriseRiskLevel = "较高";
-    this.aspectList = ["财务状况", "司法诉讼", "企业经营"];
     this.getTableData();
   },
   methods: {
     getTableData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.tableData = [
-          {
-            type: "财务预警（20）",
-            total: 12,
-            rowspan: 4, //用于合并行
-            order: 1, //用于鼠标hover
-            subType: "营收利润",
-            level: "警示",
-            score: 1,
-          },
-          {
-            order: 1,
-            subType: "资产负债",
-            level: "高风险",
-            score: 4,
-          },
-          {
-            order: 1,
-            subType: "现金流量",
-            level: "高风险",
-            score: 5,
-          },
-          {
-            order: 1,
-            subType: "股指风险",
-            level: "中风险",
-            score: 2,
-          },
-
-          {
-            type: "用工预警（10）",
-            total: 3,
-            rowspan: 4,
-            order: 2,
-            subType: "从业人数",
-            level: "警示",
-            score: 1,
-          },
-          {
-            order: 2,
-            subType: "招聘数量",
-            level: "警示",
-            score: 1,
-          },
-          {
-            order: 2,
-            subType: "招聘平均薪资",
-            level: "/",
-            score: 0,
-          },
-          {
-            order: 2,
-            subType: "社保",
-            level: "警示",
-            score: 1,
-          },
-
-          {
-            type: "信用预警（10）",
-            total: 2,
-            rowspan: 1,
-            order: 3,
-            subType: "纳税信用",
-            level: "中风险",
-            score: 2,
-          },
-
-          {
-            type: "舆情预警（10）",
-            total: 5,
-            rowspan: 1,
-            order: 4,
-            subType: "舆情",
-            level: "高风险",
-            score: 5,
-          },
-
-          {
-            type: "舆情预警（10）",
-            total: 4,
-            rowspan: 2,
-            order: 5,
-            subType: "股东风险",
-            level: "高风险",
-            score: 2,
-          },
-          {
-            order: 5,
-            subType: "高管风险",
-            level: "高风险",
-            score: 2,
-          },
-
-          {
-            type: "司法风险（20）",
-            total: 12,
-            rowspan: 6,
-            order: 6,
-            subType: "被执行人",
-            level: "警示",
-            score: 1,
-          },
-          {
-            order: 6,
-            subType: "失信信息",
-            level: "高风险",
-            score: 4,
-          },
-          {
-            order: 6,
-            subType: "限制高消费",
-            level: "高风险",
-            score: 5,
-          },
-          {
-            order: 6,
-            subType: "限制出境",
-            level: "中风险",
-            score: 2,
-          },
-          {
-            order: 6,
-            subType: "终本案件",
-            level: "高风险",
-            score: 5,
-          },
-          {
-            order: 6,
-            subType: "裁判文书",
-            level: "中风险",
-            score: 2,
-          },
-
-          {
-            type: "经营风险（10）",
-            total: 12,
-            rowspan: 5,
-            order: 7,
-            subType: "经营异常",
-            level: "警示",
-            score: 1,
-          },
-          {
-            order: 7,
-            subType: "严重违法",
-            level: "高风险",
-            score: 4,
-          },
-          {
-            order: 7,
-            subType: "股权质押",
-            level: "高风险",
-            score: 5,
-          },
-          {
-            order: 7,
-            subType: "行政处罚",
-            level: "中风险",
-            score: 2,
-          },
-          {
-            order: 7,
-            subType: "欠税公告",
-            level: "高风险",
-            score: 5,
-          },
-
-          {
-            type: "关联风险（10）",
-            total: 3,
-            rowspan: 1,
-            order: 8,
-            subType: "关联风险",
-            level: "警示",
-            score: 1,
-          },
-        ];
+      const params = {
+        entId: this.$route.params.id,
+      };
+      this.$axios.get("/entRisk/comprehensiveRisk", params).then(({ data }) => {
+        this.tableData = data;
+        const arr = data.filter((item) => item.rowspan);
+        this.comprehensiveRiskRadarData = arr.map((item) => item.total);
+        //r=得分与权重之比，列举r≥0.6的分类，没有则列举r最大的分类
+        const arrTemp = arr.filter((item) => item.total / item.sum >= 0.6);
+        this.aspectList =
+          arrTemp.length > 0
+            ? arrTemp.map((item) => item.type)
+            : [
+                arr.reduce((pre, cur) =>
+                  pre.total / pre.sum >= cur.total / cur.sum ? pre : cur
+                ).type,
+              ];
       });
     },
     objectSpanMethod({ row, columnIndex }) {
@@ -248,7 +110,60 @@ export default {
         };
       }
     },
-
+    //风险指数等级
+    riskIndexFormatter(entRiskScore) {
+      switch (true) {
+        case entRiskScore >= 0 && entRiskScore <= 25:
+          return {
+            className: "riskColor4",
+            name: "低",
+          };
+        case entRiskScore > 25 && entRiskScore <= 50:
+          return {
+            className: "riskColor3",
+            name: "中",
+          };
+        case entRiskScore > 50 && entRiskScore <= 75:
+          return {
+            className: "riskColor2",
+            name: "较高",
+          };
+        case entRiskScore > 75 && entRiskScore <= 100:
+          return {
+            className: "riskColor1",
+            name: "高",
+          };
+        default:
+          break;
+      }
+    },
+    // 预警等级
+    levelFormatter(val) {
+      const obj = {
+        0: {
+          name: "无风险",
+          className: "riskColor4",
+        },
+        1: {
+          name: "高风险",
+          className: "riskColor1",
+        },
+        2: {
+          name: "中风险",
+          className: "riskColor2",
+        },
+        3: {
+          name: "警示",
+          className: "riskColor3",
+        },
+      };
+      return val === null
+        ? {
+            name: "/",
+            className: "",
+          }
+        : obj[val];
+    },
     aspectListFormatter(aspectList) {
       let aspectStr = "";
       aspectList.forEach((item, index) => {
@@ -288,12 +203,12 @@ export default {
       .score {
         padding: 0 10px;
         font-size: 32px;
-        color: rgba(244, 165, 47, 1);
+        // color: rgba(244, 165, 47, 1);
       }
     }
     .comprehensive-risk-detail {
       .level {
-        color: rgba(244, 165, 47, 1);
+        // color: rgba(244, 165, 47, 1);
       }
       .aspect {
         color: rgba(93, 119, 255, 1);
@@ -318,6 +233,19 @@ export default {
   }
   .my-hover-row {
     color: rgba(93, 119, 255, 1);
+  }
+
+  .riskColor1 {
+    color: rgb(217, 0, 27);
+  }
+  .riskColor2 {
+    color: rgb(245, 154, 42);
+  }
+  .riskColor3 {
+    color: rgb(182, 200, 76);
+  }
+  .riskColor4 {
+    color: rgba(93, 209, 140, 1);
   }
 }
 </style>

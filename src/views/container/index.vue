@@ -61,7 +61,7 @@
         >
           <div class="el-dropdown-link username-wrap">
             <i class="el-icon-user-solid user-ico"></i>
-            <span class="username">{{ "测试" }}</span>
+            <span class="username">{{ info.nickName }}</span>
           </div>
           <el-dropdown-menu class="dropdown-menu" slot="dropdown">
             <el-dropdown-item class="dropdown-menu-item" command="personalInfo"
@@ -88,16 +88,16 @@
     >
       <div class="user-info-wrap">
         <div class="user-info-item">
-          <span class="name">姓名：</span>
-          <span class="value">{{ info.name }}</span>
+          <span class="name">用户名：</span>
+          <span class="value">{{ info.nickName }}</span>
         </div>
         <div class="user-info-item">
           <span class="name">手机号：</span>
           <span class="value">{{ info.phone }}</span>
         </div>
         <div class="user-info-item">
-          <span class="name">用户身份备注：</span>
-          <span class="value">{{ info.remark }}</span>
+          <span class="name">角色：</span>
+          <span class="value">{{ info.roleName }}</span>
         </div>
       </div>
     </el-dialog>
@@ -226,12 +226,13 @@ export default {
   },
   methods: {
     getUser() {
-      this.$axios.get("/statistics/marketRiskProp").then(() => {
+      this.$axios.get("/getInfo").then(({ user }) => {
         this.info = {
-          name: "测试",
-          phone: "13212345678",
-          remark: "后台管理员",
+          nickName: user.userName,
+          phone: user.phonenumber,
+          roleName: user.roles.map((item) => item.roleName).join("、"),
         };
+        sessionStorage.setItem("userId", user.roleId);
       });
     },
     handleCommand(command) {
@@ -276,12 +277,14 @@ export default {
       this.showPwdDialog = false;
     },
     isOk() {
-      this.$axios
-        .get("/construction/projectManager", this.formData)
-        .then(() => {
-          this.$message.success("密码修改成功，下次登录后生效");
-          this.handleCancel();
-        });
+      const params = {
+        newPassword: this.formData.checkedNewPwd,
+        oldPassword: this.formData.oldPwd,
+      };
+      this.$axios.put("/system/user/updatePwd", params).then(() => {
+        this.$message.success("密码修改成功，下次登录后生效");
+        this.handleCancel();
+      });
     },
   },
 };
@@ -358,7 +361,7 @@ export default {
 
       .username-wrap {
         display: flex;
-        align-items: center;
+        align-items: baseline;
         cursor: pointer;
         // color: #fff;
         color: #1e293b;

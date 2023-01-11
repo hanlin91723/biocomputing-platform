@@ -30,29 +30,82 @@ export const useUserStore = defineStore("user", {
     return {
       permissionList: [],
       hasPermissionRoutes: [],
-      entId:localStorage.getItem("ENTID") || "",
-      entName:localStorage.getItem("ENTNAME") || "",
+      entId: sessionStorage.getItem("ENTID") || "",
+      entName: sessionStorage.getItem("ENTNAME") || "",
     };
   },
   actions: {
     getPermissionList() {
-      const params = {
-        userId: sessionStorage.getItem("userId"),
-        riskLevel: "全部",
-        riskType: "全部",
-      };
-      return http.get("marketRisk/byCondition", params).then(() => {
-        this.permissionList = ["1-1", "1-2", "2-1", "3-1", "3-2", "4-1", "4-2", ];
+      return http.get("/getRouters").then(({
+        data,
+      }) => {
+        this.permissionList = data;
       });
     },
     getHasPermissionRoutes(routes, permissions) {
       this.hasPermissionRoutes = filterAsyncRoutes(routes, permissions);
     },
-    saveEntId(entId,entName){
+    saveEntId(entId, entName) {
       this.entId = entId;
       this.entName = entName;
-      localStorage.setItem("ENTID",entId);
-      localStorage.setItem("ENTNAME",entName);
+      sessionStorage.setItem("ENTID", entId);
+      sessionStorage.setItem("ENTNAME", entName);
+    },
+  },
+});
+
+//企业风险详情-风险预警
+export const enterpriseRiskStore = defineStore("enterpriseRisk", {
+  state: () => {
+    return {
+      riskWarningNum: "",
+    };
+  },
+  actions: {
+    updateRiskWarningNum(num) {
+      this.riskWarningNum = num;
+    },
+  },
+});
+
+//企业风险详情-司法风险
+export const judicialRiskStore = defineStore("judicialRisk", {
+  state: () => {
+    return {
+      judicialRiskNum: "",
+    };
+  },
+  actions: {
+    updateJudicialRiskNum(num) {
+      this.judicialRiskNum = num;
+    },
+  },
+});
+
+//企业风险详情-经营风险
+export const managementRiskStore = defineStore("managementRisk", {
+  state: () => {
+    return {
+      managementRiskNum: "",
+    };
+  },
+  actions: {
+    updateManagementRiskNum(num) {
+      this.managementRiskNum = num;
+    },
+  },
+});
+
+//企业风险详情-关联风险
+export const relatedRiskStore = defineStore("relatedRisk", {
+  state: () => {
+    return {
+      relatedRiskNum: "",
+    };
+  },
+  actions: {
+    updateRelatedRiskNum(num) {
+      this.relatedRiskNum = num;
     },
   },
 });

@@ -75,18 +75,22 @@
         </div>
         <el-table
           :data="tableDataTemp.abnormalOperationResp.abnormalOperationList"
-          border
           size="small"
+          stripe
+          header-cell-class-name="header-row"
         >
           <el-table-column
-            prop="row"
+            type="index"
+            :index="indexMethod('abnormalOperationResp')"
             label="序号"
-            width="180"
+            width="80"
           ></el-table-column>
-          <el-table-column prop="createTime" label="立案日期"></el-table-column>
-          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
-          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
-          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+          <el-table-column prop="inDate" label="列入日期"></el-table-column>
+          <el-table-column
+            prop="yrRegorg"
+            label="登记/移入机关"
+          ></el-table-column>
+          <el-table-column prop="inReason" label="列入原因"></el-table-column>
         </el-table>
         <el-pagination
           class="page-tool"
@@ -127,18 +131,25 @@
         </div>
         <el-table
           :data="tableDataTemp.breatchTrustResp.breachTrustList"
-          border
           size="small"
+          stripe
+          header-cell-class-name="header-row"
         >
           <el-table-column
-            prop="row"
+            type="index"
+            :index="indexMethod('breatchTrustResp')"
             label="序号"
-            width="180"
+            width="80"
           ></el-table-column>
-          <el-table-column prop="createTime" label="立案日期"></el-table-column>
-          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
-          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
-          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+          <el-table-column prop="inDate" label="列入日期"></el-table-column>
+          <el-table-column
+            prop="inOrg"
+            label="作出决定机关(列入)"
+          ></el-table-column>
+          <el-table-column
+            prop="inReason"
+            label="列入严重违法失信企业名单原因"
+          ></el-table-column>
         </el-table>
         <el-pagination
           class="page-tool"
@@ -179,18 +190,28 @@
         </div>
         <el-table
           :data="tableDataTemp.pledgeEquityResp.pledgeEquityList"
-          border
           size="small"
+          stripe
+          header-cell-class-name="header-row"
         >
           <el-table-column
-            prop="row"
+            type="index"
+            :index="indexMethod('pledgeEquityResp')"
             label="序号"
-            width="180"
+            width="80"
           ></el-table-column>
-          <el-table-column prop="createTime" label="立案日期"></el-table-column>
-          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
-          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
-          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+          <el-table-column prop="pledgor" label="出质人"></el-table-column>
+          <el-table-column
+            prop="relatedCompany"
+            label="出质股权标的企业"
+          ></el-table-column>
+          <el-table-column prop="impOrg" label="质权人"></el-table-column>
+          <el-table-column prop="impAm" label="质押金额"></el-table-column>
+          <el-table-column
+            prop="impOnRecDate"
+            label="质押备案日期"
+          ></el-table-column>
+          <el-table-column prop="exeState" label="状态"></el-table-column>
         </el-table>
         <el-pagination
           class="page-tool"
@@ -231,18 +252,32 @@
         </div>
         <el-table
           :data="tableDataTemp.adminPenaltyResp.adminPenaltyList"
-          border
           size="small"
+          stripe
+          header-cell-class-name="header-row"
         >
           <el-table-column
-            prop="row"
+            type="index"
+            :index="indexMethod('adminPenaltyResp')"
             label="序号"
-            width="180"
+            width="80"
           ></el-table-column>
-          <el-table-column prop="createTime" label="立案日期"></el-table-column>
-          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
-          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
-          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+          <el-table-column
+            prop="penDecIssDate"
+            label="处罚日期"
+          ></el-table-column>
+          <el-table-column prop="penDecNo" label="决定文书号"></el-table-column>
+          <el-table-column
+            prop="caseType"
+            label="处罚事由/违法行为类型"
+          ></el-table-column>
+          <el-table-column prop="penResult" label="处罚结果"></el-table-column>
+          <el-table-column prop="content" label="处罚内容"></el-table-column>
+          <el-table-column
+            prop="penAuthName"
+            label="处罚单位"
+          ></el-table-column>
+          <el-table-column prop="dataSource" label="数据来源"></el-table-column>
         </el-table>
         <el-pagination
           class="page-tool"
@@ -283,18 +318,25 @@
         </div>
         <el-table
           :data="tableDataTemp.taxArrearsResp.taxArrearsList"
-          border
           size="small"
+          stripe
+          header-cell-class-name="header-row"
         >
           <el-table-column
-            prop="row"
+            type="index"
+            :index="indexMethod('taxArrearsResp')"
             label="序号"
-            width="180"
+            width="80"
           ></el-table-column>
-          <el-table-column prop="createTime" label="立案日期"></el-table-column>
-          <el-table-column prop="fssRegNo" label="执行标的"></el-table-column>
-          <el-table-column prop="fssCourtId" label="案号"></el-table-column>
-          <el-table-column prop="fssName" label="执行法院"></el-table-column>
+          <el-table-column prop="pubTime" label="发布日期"></el-table-column>
+          <el-table-column prop="qnum" label="纳税人识别号"></el-table-column>
+          <el-table-column prop="taxType" label="欠税税种"></el-table-column>
+          <el-table-column
+            prop="camount"
+            label="当前新发生的欠税余额"
+          ></el-table-column>
+          <el-table-column prop="debt" label="欠税余额"></el-table-column>
+          <el-table-column prop="taxOrg" label="税务机关"></el-table-column>
         </el-table>
         <el-pagination
           class="page-tool"
@@ -313,6 +355,7 @@
 </template>
 
 <script>
+import { managementRiskStore } from "@/store/index.js";
 export default {
   data() {
     return {
@@ -323,7 +366,7 @@ export default {
       checkedRiskLevels: [],
       riskLevelIsIndeterminate: false,
       tableData: {},
-      pageSize: 1,
+      pageSize: 5,
       abnormalOperationRespPageNum: 1, //经营异常
       breatchTrustRespPageNum: 1, //严重违法
       pledgeEquityRespPageNum: 1, //股权质押
@@ -408,223 +451,17 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios.get("/construction/projectManager").then(() => {
-        this.tableData = {
-          abnormalOperationResp: {
-            riskLevel: "高风险",
-            desc: "发打算发达",
-            count: 3,
-            abnormalOperationList: [
-              {
-                row: 1,
-                id: 96,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                personId: "0",
-                fssGuId: "113843750",
-                fssCaseNo: "（2016）苏0902执293号",
-                fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                fssStatus: "已结案",
-                fssCourtName: "",
-                fssCourtId: "320801",
-                fssMoney: 952365,
-                fssRegNo: "745597120",
-                fssLasj: "2016-01-20T16:00:00.000+00:00",
-                fssFileNum: null,
-                fssEndDate: "2016-10-13T16:00:00.000+00:00",
-                fssOutDate: null,
-                fssAreaCode: "320902",
-                fssAreaName: "-1",
-                fssSqr: null,
-                fssFocusNum: null,
-                fssIdt: null,
-                display: 0,
-                createTime: "2022-11-15 01:21:36",
-                updateTime: "2022-11-15 01:21:36",
-              },
-              {
-                row: 2,
-                id: 78320,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                personId: "0",
-                fssGuId: null,
-                fssCaseNo: "（2018）苏0924执3172号",
-                fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                fssStatus: "执行中",
-                fssCourtName: "",
-                fssCourtId: "320808",
-                fssMoney: 1419200,
-                fssRegNo: "91320902745****120Y",
-                fssLasj: "2018-11-11T16:00:00.000+00:00",
-                fssFileNum: "(2014)亭东民初字第0081号",
-                fssEndDate: null,
-                fssOutDate: null,
-                fssAreaCode: null,
-                fssAreaName: "-1",
-                fssSqr: null,
-                fssFocusNum: null,
-                fssIdt: "2018-11-23T16:00:00.000+00:00",
-                display: 0,
-                createTime: "2022-11-15 02:23:32",
-                updateTime: "2022-11-15 02:23:32",
-              },
-              {
-                row: 3,
-                id: 84902,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                personId: "0",
-                fssGuId: null,
-                fssCaseNo: "（2015）亭东执字第00021号",
-                fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                fssStatus: "执行中",
-                fssCourtName: "",
-                fssCourtId: "320801",
-                fssMoney: 0,
-                fssRegNo: "",
-                fssLasj: "2015-01-05T16:00:00.000+00:00",
-                fssFileNum: null,
-                fssEndDate: null,
-                fssOutDate: null,
-                fssAreaCode: null,
-                fssAreaName: "-1",
-                fssSqr: "李俊",
-                fssFocusNum: 0,
-                fssIdt: "2016-04-21T16:00:00.000+00:00",
-                display: 0,
-                createTime: "2022-11-15 02:29:13",
-                updateTime: "2022-11-15 02:29:13",
-              },
-            ],
-          },
-          breatchTrustResp: {
-            riskLevel: "高风险",
-            desc: "范德萨范德萨范德萨",
-            count: 20,
-            breachTrustList: [
-              {
-                row: 1,
-                id: 6005,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                creditCode: "91320902745597120Y",
-                registrationNumber: "320924000019628",
-                inReason:
-                  "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
-                inDate: "2020-08-25T16:00:00.000+00:00",
-                inOrg: "原盐城市税务局稽查局",
-                inWnum: null,
-                inTitle: null,
-                inContent: null,
-                yzType: null,
-                yzFact: null,
-                url: null,
-                createTime: "2022-11-15 02:11:34",
-                updateTime: "2022-11-15 02:11:34",
-              },
-            ],
-          },
-          pledgeEquityResp: {
-            riskLevel: "警示",
-            desc: "发撒打发打算",
-            count: 1,
-            pledgeEquityList: [
-              {
-                row: 1,
-                id: 7744,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                filingDate: "2018-11-11T16:00:00.000+00:00",
-                caseNo: "(2018)苏0924执3172号",
-                qyInfo: "盐城市亭湖区黄尖供销合作有限公司",
-                xname: "龚锦生",
-                publishDate: null,
-                webDetailUrl: null,
-                filePath:
-                  "http://zxgk.court.gov.cn/xglfile/1244/2019-03-19/57206748a9314635867eb31ba8529c56.pdf",
-                filePathLoad: null,
-                createTime: "2022-11-04 11:23:37",
-                updateTime: "2022-11-04 11:23:37",
-              },
-            ],
-          },
-          adminPenaltyResp: {
-            riskLevel: "中风险",
-            desc: "发第三方的撒范德萨",
-            count: 2,
-            adminPenaltyList: [
-              {
-                row: 1,
-                id: 3112,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                caseCreateTime: "2016-01-18T16:00:00.000+00:00",
-                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
-                caseCode: "(2016)苏0902执247号",
-                execMoney: 849348,
-                execMoneyUnit: "元",
-                noExecMoney: 0,
-                noExecMoneyUnit: "元",
-                execCourtName: "盐城市亭湖区人民法院",
-                createTime: "2022-11-17 00:01:43",
-                updateTime: "2022-11-17 00:01:43",
-              },
-              {
-                row: 2,
-                id: 10084,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                caseCreateTime: "2016-01-20T16:00:00.000+00:00",
-                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
-                caseCode: "(2016)苏0902执293号",
-                execMoney: 952365,
-                execMoneyUnit: "元",
-                noExecMoney: 0,
-                noExecMoneyUnit: "元",
-                execCourtName: "盐城市亭湖区人民法院",
-                createTime: "2022-11-17 00:05:44",
-                updateTime: "2022-11-17 00:05:44",
-              },
-            ],
-          },
-          taxArrearsResp: {
-            riskLevel: "警示",
-            desc: "发撒打发打算发打算分散",
-            count: 15,
-            taxArrearsList: [
-              {
-                row: 1,
-                id: 3112,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                caseCreateTime: "2016-01-18T16:00:00.000+00:00",
-                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
-                caseCode: "(2016)苏0902执247号",
-                execMoney: 849348,
-                execMoneyUnit: "元",
-                noExecMoney: 0,
-                noExecMoneyUnit: "元",
-                execCourtName: "盐城市亭湖区人民法院",
-                createTime: "2022-11-17 00:01:43",
-                updateTime: "2022-11-17 00:01:43",
-              },
-              {
-                row: 2,
-                id: 10084,
-                entId: "8535efbfc3d44226206332272daeffc5",
-                entName: "盐城市亭湖区黄尖供销合作有限公司",
-                caseCreateTime: "2016-01-20T16:00:00.000+00:00",
-                caseFinalTime: "2016-07-12T16:00:00.000+00:00",
-                caseCode: "(2016)苏0902执293号",
-                execMoney: 952365,
-                execMoneyUnit: "元",
-                noExecMoney: 0,
-                noExecMoneyUnit: "元",
-                execCourtName: "盐城市亭湖区人民法院",
-                createTime: "2022-11-17 00:05:44",
-                updateTime: "2022-11-17 00:05:44",
-              },
-            ],
-          },
-        };
+      const params = {
+        entId: this.$route.params.id,
+      };
+      this.$axios.get("/entRisk/businessRisk", params).then(({ data }) => {
+        this.tableData = data;
+        const managementRiskToalNum = Object.keys(data).reduce(
+          (prev, cur) => prev + data[cur].count,
+          0
+        );
+        const managementRisk = managementRiskStore();
+        managementRisk.updateManagementRiskNum(managementRiskToalNum);
       });
     },
     handleCheckAllRiskTypes(val) {
@@ -652,228 +489,99 @@ export default {
         checkedCount > 0 && checkedCount < this.riskLevelList.length;
     },
     pageChange(type, val) {
-      console.log(type, val);
+      const entId = this.$route.params.id;
       switch (type) {
         case "abnormalOperationResp":
           this.abnormalOperationRespPageNum = val;
           this.$axios
-            .get("/construction/projectManager", {
+            .post("/businessRisk/abnormalOperation", {
+              entId,
               pageNum: this.abnormalOperationRespPageNum,
               pageSize: this.pageSize,
             })
-            .then(() => {
-              this.tableData.abnormalOperationResp.abnormalOperationList = [
-                {
-                  row: 1,
-                  id: 96,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  personId: "0",
-                  fssGuId: "113843750",
-                  fssCaseNo: "（2016）苏0902执293号",
-                  fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                  fssStatus: "已结案",
-                  fssCourtName: "",
-                  fssCourtId: "320801",
-                  fssMoney: 952365,
-                  fssRegNo: "745597120",
-                  fssLasj: "2016-01-20T16:00:00.000+00:00",
-                  fssFileNum: null,
-                  fssEndDate: "2016-10-13T16:00:00.000+00:00",
-                  fssOutDate: null,
-                  fssAreaCode: "320902",
-                  fssAreaName: "-1",
-                  fssSqr: null,
-                  fssFocusNum: null,
-                  fssIdt: null,
-                  display: 0,
-                  createTime: "2022-12-25 01:21:36",
-                  updateTime: "2022-11-15 01:21:36",
-                },
-                {
-                  row: 2,
-                  id: 78320,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  personId: "0",
-                  fssGuId: null,
-                  fssCaseNo: "（2018）苏0924执3172号",
-                  fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                  fssStatus: "执行中",
-                  fssCourtName: "",
-                  fssCourtId: "320808",
-                  fssMoney: 1419200,
-                  fssRegNo: "91320902745****120Y",
-                  fssLasj: "2018-11-11T16:00:00.000+00:00",
-                  fssFileNum: "(2014)亭东民初字第0081号",
-                  fssEndDate: null,
-                  fssOutDate: null,
-                  fssAreaCode: null,
-                  fssAreaName: "-1",
-                  fssSqr: null,
-                  fssFocusNum: null,
-                  fssIdt: "2018-11-23T16:00:00.000+00:00",
-                  display: 0,
-                  createTime: "2022-12-11 02:23:32",
-                  updateTime: "2022-11-15 02:23:32",
-                },
-                {
-                  row: 3,
-                  id: 84902,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  personId: "0",
-                  fssGuId: null,
-                  fssCaseNo: "（2015）亭东执字第00021号",
-                  fssName: "盐城市亭湖区黄尖供销合作有限公司",
-                  fssStatus: "执行中",
-                  fssCourtName: "",
-                  fssCourtId: "320801",
-                  fssMoney: 0,
-                  fssRegNo: "",
-                  fssLasj: "2015-01-05T16:00:00.000+00:00",
-                  fssFileNum: null,
-                  fssEndDate: null,
-                  fssOutDate: null,
-                  fssAreaCode: null,
-                  fssAreaName: "-1",
-                  fssSqr: "李俊",
-                  fssFocusNum: 0,
-                  fssIdt: "2016-04-21T16:00:00.000+00:00",
-                  display: 0,
-                  createTime: "2022-12-19 02:29:13",
-                  updateTime: "2022-11-15 02:29:13",
-                },
-              ];
+            .then(({ data }) => {
+              this.tableData.abnormalOperationResp.abnormalOperationList =
+                data.list;
             });
           break;
         case "breatchTrustResp":
           this.breatchTrustRespPageNum = val;
           this.$axios
-            .get("/construction/projectManager", {
+            .post("/businessRisk/breachTrust", {
+              entId,
               pageNum: this.breatchTrustRespPageNum,
               pageSize: this.pageSize,
             })
-            .then(() => {
-              this.tableData.breatchTrustResp.breachTrustList = [
-                {
-                  row: val,
-                  id: 6005,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  entName: "盐城市亭湖区黄尖供销合作有限公司",
-                  creditCode: "91320902745597120Y",
-                  registrationNumber: "320924000019628",
-                  inReason:
-                    "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
-                  inDate: "2020-08-25T16:00:00.000+00:00",
-                  inOrg: "原盐城市税务局稽查局",
-                  inWnum: null,
-                  inTitle: null,
-                  inContent: null,
-                  yzType: null,
-                  yzFact: null,
-                  url: null,
-                  createTime: "2022-11-15 02:11:34",
-                  updateTime: "2022-11-15 02:11:34",
-                },
-              ];
+            .then(({ data }) => {
+              this.tableData.breatchTrustResp.breachTrustList = data.list;
             });
           break;
         case "pledgeEquityResp":
           this.pledgeEquityRespPageNum = val;
           this.$axios
-            .get("/construction/projectManager", {
+            .post("/businessRisk/pledgeEquity", {
+              entId,
               pageNum: this.pledgeEquityRespPageNum,
               pageSize: this.pageSize,
             })
-            .then(() => {
-              this.tableData.pledgeEquityResp.pledgeEquityList = [
-                {
-                  row: val,
-                  id: 6005,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  entName: "盐城市亭湖区黄尖供销合作有限公司",
-                  creditCode: "91320902745597120Y",
-                  registrationNumber: "320924000019628",
-                  inReason:
-                    "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
-                  inDate: "2020-08-25T16:00:00.000+00:00",
-                  inOrg: "原盐城市税务局稽查局",
-                  inWnum: null,
-                  inTitle: null,
-                  inContent: null,
-                  yzType: null,
-                  yzFact: null,
-                  url: null,
-                  createTime: "2022-11-15 02:11:34",
-                  updateTime: "2022-11-15 02:11:34",
-                },
-              ];
+            .then(({ data }) => {
+              this.tableData.pledgeEquityResp.pledgeEquityList = data.list;
             });
           break;
         case "adminPenaltyResp":
           this.adminPenaltyRespPageNum = val;
           this.$axios
-            .get("/construction/projectManager", {
+            .post("/businessRisk/adminPenalty", {
+              entId,
               pageNum: this.adminPenaltyRespPageNum,
               pageSize: this.pageSize,
             })
-            .then(() => {
-              this.tableData.adminPenaltyResp.adminPenaltyList = [
-                {
-                  row: val,
-                  id: 6005,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  entName: "盐城市亭湖区黄尖供销合作有限公司",
-                  creditCode: "91320902745597120Y",
-                  registrationNumber: "320924000019628",
-                  inReason:
-                    "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
-                  inDate: "2020-08-25T16:00:00.000+00:00",
-                  inOrg: "原盐城市税务局稽查局",
-                  inWnum: null,
-                  inTitle: null,
-                  inContent: null,
-                  yzType: null,
-                  yzFact: null,
-                  url: null,
-                  createTime: "2022-11-15 02:11:34",
-                  updateTime: "2022-11-15 02:11:34",
-                },
-              ];
+            .then(({ data }) => {
+              this.tableData.adminPenaltyResp.adminPenaltyList = data.list;
             });
           break;
         case "taxArrearsResp":
           this.taxArrearsRespPageNum = val;
           this.$axios
-            .get("/construction/projectManager", {
+            .post("/businessRisk/taxArrears", {
+              entId,
               pageNum: this.taxArrearsRespPageNum,
               pageSize: this.pageSize,
             })
-            .then(() => {
-              this.tableData.taxArrearsResp.taxArrearsList = [
-                {
-                  row: val,
-                  id: 6005,
-                  entId: "8535efbfc3d44226206332272daeffc5",
-                  entName: "盐城市亭湖区黄尖供销合作有限公司",
-                  creditCode: "91320902745597120Y",
-                  registrationNumber: "320924000019628",
-                  inReason:
-                    "经原江苏省盐城市国家税务局稽查局检查，发现其在2015年1月1日至2016年4月30日期间，主要存在以下问题：对外虚开增值税销项发票325份，虚开金额3000.44万元、税额390.06万元。",
-                  inDate: "2020-08-25T16:00:00.000+00:00",
-                  inOrg: "原盐城市税务局稽查局",
-                  inWnum: null,
-                  inTitle: null,
-                  inContent: null,
-                  yzType: null,
-                  yzFact: null,
-                  url: null,
-                  createTime: "2022-11-15 02:11:34",
-                  updateTime: "2022-11-15 02:11:34",
-                },
-              ];
+            .then(({ data }) => {
+              this.tableData.taxArrearsResp.taxArrearsList = data.list;
             });
           break;
         default:
       }
+    },
+    indexMethod(type) {
+      const that = this;
+      return function (index) {
+        switch (type) {
+          case "abnormalOperationResp":
+            return (
+              (that.abnormalOperationRespPageNum - 1) * that.pageSize +
+              index +
+              1
+            );
+          case "breatchTrustResp":
+            return (
+              (that.breatchTrustRespPageNum - 1) * that.pageSize + index + 1
+            );
+          case "pledgeEquityResp":
+            return (
+              (that.pledgeEquityRespPageNum - 1) * that.pageSize + index + 1
+            );
+          case "adminPenaltyResp":
+            return (
+              (that.adminPenaltyRespPageNum - 1) * that.pageSize + index + 1
+            );
+          case "taxArrearsResp":
+            return (that.taxArrearsRespPageNum - 1) * that.pageSize + index + 1;
+          default:
+        }
+      };
     },
   },
 };
@@ -925,6 +633,9 @@ export default {
   .page-tool {
     padding: 10px 0;
     text-align: right;
+  }
+  /deep/ .header-row {
+    background: #f0f7fc;
   }
 }
 </style>

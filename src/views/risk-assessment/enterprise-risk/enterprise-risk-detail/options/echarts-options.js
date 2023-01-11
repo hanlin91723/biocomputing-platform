@@ -1,46 +1,50 @@
 //综合风险指数
-export const comprehensiveRisk = function () {
+export const comprehensiveRisk = function (data) {
     return {
-        title: {
-            text: "Basic Radar Chart",
-        },
-        legend: {
-            data: ["Allocated Budget", "Actual Spending", ],
+        tooltip: {
+            show: true,
         },
         radar: {
-            // shape: 'circle',
+            radius: "70%",
             indicator: [{
-                    name: "Sales",
-                    max: 6500,
+                    name: "财务状况",
+                    max: 20,
                 },
                 {
-                    name: "Administration",
-                    max: 16000,
+                    name: "员工情况",
+                    max: 10,
                 },
                 {
-                    name: "Information Technology",
-                    max: 30000,
+                    name: "信用评价",
+                    max: 10,
                 },
                 {
-                    name: "Customer Support",
-                    max: 38000,
+                    name: "网络舆情",
+                    max: 10,
                 },
                 {
-                    name: "Development",
-                    max: 52000,
+                    name: "重要人员",
+                    max: 10,
                 },
                 {
-                    name: "Marketing",
-                    max: 25000,
+                    name: "司法诉讼",
+                    max: 20,
+                },
+                {
+                    name: "企业经营",
+                    max: 10,
+                },
+                {
+                    name: "关联企业",
+                    max: 10,
                 },
             ],
         },
         series: [{
-            name: "Budget vs spending",
+            name: "",
             type: "radar",
             data: [{
-                value: [5000, 14000, 28000, 26000, 42000, 21000, ],
-                name: "Actual Spending",
+                value: data,
             }, ],
         }, ],
     };

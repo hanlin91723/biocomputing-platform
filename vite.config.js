@@ -37,7 +37,7 @@ export default defineConfig(({
       proxy: {
         "/api": {
           // target: "http://183.66.214.98:8958", //微服务端
-          target: "http://192.168.3.29:8085", //本地
+          target: "http://192.168.2.255:8085", //本地
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
