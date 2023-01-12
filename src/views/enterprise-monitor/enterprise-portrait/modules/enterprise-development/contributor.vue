@@ -3,36 +3,16 @@
     <h3 class="title">股东（发起人）及出资信息（单位：万人民币）</h3>
     <el-table
       :data="contributorData"
-      row-key="shareholderName"
       size="small"
       header-cell-class-name="header-row"
     >
       <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column
-        prop="shareholderName"
-        label="股东名称"
-      ></el-table-column>
-      <el-table-column
-        prop="AccumulatedShouldAmount"
-        label="累计认缴额"
-        width="170"
-      ></el-table-column>
-      <el-table-column
-        prop="conprop"
-        label="出资比例"
-        width="170"
-      ></el-table-column>
+      <el-table-column prop="inv" label="股东名称"></el-table-column>
+      <el-table-column prop="subconam" label="累计认缴额"></el-table-column>
+      <el-table-column prop="conprop" label="出资比例"></el-table-column>
       <!-- <el-table-column prop="shouldMode" label="认缴出资方式" width="170"></el-table-column> -->
-      <el-table-column
-        prop="AccumulatedActualAmount"
-        label="累计实缴额"
-        width="170"
-      ></el-table-column>
-      <el-table-column
-        prop="actualTime"
-        label="实缴出资日期"
-        width="170"
-      ></el-table-column>
+      <el-table-column prop="acconam" label="累计实缴额"></el-table-column>
+      <el-table-column prop="condate" label="实缴出资日期"></el-table-column>
       <!-- <el-table-column prop="actualMode" label="实缴出资方式" width="171"></el-table-column> -->
     </el-table>
     <!-- 分页器 -->
@@ -77,15 +57,7 @@ export default {
       };
       this.$axios.post("/develop/contribution", params).then(({ data }) => {
         this.contributorTotal = data.total;
-        this.contributorData = data.list.map((item) => {
-          return {
-            shareholderName: item.inv,
-            AccumulatedShouldAmount: item.subconam,
-            conprop: item.conprop,
-            AccumulatedActualAmount: item.acconam,
-            actualTime: item.condate,
-          };
-        });
+        this.contributorData = data.list;
       });
     },
     // 变更记录分页

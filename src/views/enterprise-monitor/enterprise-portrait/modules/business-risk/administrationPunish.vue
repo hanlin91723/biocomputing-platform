@@ -6,32 +6,19 @@
       size="small"
       header-cell-class-name="header-row"
     >
-      <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column
-        prop="punishTime"
-        label="处罚日期"
-        width="199"
+        label="序号"
+        width="50"
+        type="index"
+        :index="indexMethod"
       ></el-table-column>
-      <el-table-column prop="documentNum" label="决定文书号"></el-table-column>
-      <el-table-column
-        prop="punishReason"
-        label="处罚事由/违法行为类型"
-      ></el-table-column>
-      <el-table-column
-        prop="punishResult"
-        label="处罚结果/内容"
-        width="199"
-      ></el-table-column>
-      <el-table-column
-        prop="punishCompany"
-        label="处罚单位"
-        width="199"
-      ></el-table-column>
-      <el-table-column
-        prop="dataSources"
-        label="数据来源"
-        width="199"
-      ></el-table-column>
+      <el-table-column prop="penDecIssDate" label="处罚日期"></el-table-column>
+      <el-table-column prop="penDecNo" label="决定文书号"></el-table-column>
+      <el-table-column prop="caseReason" label="处罚事由"></el-table-column>
+      <el-table-column prop="caseType" label="违法行为类型"></el-table-column>
+      <el-table-column prop="penResult" label="处罚结果"></el-table-column>
+      <el-table-column prop="penAuthName" label="处罚单位"></el-table-column>
+      <el-table-column prop="dataSource" label="数据来源"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -74,25 +61,24 @@ export default {
         pageSize: this.administrationPunishPageSize,
       };
       this.$axios
-        .post("/businessRisk/pledgeEquity", params)
+        .post("/businessRisk/adminPenalty", params)
         .then(({ data }) => {
           this.administrationPunishTotal = data.total;
-          this.administrationPunishData = data.list.map((item) => {
-            return {
-              punishTime: item.penDecIssDate,
-              documentNum: item.penDecNo,
-              punishReason: item.caseType,
-              punishResult: item.penResult || item.content,
-              punishCompany: item.penAuthName,
-              dataSources: item.dataSource,
-            };
-          });
+          this.administrationPunishData = data.list;
         });
     },
     // 变更记录分页
     administrationPunishCurrentChange(val) {
       this.administrationPunishCurrentPage = val;
       this.getAdministrationPunishData();
+    },
+    indexMethod(index) {
+      return (
+        (this.administrationPunishCurrentPage - 1) *
+          this.administrationPunishPageSize +
+        index +
+        1
+      );
     },
   },
 };

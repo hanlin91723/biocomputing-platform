@@ -35,17 +35,22 @@
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" border stripe class="table">
+    <el-table
+      :data="tableData"
+      stripe
+      class="table"
+      header-cell-class-name="header-row"
+    >
       <el-table-column prop="id" label="序号" width="80"></el-table-column>
+      <el-table-column prop="riskIndex" label="风险指标"></el-table-column>
+      <el-table-column prop="riskClassify" label="风险分类"></el-table-column>
       <el-table-column prop="riskGrade" label="风险等级">
-        <template slot-scope="scope">
-          <span :class="{ [riskColor(scope.row.riskGrade)]: true }">{{
-            scope.row.riskGrade
+        <template slot-scope="{ row }">
+          <span :class="{ [riskColor(row.riskGrade)]: true }">{{
+            row.riskGrade
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="riskIndex" label="风险指标"></el-table-column>
-      <el-table-column prop="riskClassify" label="风险分类"></el-table-column>
       <el-table-column
         prop="riskDescribe"
         label="风险描述"

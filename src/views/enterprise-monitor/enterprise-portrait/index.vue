@@ -18,7 +18,7 @@
               headerInfo.legalPerson || "--"
             }}</el-descriptions-item>
             <el-descriptions-item label="注册日期">{{
-              headerInfo.incorporationDate?.split("T")[0] || "--"
+              headerInfo.incorporationDate || "--"
             }}</el-descriptions-item>
             <el-descriptions-item label="专利数量"
               >{{ headerInfo.patentNum || "--" }}件</el-descriptions-item
@@ -520,9 +520,6 @@ export default {
     }
     .companyInfo {
       width: 73%;
-      .info {
-        width: 520px;
-      }
       .title {
         margin-bottom: 10px;
       }

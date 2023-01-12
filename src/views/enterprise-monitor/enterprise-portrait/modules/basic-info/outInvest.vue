@@ -185,35 +185,11 @@ export default {
         entName: userStore.entName,
       };
       this.$axios.get("/entInfo/foreignInvestArea", params).then(({ data }) => {
-        this.mapAndBarData = data.map((item) => {
-          return {
-            name: item.regionName,
-            value: item.num,
-          };
-        });
+        this.mapAndBarData = data.map((item) => ({
+          name: item.regionName,
+          value: item.num,
+        }));
       });
-      // this.mapAndBarData = [
-      //   {
-      //     name: "北京市",
-      //     value: 13,
-      //   },
-      //   {
-      //     name: "广东省",
-      //     value: 8,
-      //   },
-      //   {
-      //     name: "浙江省",
-      //     value: 6,
-      //   },
-      //   {
-      //     name: "重庆市",
-      //     value: 5,
-      //   },
-      //   {
-      //     name: "天津市",
-      //     value: 2,
-      //   },
-      // ];
     },
     getInvestPieData() {
       const userStore = useUserStore();
@@ -342,7 +318,7 @@ export default {
         width: 49%;
         text-align: center;
         .chartContent {
-          width: 569px;
+          // width: 569px;
           height: 263px;
           // border: 1px solid #cfcfcf;
         }

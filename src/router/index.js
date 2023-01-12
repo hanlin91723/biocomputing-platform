@@ -39,28 +39,28 @@ const asyncRouterMap = [{
         path: "/home",
         name: "Home",
         component: Layout,
-        redirect: "/risk-map",
+        redirect: "/statistical-analysis",
         meta: {
           title: "概览",
           ico: "el-icon-monitor",
           permission: ["1-1", "1-2", ],
         },
         children: [{
-            path: "/risk-map", //风险地图
-            name: "RiskMap",
-            component: () => import("@/views/home/risk-map/index.vue"),
-            meta: {
-              title: "风险地图",
-              permission: ["1-1", ],
-            },
-          },
-          {
             path: "/statistical-analysis", //统计分析
             name: "StatisticalAnalysis",
             component: () => import("@/views/home/statistical-analysis/index.vue"),
             meta: {
               title: "统计分析",
               permission: ["1-2", ],
+            },
+          },
+          {
+            path: "/risk-map", //风险地图
+            name: "RiskMap",
+            component: () => import("@/views/home/risk-map/index.vue"),
+            meta: {
+              title: "风险地图",
+              permission: ["1-1", ],
             },
           },
         ],

@@ -3,16 +3,11 @@
     <h3 class="title">终本案件 {{ finalCaseTotal }}</h3>
     <el-table
       :data="finalCaseData"
-      style="width: 226px"
       size="small"
       header-cell-class-name="header-row"
     >
-      <el-table-column label="序号" width="50" type="index"></el-table-column>
-      <el-table-column
-        prop="referenceNum"
-        label="案号"
-        width="175"
-      ></el-table-column>
+      <el-table-column label="序号" type="index"></el-table-column>
+      <el-table-column prop="referenceNum" label="案号"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination

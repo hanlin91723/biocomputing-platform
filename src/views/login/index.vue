@@ -95,7 +95,7 @@ export default {
             .then((res) => {
               sessionStorage.setItem("token", res.token);
               this.$router.push({
-                path: this.$route.query.redirect || "/risk-map",
+                path: this.$route.query.redirect || "/statistical-analysis",
               });
             })
             .finally(() => {
