@@ -19,36 +19,28 @@
       >
         <el-table-column label="序号" width="50" type="index"></el-table-column>
         <el-table-column
-          prop="applyDate"
+          prop="applicationDate"
           label="申请日"
-          width="170"
           :filters="filterApplyData"
           :filter-method="filterHandler"
         >
         </el-table-column>
-        <el-table-column prop="brand" label="商标" width="170">
-          <template slot-scope="scope">
-            <el-image
-              style="width: 50px; height: 50px"
-              :src="scope.row.brand"
-              fit="fill"
-            >
-            </el-image>
+        <el-table-column prop="tname" label="商标名称">
+          <template slot-scope="{ row }">
+            <span class="tname">{{ row.tname }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="brandName" label="商标名称">
-          <template slot-scope="scope">
-            <span class="brandName">{{ scope.row.brandName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="registerNum" label="注册号"></el-table-column>
+        <el-table-column prop="tnum" label="注册号"></el-table-column>
         <el-table-column
-          prop="classify"
+          prop="ttype"
           label="国际分类"
           width="170"
           :filters="filterTypeData"
           :filter-method="filterHandler"
         >
+          <template slot-scope="{ row }">{{
+            row.ttype ? `${row.ttype}类-${row.ttypeName}` : ""
+          }}</template>
         </el-table-column>
         <!-- <el-table-column
          prop="brandStatus"
@@ -177,17 +169,7 @@ export default {
       };
       this.$axios.post("/knowledge/trademarkInfo", params).then(({ data }) => {
         this.brandInfoTotal = data.total;
-        this.brandInfoData = data.list.map((item) => {
-          return {
-            applyDate: item.applicationDate,
-            brand: item.pic,
-            brandName: item.tname,
-            registerNum: item.tnum,
-            classify: item.ttype,
-            // brandStatus: "初审公告",
-            registerDate: item.registerDate,
-          };
-        });
+        this.brandInfoData = data.list;
       });
     },
     // 裁判文书分页
@@ -214,7 +196,7 @@ export default {
   }
   .enterpriseInvest {
     margin-bottom: 30px;
-    .brandName {
+    .tname {
       color: rgba(55, 87, 255, 1);
     }
     .chart {

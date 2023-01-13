@@ -77,7 +77,12 @@
         ref="roleInfo"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input placeholder="请输入角色名称" v-model="roleInfo.roleName" />
+          <el-input
+            placeholder="请输入角色名称"
+            maxlength="30"
+            show-word-limit
+            v-model="roleInfo.roleName"
+          />
         </el-form-item>
         <el-form-item label="权限描述" prop="roleDesc">
           <el-input
@@ -133,7 +138,7 @@ export default {
         arr = [...arr, ...value[item]];
       });
       return arr.length === 0
-        ? callback(new Error("功能权限为必选"))
+        ? callback(new Error("请至少选择一项功能权限"))
         : callback();
     };
     return {
@@ -168,7 +173,7 @@ export default {
       },
       roleInfoRules: {
         roleName: [
-          { required: true, message: "用户名不能为空", trigger: "blur" },
+          { required: true, message: "角色名称不能为空", trigger: "blur" },
         ],
         roleDesc: [
           { required: true, message: "权限描述不能为空", trigger: "blur" },
@@ -231,8 +236,8 @@ export default {
     },
     // 删除角色
     deleteRole(row) {
-      this.$axios.delete(`/system/role/${row.userId}`).then(() => {
-        this.$message.success("删除成功！");
+      this.$axios.delete(`/system/role/${row.roleId}`).then(() => {
+        this.$message.success("删除成功");
         this.getTableData();
       });
     },
@@ -249,6 +254,11 @@ export default {
         Object.keys(row.menuIdMap).forEach((item) => {
           const itemTemp = this.roleList.find((key) => key.id === Number(item));
           this.handleCheckedRolesChange(itemTemp, row.menuIdMap[item]);
+        });
+      } else {
+        this.roleList.forEach((item) => {
+          this.checkedAllObj[item.id] = false;
+          this.isIndeterminateObj[item.id] = false;
         });
       }
       this.showRoleDialog = true;
@@ -275,7 +285,7 @@ export default {
             "/system/role",
             params
           ).then(() => {
-            this.$message.success(`${this.isEdit ? "修改" : "添加"}成功！`);
+            this.$message.success(`${this.isEdit ? "修改" : "添加"}成功`);
             this.getTableData();
             this.isCancel();
           });
@@ -294,9 +304,9 @@ export default {
           4: [],
         },
       };
-      // this.$refs.roleInfo.resetFields(); // 重置校验结果
+      this.$refs.roleInfo.resetFields(); // 重置校验结果
       this.showRoleDialog = false;
-      this.roleId = -1;
+      this.roleId = "";
     },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pageSize + index + 1;

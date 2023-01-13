@@ -1,7 +1,11 @@
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
-import { v4 as uuidv4 } from "uuid";
-import { Message } from "element-ui";
+import {
+  v4 as uuidv4
+} from "uuid";
+import {
+  Message
+} from "element-ui";
 
 /**
  * 文件导出
@@ -9,8 +13,8 @@ import { Message } from "element-ui";
  * filename 文件名
  * options 转出文件的格式类型等配置
  */
- export const exportLists = (res, filename, options = {}) => {
-  const blob = new Blob([res,], options);
+export const exportLists = (res, filename, options = {}) => {
+  const blob = new Blob([res, ], options);
   const elink = document.createElement("a");
   elink.download = filename;
   elink.style.display = "none";
@@ -86,24 +90,26 @@ export function formatter(num) {
  * el-table表格导出为Excel
  * _targetId 需处理的table
  */
- export const exportTableAsXLSX = function(_targetId) {
+export const exportTableAsXLSX = function (_targetId) {
   //根据table生成Book工作簿
   let wb = XLSX.utils.table_to_book(document.getElementById(_targetId));
   //将Book工作簿作为输出
   let wbout = XLSX.write(wb, {
-      bookType: "xlsx",
-      bookSST: true,
-      type: "array",
+    bookType: "xlsx",
+    bookSST: true,
+    type: "array",
   });
   //尝试将当前table内容保存为excel文件
   try {
-      FileSaver.saveAs(
-          //被导出的blob二进制对象
-          new Blob([wbout,], { type: "application/octet-stream", }),
-          //导出文件的名称+后缀名
-          uuidv4() + ".xlsx"
-      );
+    FileSaver.saveAs(
+      //被导出的blob二进制对象
+      new Blob([wbout, ], {
+        type: "application/octet-stream",
+      }),
+      //导出文件的名称+后缀名
+      uuidv4() + ".xlsx"
+    );
   } catch (e) {
-      Message.error("导出失败，请稍后再试！");
+    Message.error("导出失败，请稍后再试");
   }
 };

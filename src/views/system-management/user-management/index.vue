@@ -210,7 +210,7 @@ export default {
     // 删除用户
     deleteUser(row) {
       this.$axios.delete(`/system/user/${row.userId}`).then(() => {
-        this.$message.success("删除成功！");
+        this.$message.success("删除成功");
         this.getTableData();
       });
     },
@@ -220,7 +220,7 @@ export default {
         userId: row.userId,
       };
       this.$axios.put("/system/user/resetPwd", params).then(() => {
-        this.$message.success("重置密码成功！");
+        this.$message.success("重置密码成功");
       });
     },
     // 添加/编辑用户
@@ -257,7 +257,7 @@ export default {
             "/system/user",
             params
           ).then(() => {
-            this.$message.success(`${this.isEdit ? "修改" : "添加"}成功！`);
+            this.$message.success(`${this.isEdit ? "修改" : "添加"}成功`);
             this.getTableData();
             this.isCancel();
           });
@@ -267,6 +267,12 @@ export default {
     // 取消
     isCancel() {
       this.userId = "";
+      this.userInfo = {
+        userName: "",
+        phonenumber: "",
+        remark: "",
+        roleIds: [],
+      };
       this.$refs.userInfo.resetFields(); // 重置校验结果
       this.showUserDialog = false;
     },

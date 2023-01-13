@@ -77,7 +77,7 @@
       <el-table-column label="操作">
         <template slot-scope="{ row }">
           <span class="edit" @click="riskDetails(row)">风险详情</span>
-          <span class="delete" @click="portrait(row)">企业画像</span>
+          <span class="reset" @click="portrait(row)">企业画像</span>
         </template>
       </el-table-column>
     </el-table>

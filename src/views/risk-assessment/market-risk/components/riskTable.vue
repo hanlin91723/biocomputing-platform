@@ -59,22 +59,24 @@
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" border stripe class="table">
-      <el-table-column prop="index" label="序号" width="80"></el-table-column>
+    <el-table
+      :data="tableData"
+      stripe
+      class="table"
+      size="small"
+      header-cell-class-name="header-row"
+    >
       <el-table-column
-        prop="enterpriseName"
-        label="企业名称"
-        width="240"
+        type="index"
+        label="序号"
+        width="50"
+        :index="indexMethod"
       ></el-table-column>
-      <el-table-column
-        prop="legalPerson"
-        label="法人"
-        width="90"
-      ></el-table-column>
+      <el-table-column prop="enterpriseName" label="企业名称"></el-table-column>
+      <el-table-column prop="legalPerson" label="法人"></el-table-column>
       <el-table-column
         prop="creditCode"
         label="统一社会信用代码"
-        width="200"
       ></el-table-column>
       <el-table-column prop="industry" label="行业"></el-table-column>
       <el-table-column prop="riskIndex" label="综合风险指数">
@@ -88,7 +90,6 @@
         prop="earlyWarning"
         label="指标风险（财务预警）"
         sortable
-        width="185"
       >
         <template slot-scope="scope">
           <span
@@ -98,9 +99,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
-          <span class="edit" @click="riskDetails(scope.row)">风险详情</span>
-          <span class="delete" @click="portrait(scope.row)">企业画像</span>
+        <template slot-scope="{ row }">
+          <span class="edit" @click="riskDetails(row)">风险详情</span>
+          <span class="reset" @click="portrait(row)">企业画像</span>
         </template>
       </el-table-column>
     </el-table>
@@ -310,16 +311,18 @@ export default {
       window.open(routeData.location.path, "_blank");
     },
     // 风险详情
-    riskDetails({ id }) {
-      console.log(id);
+    riskDetails(row) {
       this.$router.push({
-        path: "/enterprise-risk/detail/1",
+        path: `/enterprise-risk/detail/${row.entId}`,
       });
     },
     // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getTableData();
+    },
+    indexMethod(index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1;
     },
   },
 };
@@ -349,8 +352,6 @@ export default {
     }
   }
   .table {
-    width: 100%;
-    // height: 587px;
     margin-bottom: 10px;
     .riskColor1 {
       color: rgba(245, 114, 114, 1);

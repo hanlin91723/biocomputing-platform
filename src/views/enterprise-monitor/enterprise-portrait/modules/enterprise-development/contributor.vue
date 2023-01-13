@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="title">股东（发起人）及出资信息（单位：万人民币）</h3>
+    <h3 class="title">股东（发起人）及出资信息</h3>
     <el-table
       :data="contributorData"
       size="small"
@@ -8,12 +8,14 @@
     >
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="inv" label="股东名称"></el-table-column>
-      <el-table-column prop="subconam" label="累计认缴额"></el-table-column>
-      <el-table-column prop="conprop" label="出资比例"></el-table-column>
-      <!-- <el-table-column prop="shouldMode" label="认缴出资方式" width="170"></el-table-column> -->
-      <el-table-column prop="acconam" label="累计实缴额"></el-table-column>
-      <el-table-column prop="condate" label="实缴出资日期"></el-table-column>
-      <!-- <el-table-column prop="actualMode" label="实缴出资方式" width="171"></el-table-column> -->
+      <el-table-column prop="subconam" label="出资金额">
+        <template slot-scope="{ row }">
+          {{ row.conMoney + row.conMoneyUnit }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="conprop" label="出资比例">
+        <template slot-scope="{ row }"> {{ row.conprop }}% </template>
+      </el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -50,7 +52,7 @@ export default {
     getContributorData() {
       const userStore = useUserStore();
       let params = {
-        entId: userStore.entId,
+        entId: "25e3b319bf6dd259dd99393e42a4f4b3",
         entName: userStore.entName,
         pageNum: this.contributorCurrentPage,
         pageSize: this.contributorPageSize,

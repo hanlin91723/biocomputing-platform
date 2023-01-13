@@ -1,5 +1,6 @@
 export const marketRisk = function (data) {
   return {
+    color: ["rgba(245,114,114,1)", "rgba(244,165,47,1)", "rgba(182,200,76,1)", "rgba(93,209,140,1)", ],
     title: {
       text: "市场风险概况",
       left: "center",
@@ -175,7 +176,7 @@ export const wordCloud = function (data) {
 export const ranking = function (data) {
   return {
     title: {
-      text: "高风险企业十大行业排名",
+      text: "风险企业十大行业排名",
       left: "center",
     },
     tooltip: {
@@ -208,7 +209,7 @@ export const ranking = function (data) {
 export const distribution = function (data) {
   return {
     title: {
-      text: "高风险企业规模分布",
+      text: "风险企业规模分布",
       left: "center",
     },
     tooltip: {

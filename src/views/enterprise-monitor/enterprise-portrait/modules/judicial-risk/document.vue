@@ -34,9 +34,13 @@
           :filter-method="filterHandler"
         >
         </el-table-column>
-        <el-table-column prop="party" label="当事人"></el-table-column>
+        <el-table-column
+          prop="party"
+          label="当事人"
+          width="280"
+        ></el-table-column>
         <el-table-column prop="caseAmount" label="案件金额"></el-table-column>
-        <el-table-column prop="judgmentResult" label="裁判结果" width="240">
+        <el-table-column prop="judgmentResult" label="裁判结果" width="280">
           <template slot-scope="{ row }">
             <el-tooltip placement="top">
               <div slot="content" class="judgment-result">
@@ -44,7 +48,6 @@
               </div>
               <div class="ellipsis">{{ row.judgmentResult }}</div>
             </el-tooltip>
-            <!-- <span class="ellipsis">{{ scope.row.judgmentResult }}</span> -->
           </template>
         </el-table-column>
         <el-table-column
@@ -217,9 +220,7 @@ export default {
         width: 49%;
         text-align: center;
         .chartContent {
-          width: 569px;
           height: 263px;
-          // border: 1px solid #cfcfcf;
         }
       }
       .chartTitle {

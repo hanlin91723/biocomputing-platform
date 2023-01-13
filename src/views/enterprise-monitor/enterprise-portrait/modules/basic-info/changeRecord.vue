@@ -8,21 +8,27 @@
     >
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="changeProject" label="变更项目"></el-table-column>
-      <el-table-column
-        prop="changeTime"
-        label="变更日期"
-        width="299"
-      ></el-table-column>
-      <el-table-column
-        prop="beforeInfo"
-        label="变更前信息"
-        width="299"
-      ></el-table-column>
-      <el-table-column
-        prop="afterInfo"
-        label="变更后信息"
-        width="299"
-      ></el-table-column>
+      <el-table-column prop="changeTime" label="变更日期"></el-table-column>
+      <el-table-column prop="beforeInfo" label="变更前信息">
+        <template slot-scope="{ row }">
+          <el-tooltip placement="top">
+            <div slot="content" class="judgment-result">
+              {{ row.beforeInfo }}
+            </div>
+            <div class="ellipsis">{{ row.beforeInfo }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="afterInfo" label="变更后信息">
+        <template slot-scope="{ row }">
+          <el-tooltip placement="top">
+            <div slot="content" class="judgment-result">
+              {{ row.afterInfo }}
+            </div>
+            <div class="ellipsis">{{ row.afterInfo }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
@@ -94,5 +100,8 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
+}
+.judgment-result {
+  max-width: 500px;
 }
 </style>

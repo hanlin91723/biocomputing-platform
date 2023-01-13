@@ -4,10 +4,14 @@
       <el-card class="header-left" shadow="hover">
         <el-descriptions :column="1">
           <el-descriptions-item label="风险指标">
-            <span class="red">{{infoData.indexSmallTypeName}}</span>
+            <span class="red">{{ infoData.indexSmallTypeName }}</span>
           </el-descriptions-item>
-          <el-descriptions-item label="风险分类">{{infoData.indexLargeTypeName}}</el-descriptions-item>
-          <el-descriptions-item label="风险描述">{{infoData.desc}}</el-descriptions-item>
+          <el-descriptions-item label="风险分类">{{
+            infoData.indexLargeTypeName
+          }}</el-descriptions-item>
+          <el-descriptions-item label="风险描述">{{
+            infoData.desc
+          }}</el-descriptions-item>
           <el-descriptions-item label="风险等级">
             <riskLevelTwo :level="infoData.riskLevel || 0"></riskLevelTwo>
           </el-descriptions-item>
@@ -23,12 +27,17 @@
           <div class="right">
             <div>
               同比
-              <span class="value">{{(infoData.changeValue>=0? '+':'-') + infoData.changeValue*100}}</span>
+              <span class="value">{{
+                (infoData.changeValue >= 0 ? "+" : "-") +
+                (infoData.changeValue * 100).toFixed(0)
+              }}</span>
               <span class="unit">%</span>
             </div>
             <div>
               占比
-              <span class="value blue">{{infoData.prop * 100}}</span>
+              <span class="value blue">{{
+                (infoData.prop * 100).toFixed(0)
+              }}</span>
               <span class="unit blue">%</span>
             </div>
           </div>
@@ -46,10 +55,7 @@
           </div>
           <div class="content-right">
             <h3>风险企业注册规模分布</h3>
-            <v-chart
-             class="chart2"
-             :option="registeredScaleOption"
-             ></v-chart>
+            <v-chart class="chart2" :option="registeredScaleOption"></v-chart>
           </div>
         </div>
       </el-card>
@@ -62,31 +68,31 @@
 <script>
 import riskLevelTwo from "@/views/risk-assessment/market-risk/components/riskLevelTwo.vue";
 import riskTable from "@/views/risk-assessment/market-risk/components/riskTable.vue";
-import { rankingBar,registeredScale } from "@/views/risk-assessment/market-risk/market-risk-detail/options/echarts-options.js";
+import {
+  rankingBar,
+  registeredScale,
+} from "@/views/risk-assessment/market-risk/market-risk-detail/options/echarts-options.js";
 import { formatter } from "@/util/util";
 export default {
   data() {
     return {
-      infoData:{},
-      rankingName:[],
-      rankingValue:[],
-      registeredScaleData:[],
-      indexLargeTypeCode:"",
-      indexSmallTypeCode:"",
-      params:{},
-      rankingData:[],
+      infoData: {},
+      rankingName: [],
+      rankingValue: [],
+      registeredScaleData: [],
+      params: {},
     };
   },
   components: {
     riskLevelTwo,
     riskTable,
   },
-  created(){
+  created() {
     this.getInfoData();
   },
   computed: {
     rankingBarOption() {
-      return rankingBar(this.rankingName,this.rankingValue);
+      return rankingBar(this.rankingName, this.rankingValue);
     },
     registeredScaleOption() {
       return registeredScale(this.registeredScaleData);
@@ -94,21 +100,19 @@ export default {
   },
   methods: {
     // 获取基本信息
-    getInfoData(){
+    getInfoData() {
       let params = {
-        riskType:"全部",
-        riskLevel:"全部",
+        riskType: "全部",
+        riskLevel: "全部",
       };
-      this.$axios.get("/marketRisk/byCondition",params).then(({data,})=>{
-        this.infoData = data.find(item=>{
-          return item.id === parseInt(this.$route.query.id);
-        });
-        this.indexLargeTypeCode = this.infoData.indexLargeTypeCode;
-        this.indexSmallTypeCode = this.infoData.indexSmallTypeCode;
+      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
+        this.infoData = data.find(
+          (item) => item.id === parseInt(this.$route.query.id)
+        );
         this.params = {
-        indexLargeTypeCode: this.indexLargeTypeCode,
-        indexSmallTypeCode: this.indexSmallTypeCode,
-      };
+          indexLargeTypeCode: this.infoData.indexLargeTypeCode,
+          indexSmallTypeCode: this.infoData.indexSmallTypeCode,
+        };
         // 获取排行数据
         this.getRankingData();
         // 获取饼图数据
@@ -116,22 +120,21 @@ export default {
       });
     },
     // 获取排行数据
-    getRankingData(){
-      this.$axios.get("/marketRisk/industryRanking",this.params).then(({data,})=>{
-        this.rankingData = data;
-        this.rankingName = this.rankingData.map(item=>{
-          return item.name;
+    getRankingData() {
+      this.$axios
+        .get("/marketRisk/industryRanking", this.params)
+        .then(({ data }) => {
+          this.rankingName = data.map((item) => item.name);
+          this.rankingValue = data.map((item) => item.value);
         });
-        this.rankingValue = this.rankingData.map(item=>{
-          return item.value;
-        });
-      });
     },
     // 获取饼图数据
-    getRegisteredScaleData(){
-      this.$axios.get("/marketRisk/registeredCapital",this.params).then(({data,})=>{
-        this.registeredScaleData = data;
-      });
+    getRegisteredScaleData() {
+      this.$axios
+        .get("/marketRisk/registeredCapital", this.params)
+        .then(({ data }) => {
+          this.registeredScaleData = data;
+        });
     },
     // 千分位分隔
     formatter(val) {
@@ -152,7 +155,7 @@ export default {
     width: 100%;
     height: 400px;
     .header-left {
-      width: 39%;
+      width: 34%;
       padding: 10px;
       .red {
         color: red;
@@ -213,26 +216,22 @@ export default {
       }
     }
     .header-right {
-      width: 58%;
+      overflow: initial;
+      width: 64%;
       .content {
         display: flex;
         justify-content: space-around;
         text-align: center;
+        font-size: 20px;
         .content-left {
-          width: 450px;
-          font-size: 20px;
+          width: 60%;
           .chart1 {
-            width: 500px;
             height: 300px;
-            margin-left: -15px;
           }
         }
         .content-right {
-          width: 300px;
-          height: 200px;
-          font-size: 20px;
+          width: 40%;
           .chart2 {
-            width: 270px;
             height: 300px;
           }
         }

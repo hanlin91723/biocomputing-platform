@@ -388,7 +388,7 @@ export const trendChange = function (data) {
       },
       {
         // name: "P",
-        name: "中级舆论",
+        name: "中性舆论",
         type: "bar",
         stack: "total",
         label: {
@@ -587,9 +587,11 @@ export const recruit = function (name, value) {
 export const basicPie = function (data) {
   return {
     color: ["#1990FF", "#8DDAF8", "#7ACC8B", "#FFB355", "#F96E5F", "#896EF5", ],
+    grid: {
+      containLabel: true,
+    },
     tooltip: {
       trigger: "item",
-      // formatter: "{a} <br/>{b} : {c} ({d}%)",
       formatter: "{b} : {d}%",
     },
     legend: {
@@ -597,15 +599,15 @@ export const basicPie = function (data) {
       orient: "vertical",
       itemlength: 20,
       itemWidth: 15,
-      left: "60%",
+      left: "55%",
       align: "left",
       top: "middle",
     },
     series: [{
       name: "",
       type: "pie",
-      radius: [0, "60%", ],
-      center: ["200", "50%", ],
+      // radius: [0, "60%", ],
+      center: ["30%", "50%", ],
       avoidLabelOverlap: false,
       label: {
         show: false,

@@ -1,34 +1,36 @@
 <template>
   <div classs="hareholder">
-    <div class="title" @click="handleTab">
+    <div class="title">
       <span
         :class="{
           titleItem: true,
-          active: selectTab.startsWith('股东信息'),
-          disabled: shareholderTotal == 0,
+          active: selectTab === '股东信息',
         }"
+        @click="handleTab('股东信息')"
         >股东信息 {{ shareholderTotal }}</span
       >
       <span
         :class="{
           titleItem: true,
-          active: selectTab.startsWith('历史股东信息'),
+          active: selectTab === '历史股东信息',
           disabled: oldShareholderTotal == 0,
         }"
+        @click="handleTab('历史股东信息')"
         >历史股东信息 {{ oldShareholderTotal }}</span
       >
       <span
         :class="{
           titleItem: true,
-          active: selectTab.startsWith('股东变更'),
+          active: selectTab === '股东变更',
           disabled: stockRightTotal == 0,
         }"
+        @click="handleTab('股东变更')"
         >股东变更 {{ stockRightTotal }}</span
       >
     </div>
     <!-- 股东信息表格 -->
     <el-table
-      v-show="selectTab.startsWith('股东信息')"
+      v-show="selectTab === '股东信息'"
       :data="shareholderData"
       class="table"
       size="small"
@@ -39,42 +41,18 @@
       <el-table-column
         prop="scale"
         label="出资比例"
-        width="100"
+        :formatter="(row) => row.scale + '%'"
       ></el-table-column>
-      <el-table-column
-        prop="shouldQuota"
-        label="认缴出资额"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="shouldTime"
-        label="认缴出资日期"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="shouldMode"
-        label="认缴出资方式"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="actualQuota"
-        label="实缴出资额"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="actualTime"
-        label="实缴出资日期"
-        width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="actualMode"
-        label="实缴出资方式"
-        width="150"
-      ></el-table-column>
+      <el-table-column prop="shouldQuota" label="认缴出资额"></el-table-column>
+      <el-table-column prop="shouldTime" label="认缴出资日期"></el-table-column>
+      <el-table-column prop="shouldMode" label="认缴出资方式"></el-table-column>
+      <el-table-column prop="actualQuota" label="实缴出资额"></el-table-column>
+      <el-table-column prop="actualTime" label="实缴出资日期"></el-table-column>
+      <el-table-column prop="actualMode" label="实缴出资方式"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
-      v-show="selectTab.startsWith('股东信息') && shareholderTotal > 10"
+      v-show="selectTab === '股东信息' && shareholderTotal > 10"
       background
       layout="total, prev, pager, next"
       :page-size="shareholderPageSize"
@@ -86,7 +64,7 @@
     </el-pagination>
     <!-- 历史股东信息表格 -->
     <el-table
-      v-show="selectTab.startsWith('历史股东信息')"
+      v-show="selectTab === '历史股东信息'"
       :data="oldShareholderData"
       class="table"
       size="small"
@@ -100,32 +78,16 @@
       <el-table-column
         prop="scale"
         label="出资比例"
-        width="196"
+        :formatter="(row) => (row.scale ? row.scale + '%' : '')"
       ></el-table-column>
-      <el-table-column
-        prop="shouldQuota"
-        label="认缴出资额"
-        width="200"
-      ></el-table-column>
-      <el-table-column
-        prop="shouldTime"
-        label="认缴出资日期"
-        width="200"
-      ></el-table-column>
-      <el-table-column
-        prop="sharesTime"
-        label="入股日期"
-        width="200"
-      ></el-table-column>
-      <el-table-column
-        prop="exitTime"
-        label="退出日期"
-        width="200"
-      ></el-table-column>
+      <el-table-column prop="shouldQuota" label="认缴出资额"></el-table-column>
+      <el-table-column prop="shouldTime" label="认缴出资日期"></el-table-column>
+      <el-table-column prop="sharesTime" label="入股日期"></el-table-column>
+      <el-table-column prop="exitTime" label="退出日期"></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
-      v-show="selectTab.startsWith('历史股东信息') && oldShareholderTotal > 10"
+      v-show="selectTab === '历史股东信息' && oldShareholderTotal > 10"
       background
       layout="total, prev, pager, next"
       :page-size="oldShareholderPageSize"
@@ -137,7 +99,7 @@
     </el-pagination>
     <!-- 股东变更表格 -->
     <el-table
-      v-show="selectTab.startsWith('股东变更')"
+      v-show="selectTab === '股东变更'"
       :data="stockRightData"
       class="table"
       size="small"
@@ -145,40 +107,31 @@
     >
       <el-table-column label="序号" width="50" type="index"></el-table-column>
       <el-table-column prop="changeType" label="变动类型"></el-table-column>
-      <el-table-column
-        prop="changeTime"
-        label="变动日期"
-        width="170"
-      ></el-table-column>
+      <el-table-column prop="changeTime" label="变动日期"></el-table-column>
       <el-table-column
         prop="shareholderName"
         label="股东名称"
-        width="170"
       ></el-table-column>
       <el-table-column
         prop="beforeChangeQuota"
         label="变更前认缴金额"
-        width="170"
       ></el-table-column>
       <el-table-column
         prop="afterChangeQuota"
         label="变更后认缴金额"
-        width="170"
       ></el-table-column>
       <el-table-column
         prop="beforeChangeOccupy"
         label="变动前投资占比"
-        width="170"
       ></el-table-column>
       <el-table-column
         prop="afterChangeOccupy"
         label="变动后投资占比"
-        width="170"
       ></el-table-column>
     </el-table>
     <!-- 分页器 -->
     <el-pagination
-      v-show="selectTab.startsWith('股东变更') && stockRightTotal > 10"
+      v-show="selectTab === '股东变更' && stockRightTotal > 10"
       background
       layout="total, prev, pager, next"
       :page-size="stockRightPageSize"
@@ -196,7 +149,7 @@ import { useUserStore } from "@/store/index.js";
 export default {
   data() {
     return {
-      selectTab: "",
+      selectTab: "股东信息",
       shareholderData: [],
       oldShareholderData: [],
       stockRightData: [],
@@ -219,30 +172,7 @@ export default {
     this.getOldShareholderData();
     this.getStockRightData();
   },
-  watch: {
-    shareholderTotal() {
-      this.defaultTab();
-    },
-    oldShareholderTotal() {
-      this.defaultTab();
-    },
-    stockRightTotal() {
-      this.defaultTab();
-    },
-  },
   methods: {
-    // 每次页面刷新自动选中第一个非零tab项
-    defaultTab() {
-      if (this.shareholderTotal) {
-        this.selectTab = "股东信息";
-      } else if (this.oldShareholderTotal) {
-        this.selectTab = "历史股东信息";
-      } else if (this.stockRightTotal) {
-        this.selectTab = "股东变更";
-      } else {
-        return;
-      }
-    },
     // 股东信息表格数据
     getShareholderData() {
       const userStore = useUserStore();
@@ -327,13 +257,8 @@ export default {
       this.getStockRightData();
     },
     // tab切换
-    handleTab(e) {
-      if (
-        e.target.className === "title" ||
-        e.target.innerText.split(" ")[1] === "0"
-      )
-        return;
-      this.selectTab = e.target.innerText;
+    handleTab(val) {
+      this.selectTab = val;
     },
   },
 };

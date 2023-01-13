@@ -156,11 +156,9 @@ export default {
       let params = {
         entId: userStore.entId,
       };
-      this.$axios
-        .get("/knowledge/patentApplyTrend", params)
-        .then(({ data }) => {
-          this.patentBarData = data;
-        });
+      this.$axios.get("/knowledge/patentApplyTrend", params).then((data) => {
+        this.patentBarData = data;
+      });
     },
     // 获取专利类型数据
     getBasicPieData() {

@@ -30,10 +30,18 @@
       </el-table-column>
       <el-table-column prop="amount3" label="操作">
         <template slot-scope="{ row }">
-          <el-button @click="handleRiskDetail(row)" type="text" size="small"
+          <el-button
+            class="edit"
+            @click="handleRiskDetail(row)"
+            type="text"
+            size="small"
             >风险详情</el-button
           >
-          <el-button @click="handleEnterpriseInfo(row)" type="text" size="small"
+          <el-button
+            class="edit"
+            @click="handleEnterpriseInfo(row)"
+            type="text"
+            size="small"
             >企业画像</el-button
           >
         </template>
@@ -111,6 +119,9 @@ export default {
     border: 1px solid rgba(182, 200, 76, 0.3);
     background-color: rgba(182, 200, 76, 0.1);
     color: rgba(182, 200, 76, 1);
+  }
+  .edit {
+    color: rgb(3, 167, 240);
   }
 }
 </style>

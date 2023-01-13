@@ -142,7 +142,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <span class="delete" @click="portrait(scope.row)">企业画像</span>
+          <span class="reset" @click="portrait(scope.row)">企业画像</span>
         </template>
       </el-table-column>
     </el-table>
@@ -321,28 +321,7 @@ export default {
             name: "15年以上",
           },
         ],
-        entTypeOpts: [
-          {
-            id: "选项1",
-            name: "黄金糕",
-          },
-          {
-            id: "选项2",
-            name: "双皮奶",
-          },
-          {
-            id: "选项3",
-            name: "蚵仔煎",
-          },
-          {
-            id: "选项4",
-            name: "龙须面",
-          },
-          {
-            id: "选项5",
-            name: "北京烤鸭",
-          },
-        ],
+        entTypeOpts: [],
         staffNumOpts: [
           {
             id: "小于50人",
@@ -407,6 +386,7 @@ export default {
       : [];
     this.searchFormData.entName = routeParams.entName || "";
     this.getIndustryList();
+    this.getEntTypeList();
     this.getTableData();
   },
   methods: {
@@ -498,6 +478,18 @@ export default {
         })
         .then(({ data }) => {
           this.optsObj.industryOpts = data.map((item) => ({
+            id: item.dictName,
+            name: item.dictName,
+          }));
+        });
+    },
+    getEntTypeList() {
+      this.$axios
+        .get("/dict/queryDictByType", {
+          dictType: "entType",
+        })
+        .then(({ data }) => {
+          this.optsObj.entTypeOpts = data.map((item) => ({
             id: item.dictName,
             name: item.dictName,
           }));
