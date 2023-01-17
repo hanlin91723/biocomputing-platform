@@ -141,8 +141,14 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
-          <span class="reset" @click="portrait(scope.row)">企业画像</span>
+        <template slot-scope="{ row }">
+          <el-button
+            :disabled="!enterprisePortraitHasPermission"
+            @click="portrait(row)"
+            type="text"
+            size="small"
+            >企业画像</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -162,6 +168,7 @@
 <script>
 // import { exportTableAsXLSX } from "@/util/util";
 import { useUserStore } from "@/store/index.js";
+const userStore = useUserStore();
 const searchFormList = [
   {
     formLabel: "所属行业",
@@ -251,6 +258,8 @@ export default {
       searchFormData[item.prop] = item.value;
     });
     return {
+      enterprisePortraitHasPermission:
+        userStore.enterprisePortraitHasPermission,
       searchFormList,
       searchFormData,
       optsObj: {
@@ -524,7 +533,6 @@ export default {
     },
     // 企业画像
     portrait({ entId, entName }) {
-      const userStore = useUserStore();
       userStore.saveEntId(entId, entName);
       // this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
       //新窗口打开企业画像
@@ -761,18 +769,6 @@ export default {
     }
     .riskColor4 {
       color: rgba(93, 209, 140, 1);
-    }
-    .reset,
-    .edit,
-    .delete {
-      color: rgb(3, 167, 240);
-      cursor: pointer;
-    }
-    .edit {
-      margin-right: 20px;
-    }
-    .delete {
-      color: orange;
     }
   }
   .pagination {

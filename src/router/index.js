@@ -51,7 +51,7 @@ const asyncRouterMap = [{
             component: () => import("@/views/home/statistical-analysis/index.vue"),
             meta: {
               title: "统计分析",
-              permission: ["1-2", ],
+              permission: ["1-1", ],
             },
           },
           {
@@ -60,7 +60,7 @@ const asyncRouterMap = [{
             component: () => import("@/views/home/risk-map/index.vue"),
             meta: {
               title: "风险地图",
-              permission: ["1-1", ],
+              permission: ["1-2", ],
             },
           },
         ],

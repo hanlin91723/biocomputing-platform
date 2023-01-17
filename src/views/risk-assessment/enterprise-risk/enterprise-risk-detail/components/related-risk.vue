@@ -30,15 +30,11 @@
       </el-table-column>
       <el-table-column prop="amount3" label="操作">
         <template slot-scope="{ row }">
-          <el-button
-            class="edit"
-            @click="handleRiskDetail(row)"
-            type="text"
-            size="small"
+          <el-button @click="handleRiskDetail(row)" type="text" size="small"
             >风险详情</el-button
           >
           <el-button
-            class="edit"
+            :disabled="!enterprisePortraitHasPermission"
             @click="handleEnterpriseInfo(row)"
             type="text"
             size="small"
@@ -52,9 +48,12 @@
 
 <script>
 import { useUserStore, relatedRiskStore } from "@/store/index.js";
+const userStore = useUserStore();
 export default {
   data() {
     return {
+      enterprisePortraitHasPermission:
+        userStore.enterprisePortraitHasPermission,
       tableData: [],
     };
   },
@@ -78,7 +77,6 @@ export default {
       });
     },
     handleEnterpriseInfo(row) {
-      const userStore = useUserStore();
       userStore.saveEntId(row.entId, row.entName);
       // this.$router.push(
       //   `/enterprise-retrieval/enterprise-portrait/${row.entId}`
@@ -119,9 +117,6 @@ export default {
     border: 1px solid rgba(182, 200, 76, 0.3);
     background-color: rgba(182, 200, 76, 0.1);
     color: rgba(182, 200, 76, 1);
-  }
-  .edit {
-    color: rgb(3, 167, 240);
   }
 }
 </style>

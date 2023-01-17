@@ -52,7 +52,7 @@ export default {
     getContributorData() {
       const userStore = useUserStore();
       let params = {
-        entId: "25e3b319bf6dd259dd99393e42a4f4b3",
+        entId: userStore.entId,
         entName: userStore.entName,
         pageNum: this.contributorCurrentPage,
         pageSize: this.contributorPageSize,

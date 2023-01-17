@@ -28,6 +28,7 @@ const filterAsyncRoutes = (routes, permissions) => {
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
+      enterprisePortraitHasPermission: false, //企业监测模块权限(主要用于判断企业画像按钮是否可点)
       permissionList: [],
       hasPermissionRoutes: [],
       entId: sessionStorage.getItem("ENTID") || "",
@@ -40,6 +41,7 @@ export const useUserStore = defineStore("user", {
         data,
       }) => {
         this.permissionList = data;
+        this.enterprisePortraitHasPermission = data.includes("2-1");
       });
     },
     getHasPermissionRoutes(routes, permissions) {

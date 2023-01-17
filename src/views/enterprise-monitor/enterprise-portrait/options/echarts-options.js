@@ -632,6 +632,9 @@ export const patentBar = function (data) {
   return {
     tooltip: {
       trigger: "axis",
+      textStyle: {
+        align: "left",
+      },
       axisPointer: {
         // Use axis to trigger tooltip
         type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
@@ -692,14 +695,26 @@ export const patentBar = function (data) {
             return e.value ? e.seriesName : "";
           },
         },
-        itemStyle: {
-          borderRadius: [0, 0, 4, 4, ],
-        },
         barWidth: 20,
         emphasis: {
           focus: "series",
         },
         data: data.fmggList,
+      },
+      {
+        // name: "A",
+        name: "实用",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: data.syList,
       },
       {
         // name: "E",
@@ -713,9 +728,6 @@ export const patentBar = function (data) {
             return e.value ? e.seriesName : "";
           },
         },
-        itemStyle: {
-          borderRadius: [0, 0, 4, 4, ],
-        },
         emphasis: {
           focus: "series",
         },
@@ -723,7 +735,7 @@ export const patentBar = function (data) {
       },
       {
         // name: "P",
-        name: "外观专利",
+        name: "外观",
         type: "bar",
         stack: "total",
         label: {
@@ -735,24 +747,6 @@ export const patentBar = function (data) {
           focus: "series",
         },
         data: data.wgList,
-      },
-      {
-        // name: "A",
-        name: "实用新型专利",
-        type: "bar",
-        stack: "total",
-        label: {
-          show: false,
-          color: "#FFFFFF",
-          formatter: "{a}",
-        },
-        itemStyle: {
-          borderRadius: [4, 4, 0, 0, ],
-        },
-        emphasis: {
-          focus: "series",
-        },
-        data: data.syList,
       },
     ],
   };

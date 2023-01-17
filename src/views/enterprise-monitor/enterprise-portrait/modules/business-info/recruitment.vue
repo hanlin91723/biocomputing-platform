@@ -148,7 +148,7 @@ export default {
       return basicPie(this.basicPieData);
     },
     diplomaPie() {
-      return ringPie(this.diplomaData);
+      return ringPie(this.diplomaPieData);
     },
     payPie() {
       return ringPie(this.payPieData);

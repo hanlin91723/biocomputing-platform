@@ -3,8 +3,8 @@ export const rankingBar = function (name, value) {
     let fullArr = new Array(value.length).fill(max + Math.floor(max * 0.1));
     return {
         grid: {
-            left: 0,
-            right: 0,
+            left: "-30%",
+            right: "10%",
             bottom: 0,
             top: "10%",
             containLabel: true,
@@ -36,7 +36,7 @@ export const rankingBar = function (name, value) {
                 data: name.map(item => ({
                     value: item,
                     textStyle: {
-                        width: 100,
+                        width: 150,
                         overflow: "truncate",
                     },
                 })),
@@ -102,6 +102,7 @@ export const registeredScale = function (data) {
             "rgba(132, 151, 255, 1)",
             "rgba(170, 184, 255, 1)",
             "rgba(208, 215, 255, 1)",
+            "rgba(234,236,239,1)",
         ],
         tooltip: {
             trigger: "item",

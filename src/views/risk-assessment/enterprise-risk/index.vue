@@ -76,8 +76,16 @@
       ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="{ row }">
-          <span class="edit" @click="riskDetails(row)">风险详情</span>
-          <span class="reset" @click="portrait(row)">企业画像</span>
+          <el-button @click="riskDetails(row)" type="text" size="small"
+            >风险详情</el-button
+          >
+          <el-button
+            :disabled="!enterprisePortraitHasPermission"
+            @click="portrait(row)"
+            type="text"
+            size="small"
+            >企业画像</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -96,9 +104,12 @@
 
 <script>
 import { useUserStore } from "@/store/index.js";
+const userStore = useUserStore();
 export default {
   data() {
     return {
+      enterprisePortraitHasPermission:
+        userStore.enterprisePortraitHasPermission,
       tableData: [],
       industryOptions: [],
       riskGradeOptions: [
@@ -204,7 +215,6 @@ export default {
     },
     // 企业画像
     portrait({ entId, entName }) {
-      const userStore = useUserStore();
       userStore.saveEntId(entId, entName);
       // this.$router.push(`/enterprise-retrieval/enterprise-portrait/${entId}`);
       //新窗口打开企业画像
@@ -266,18 +276,6 @@ export default {
     }
     .riskColor4 {
       color: rgba(93, 209, 140, 1);
-    }
-    .reset,
-    .edit,
-    .delete {
-      color: rgb(3, 167, 240);
-      cursor: pointer;
-    }
-    .edit {
-      margin-right: 20px;
-    }
-    .delete {
-      color: orange;
     }
   }
   .pagination {
