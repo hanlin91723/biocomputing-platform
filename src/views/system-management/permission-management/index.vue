@@ -108,6 +108,7 @@
                 v-for="child in item.children"
                 :label="child.id"
                 :key="child.id"
+                :disabled="child.label === '统计分析'"
                 >{{ child.label }}</el-checkbox
               >
             </el-checkbox-group>
@@ -165,7 +166,7 @@ export default {
         roleName: "",
         roleDesc: "",
         checkedRoleObj: {
-          1: [],
+          1: [5], //概览-统计分析默认勾选
           2: [],
           3: [],
           4: [],
@@ -258,7 +259,7 @@ export default {
       } else {
         this.roleList.forEach((item) => {
           this.checkedAllObj[item.id] = false;
-          this.isIndeterminateObj[item.id] = false;
+          this.isIndeterminateObj[item.id] = item.id === 1; //概览默认勾选
         });
       }
       this.showRoleDialog = true;
@@ -298,7 +299,7 @@ export default {
         roleName: "",
         roleDesc: "",
         checkedRoleObj: {
-          1: [],
+          1: [5],
           2: [],
           3: [],
           4: [],

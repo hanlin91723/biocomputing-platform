@@ -32,48 +32,35 @@
         <el-table-column
           prop="legalPerson"
           label="被投资企业法定代表人"
-        ></el-table-column>
-        <el-table-column
-          prop="dutyType"
-          label="责任类型"
           width="100"
         ></el-table-column>
-        <el-table-column
-          prop="mainType"
-          label="主体类型"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="contribution"
-          label="出资额"
-          width="100"
-        ></el-table-column>
+        <el-table-column prop="dutyType" label="责任类型"></el-table-column>
+        <el-table-column prop="mainType" label="主体类型"></el-table-column>
+        <el-table-column prop="contribution" label="出资额"></el-table-column>
         <el-table-column
           prop="contributionTime"
           label="出资日期"
-          width="100"
         ></el-table-column>
         <el-table-column
           prop="contributionMode"
           label="出资方式"
-          width="100"
         ></el-table-column>
         <el-table-column
           prop="contributionScale"
           label="出资比例"
-          width="90"
+          :formatter="(row) => row.contributionScale + '%'"
         ></el-table-column>
         <el-table-column
           prop="shouldQuota"
           label="认缴出资额"
-          width="100"
+          :formatter="(row) => row.contributionScale + '万元人民币'"
         ></el-table-column>
         <el-table-column
           prop="actualQuota"
           label="实缴出资额"
-          width="100"
+          :formatter="(row) => row.contributionScale + '万元人民币'"
         ></el-table-column>
-        <el-table-column prop="area" label="地区" width="100"></el-table-column>
+        <el-table-column prop="area" label="地区"></el-table-column>
       </el-table>
       <!-- 分页器 -->
       <el-pagination
