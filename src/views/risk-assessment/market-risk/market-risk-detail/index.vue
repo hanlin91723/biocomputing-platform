@@ -9,37 +9,37 @@
           <el-descriptions-item label="风险分类">{{
             infoData.indexLargeTypeName
           }}</el-descriptions-item>
-          <el-descriptions-item label="风险描述">{{
-            infoData.desc
-          }}</el-descriptions-item>
           <el-descriptions-item label="风险等级">
             <riskLevelTwo :level="infoData.riskLevel || 0"></riskLevelTwo>
           </el-descriptions-item>
         </el-descriptions>
         <div class="enterprise-count">
           <div class="left">
-            <h3 class="title">风险企业总数</h3>
+            <h3 class="title">市场指标风险指数</h3>
             <div>
-              <span class="value">{{ formatter(infoData.entNum || 0) }}</span>
-              <span class="unit">家</span>
+              <span class="value">{{
+                formatter(infoData.entMarketRiskScore || 0)
+              }}</span>
+              <span class="unit"></span>
             </div>
           </div>
           <div class="right">
-            <div>
-              同比
-              <span class="value">{{
-                (infoData.changeValue >= 0 ? "+" : "-") +
-                (infoData.changeValue * 100).toFixed(0)
-              }}</span>
-              <span class="unit">%</span>
-            </div>
-            <div>
-              占比
-              <span class="value blue">{{
-                (infoData.prop * 100).toFixed(0)
-              }}</span>
-              <span class="unit blue">%</span>
-            </div>
+            <Rate
+              :type="1"
+              :num="infoData.highRiskNum"
+              :percent="infoData.highRiskProp"
+            ></Rate>
+            <Rate
+              class="margin"
+              :type="2"
+              :num="infoData.midRiskNum"
+              :percent="infoData.midRiskProp"
+            ></Rate>
+            <Rate
+              :type="3"
+              :num="infoData.lowRiskNum"
+              :percent="infoData.lowRiskProp"
+            ></Rate>
           </div>
         </div>
       </el-card>
@@ -86,6 +86,7 @@ export default {
   components: {
     riskLevelTwo,
     riskTable,
+    Rate: () => import("./components/rate.vue"),
   },
   created() {
     this.getInfoData();
@@ -163,15 +164,18 @@ export default {
       }
       .enterprise-count {
         display: flex;
-        width: 420px;
-        height: 160px;
+        // width: 420px;
+        // height: 160px;
         padding: 32px;
         background: #fafbfd;
         border: 1px solid #eaecef;
         border-radius: 4px;
         margin-top: 20px;
         .left {
-          width: 202px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 50%;
           border-right: 2px solid #eaecef;
           .title {
             font-size: 20px;
@@ -189,28 +193,10 @@ export default {
           }
         }
         .right {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          width: 154px;
-          padding-left: 32px;
-          padding-top: 8px;
-          padding-bottom: 8px;
-          font-size: 20px;
-          .value,
-          .unit {
-            font-family: "Altinn-DIN";
-            font-weight: 700;
-            color: #f57272;
-          }
-          .value {
-            font-size: 24px;
-          }
-          .unit {
-            font-size: 16px;
-          }
-          .blue {
-            color: #5d77ff;
+          width: 50%;
+          padding-left: 20px;
+          .margin {
+            margin: 10px auto;
           }
         }
       }

@@ -31,7 +31,9 @@
           ></el-option>
         </el-select>
       </div>
-      <el-button type="primary" class="search" @click="search">查询</el-button>
+      <el-button type="primary" class="search" @click="getTableData"
+        >查询</el-button
+      >
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
@@ -42,8 +44,14 @@
       header-cell-class-name="header-row"
     >
       <el-table-column prop="id" label="序号" width="80"></el-table-column>
-      <el-table-column prop="riskIndex" label="风险指标"></el-table-column>
-      <el-table-column prop="riskClassify" label="风险分类"></el-table-column>
+      <el-table-column
+        prop="indexSmallTypeName"
+        label="风险指标"
+      ></el-table-column>
+      <el-table-column
+        prop="indexLargeTypeName"
+        label="风险分类"
+      ></el-table-column>
       <el-table-column prop="riskGrade" label="风险等级">
         <template slot-scope="{ row }">
           <span :class="{ [riskColor(row.riskGrade)]: true }">{{
@@ -52,14 +60,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="riskDescribe"
-        label="风险描述"
-        width="420"
-      ></el-table-column>
-      <el-table-column
-        prop="riskEnterpriseCount"
-        label="风险企业数量"
-        :render-header="renderCount"
+        prop="entMarketRiskScore"
+        label="市场指标风险指数"
       ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -143,41 +145,15 @@ export default {
       }
     },
     getTableData() {
-      let params = {
+      const params = {
         riskType: this.classifyValue,
         riskLevel: this.riskGradeValue,
       };
       this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
-        this.tableData = data.map((item) => {
-          return {
-            id: item.id,
-            riskGrade: this.riskTrans(item.riskLevel),
-            riskIndex: item.indexSmallTypeName,
-            riskClassify: item.indexLargeTypeName,
-            riskDescribe: item.desc,
-            riskEnterpriseCount: item.entNum,
-          };
-        });
-      });
-    },
-    // 查询
-    search() {
-      // 调用接口查询，拿到结果给表格
-      let params = {
-        riskType: this.classifyValue,
-        riskLevel: this.riskGradeValue,
-      };
-      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
-        this.tableData = data.map((item) => {
-          return {
-            id: item.id,
-            riskGrade: this.riskTrans(item.riskLevel),
-            riskIndex: item.indexSmallTypeName,
-            riskClassify: item.indexLargeTypeName,
-            riskDescribe: item.desc,
-            riskEnterpriseCount: item.entNum,
-          };
-        });
+        this.tableData = data.map((item) => ({
+          ...item,
+          riskGrade: this.riskTrans(item.riskLevel),
+        }));
       });
     },
     // 风险指数
@@ -203,37 +179,6 @@ export default {
           id,
         },
       });
-    },
-    // 为表格头标题添加小图标并hover后出现提示信息
-    renderCount(h, { column }) {
-      // h 是一个渲染函数       column 是一个对象表示当前列      $index 第几列
-      return h("div", [
-        h("span", column.label + "  ", {
-          align: "center",
-          marginTop: "10px",
-        }),
-        h(
-          "el-popover",
-          {
-            props: {
-              placement: "top-start", // 一般 icon 处可添加浮层说明，浮层位置等属性
-              width: "310",
-              trigger: "hover",
-            },
-          },
-          [
-            h("p", "风险企业数量根据企业风险等级加权汇总统计", {
-              class: "text-align: center; margin: 0",
-            }),
-            h("i", {
-              // 生成 i 标签 ，添加icon 设置 样式，slot 必填
-              class: "el-icon-warning",
-              style: "color:#ccc,margin:18px,padding-top:10px",
-              slot: "reference",
-            }),
-          ]
-        ),
-      ]);
     },
   },
 };

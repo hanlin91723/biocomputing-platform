@@ -87,7 +87,7 @@
     <!-- </transition> -->
     <el-form inline class="btn-form">
       <el-form-item>
-        <el-button type="primary" @click="getTableData">查询</el-button>
+        <el-button type="primary" @click="search">查询</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="reset">重置条件</el-button>
@@ -112,7 +112,13 @@
       </el-tag>
     </div>
     <el-divider></el-divider>
-    <el-table :data="tableData" stripe class="table" id="outTable">
+    <el-table
+      v-loading="loading"
+      :data="tableData"
+      stripe
+      class="table"
+      id="outTable"
+    >
       <el-table-column
         type="index"
         :index="indexMethod"
@@ -258,6 +264,7 @@ export default {
       searchFormData[item.prop] = item.value;
     });
     return {
+      loading: false,
       enterprisePortraitHasPermission:
         userStore.enterprisePortraitHasPermission,
       searchFormList,
@@ -399,6 +406,11 @@ export default {
     this.getTableData();
   },
   methods: {
+    //查询
+    search() {
+      this.currentPage = 1;
+      this.getTableData();
+    },
     getTableData() {
       let params = Object.assign({}, this.searchFormData, {
         pageSize: this.pageSize,
@@ -475,10 +487,16 @@ export default {
           break;
         default:
       }
-      this.$axios.post("/entInfo/condition", params).then(({ data }) => {
-        this.total = data.total;
-        this.tableData = data.list;
-      });
+      this.loading = true;
+      this.$axios
+        .post("/entInfo/condition", params)
+        .then(({ data }) => {
+          this.total = data.total;
+          this.tableData = data.list;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     getIndustryList() {
       this.$axios

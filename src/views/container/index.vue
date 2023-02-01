@@ -226,13 +226,14 @@ export default {
   },
   methods: {
     getUser() {
-      this.$axios.get("/getInfo").then(({ user }) => {
+      this.$axios.get("/getInfo").then(({ user, roles }) => {
         this.info = {
           nickName: user.userName,
           phone: user.phonenumber,
           roleName: user.roles.map((item) => item.roleName).join("、"),
         };
         sessionStorage.setItem("userId", user.roleId);
+        sessionStorage.setItem("userRoles", roles);
       });
     },
     handleCommand(command) {

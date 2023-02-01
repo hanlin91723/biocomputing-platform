@@ -16,7 +16,11 @@
         />
         <el-button type="primary" @click="getTableData">查询</el-button>
       </div>
-      <el-button type="primary" icon="el-icon-plus" @click="handleEdit()"
+      <el-button
+        type="primary"
+        :disabled="!userRoles.includes('超级管理员')"
+        icon="el-icon-plus"
+        @click="handleEdit()"
         >新建角色</el-button
       >
     </div>
@@ -39,7 +43,11 @@
       <el-table-column prop="roleNum" label="角色人数"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="{ row }">
-          <el-button class="edit-btn" type="text" @click="handleEdit(row)"
+          <el-button
+            class="edit-btn"
+            type="text"
+            :disabled="!userRoles.includes('超级管理员')"
+            @click="handleEdit(row)"
             >编辑</el-button
           >
           <el-popconfirm
@@ -47,7 +55,12 @@
             title="确认删除该角色吗？"
             @confirm="deleteRole(row)"
           >
-            <el-button type="text" slot="reference">删除</el-button>
+            <el-button
+              type="text"
+              :disabled="!userRoles.includes('超级管理员')"
+              slot="reference"
+              >删除</el-button
+            >
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -143,6 +156,7 @@ export default {
         : callback();
     };
     return {
+      userRoles: sessionStorage.getItem("userRoles").split(","), //当前用户的角色
       roleNameVal: "",
       permissionDescVal: "",
       tableData: [],
