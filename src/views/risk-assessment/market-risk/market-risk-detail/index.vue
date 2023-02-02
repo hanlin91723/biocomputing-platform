@@ -61,7 +61,10 @@
       </el-card>
     </div>
     <el-divider></el-divider>
-    <risk-table :params="params"></risk-table>
+    <risk-table
+      :params="params"
+      :typeName="infoData.indexSmallTypeName"
+    ></risk-table>
   </div>
 </template>
 

@@ -39,38 +39,6 @@ export default {
       default: 0,
     },
   },
-  methods: {
-    tagColor() {
-      switch (true) {
-        case this.level >= 0 && this.level <= 25:
-          return {
-            level: 1,
-            tag: "tag1",
-            text: "低风险",
-          };
-        case this.level > 25 && this.level <= 50:
-          return {
-            level: 2,
-            tag: "tag2",
-            text: "中风险",
-          };
-        case this.level > 50 && this.level <= 75:
-          return {
-            level: 3,
-            tag: "tag3",
-            text: "较高风险",
-          };
-        case this.level > 75 && this.level <= 100:
-          return {
-            level: 4,
-            tag: "tag4",
-            text: "高风险",
-          };
-        default:
-          break;
-      }
-    },
-  },
 };
 </script>
 

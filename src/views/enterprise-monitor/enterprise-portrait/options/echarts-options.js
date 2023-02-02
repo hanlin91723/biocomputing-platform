@@ -650,7 +650,6 @@ export const patentBar = function (data) {
       color: "#858585",
       fontWeight: 400,
       padding: [4, 0, 0, 0, ],
-      // data: ["A", "B", "P", "E",],
     },
     color: ["#1990FF", "#8DDAF8", "#7ACC8B", "#FFB355", "#F96E5F", "#896EF5", ],
     grid: {
@@ -684,7 +683,6 @@ export const patentBar = function (data) {
       },
     },
     series: [{
-        // name: "E",
         name: "发明公告",
         type: "bar",
         stack: "total",
@@ -702,7 +700,6 @@ export const patentBar = function (data) {
         data: data.fmggList,
       },
       {
-        // name: "A",
         name: "实用",
         type: "bar",
         stack: "total",
@@ -717,7 +714,20 @@ export const patentBar = function (data) {
         data: data.syList,
       },
       {
-        // name: "E",
+        name: "外观",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: false,
+          color: "#FFFFFF",
+          formatter: "{a}",
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: data.wgList,
+      },
+      {
         name: "发明授权",
         type: "bar",
         stack: "total",
@@ -732,21 +742,6 @@ export const patentBar = function (data) {
           focus: "series",
         },
         data: data.fmsqList,
-      },
-      {
-        // name: "P",
-        name: "外观",
-        type: "bar",
-        stack: "total",
-        label: {
-          show: false,
-          color: "#FFFFFF",
-          formatter: "{a}",
-        },
-        emphasis: {
-          focus: "series",
-        },
-        data: data.wgList,
       },
     ],
   };

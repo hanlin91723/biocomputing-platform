@@ -88,7 +88,7 @@
       </el-table-column>
       <el-table-column
         prop="earlyWarning"
-        label="指标风险（财务预警）"
+        :label="`指标风险（${typeName}）`"
         sortable
       >
         <template slot-scope="scope">
@@ -194,6 +194,11 @@ export default {
   props: {
     params: {
       type: Object,
+    },
+    typeName: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   watch: {

@@ -37,7 +37,12 @@
           </li>
           <li class="enterprise-item flex">
             <span class="name">风险总数：</span>
-            <span class="value">{{ enterpriseInfo.entRiskNum }}</span>
+            <span class="value">{{
+              enterpriseRisk.riskWarningNum +
+              judicialRisk.judicialRiskNum +
+              managementRisk.managementRiskNum +
+              relatedRisk.relatedRiskNum
+            }}</span>
           </li>
           <li class="enterprise-item flex">
             <span class="name">最后评估时间：</span>
