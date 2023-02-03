@@ -62,6 +62,9 @@ export const riskIndexAnalysis = function (data) {
 
 export const enterpriseNum = function (data) {
   return {
+    tooltip: {
+      trigger: "axis",
+    },
     xAxis: {
       type: "category",
       data: data.map(item => item.name),

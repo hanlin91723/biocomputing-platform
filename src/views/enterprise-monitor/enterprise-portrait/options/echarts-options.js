@@ -279,6 +279,8 @@ export const investPie = function (data) {
       formatter: "{b} : {d}%",
     },
     legend: {
+      type: "scroll",
+      pageIconSize: 12,
       show: true,
       orient: "vertical",
       itemlength: 20,

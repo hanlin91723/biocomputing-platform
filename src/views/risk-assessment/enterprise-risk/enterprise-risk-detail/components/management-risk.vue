@@ -44,7 +44,7 @@
     </div>
     <div class="tip">
       共<span class="total">{{ total }}</span
-      >条符合条件的司法风险
+      >条符合条件的经营风险
     </div>
     <!-- <div class="tip">{{ tableDataTemp }}</div> -->
     <el-collapse>

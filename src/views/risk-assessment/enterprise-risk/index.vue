@@ -49,7 +49,7 @@
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" stripe class="table">
+    <el-table v-loading="loading" :data="tableData" stripe class="table">
       <el-table-column
         type="index"
         :index="indexMethod"
@@ -108,6 +108,7 @@ const userStore = useUserStore();
 export default {
   data() {
     return {
+      loading: false,
       enterprisePortraitHasPermission:
         userStore.enterprisePortraitHasPermission,
       tableData: [],
@@ -158,11 +159,15 @@ export default {
         pageNum: this.currentPage,
         pageSize: this.pageSize,
       };
+      this.loading = true;
       this.$axios
         .post("/entRisk/queryEntRiskByCondition", params)
         .then(({ data }) => {
           this.total = data.total;
           this.tableData = data.list;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     getIndustryOptions() {
