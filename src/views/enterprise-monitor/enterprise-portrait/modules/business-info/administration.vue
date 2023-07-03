@@ -73,7 +73,7 @@ export default {
         pageSize: this.administrationPageSize,
       };
       this.$axios
-        .post("/businessInfo/administrativeLicense", params)
+        .post("/riskManager/businessInfo/administrativeLicense", params)
         .then(({ data }) => {
           this.administrationTotal = data.total;
           this.administrationData = data.list.map((item) => {

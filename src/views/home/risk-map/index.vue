@@ -115,7 +115,7 @@ export default {
           break;
       }
     },
-    selectIcon(val){
+    selectIcon(val) {
       switch (val) {
         case 1:
           return icon1;
@@ -129,36 +129,38 @@ export default {
       const param = {
         type: val,
       };
-      this.$axios.get("/riskMap/positionType", param).then(({ data, }) => {
-        this.pointsList = [];
-        this.heatData = [];
-        if (val === 0) {
-          data.forEach((item) => {
-            this.heatData.push({
-              geometry: {
-                type: "Point",
-                coordinates: [item.lng, item.lat,],
-              },
-              properties: {
-                count: item.score,
-              },
-            });
-          });
-        } else {
-          this.noPointsList = data;
-          const iconImg = val;
-          this.noPointsList.map((item) => {
-            this.pointsList.push(
-              Object.assign({}, item, {
-                dotIcon: {
-                  url: this.selectIcon(iconImg),
-                  size: [16, 20,],
+      this.$axios
+        .get("/riskManager/riskMap/positionType", param)
+        .then(({ data }) => {
+          this.pointsList = [];
+          this.heatData = [];
+          if (val === 0) {
+            data.forEach((item) => {
+              this.heatData.push({
+                geometry: {
+                  type: "Point",
+                  coordinates: [item.lng, item.lat],
                 },
-              })
-            );
-          });
-        }
-      });
+                properties: {
+                  count: item.score,
+                },
+              });
+            });
+          } else {
+            this.noPointsList = data;
+            const iconImg = val;
+            this.noPointsList.map((item) => {
+              this.pointsList.push(
+                Object.assign({}, item, {
+                  dotIcon: {
+                    url: this.selectIcon(iconImg),
+                    size: [16, 20],
+                  },
+                })
+              );
+            });
+          }
+        });
     },
     // handlePoint(e) {
     //   const { target, } = e;

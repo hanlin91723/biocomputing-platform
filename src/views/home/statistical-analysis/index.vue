@@ -125,13 +125,15 @@ export default {
   methods: {
     //市场风险概况
     getMarketRiskData() {
-      this.$axios.get("/statistics/marketRiskProp").then(({ data }) => {
-        this.marketRiskData = data;
-      });
+      this.$axios
+        .get("/riskManager/statistics/marketRiskProp")
+        .then(({ data }) => {
+          this.marketRiskData = data;
+        });
     },
     //市场主体统计
     getMarketStatisticsData() {
-      this.$axios.get("/statistics/marketMain").then(({ data }) => {
+      this.$axios.get("/riskManager/statistics/marketMain").then(({ data }) => {
         this.marketStatistics = data;
       });
     },
@@ -162,29 +164,33 @@ export default {
       //     [100, 30],
       //   ];
       // });
-      this.$axios.get("/statistics/comprehensive").then(({ data }) => {
-        this.riskIndexAnalysisData = data.map((item) => [
-          item.name,
-          item.value,
-        ]);
-      });
+      this.$axios
+        .get("/riskManager/statistics/comprehensive")
+        .then(({ data }) => {
+          this.riskIndexAnalysisData = data.map((item) => [
+            item.name,
+            item.value,
+          ]);
+        });
     },
     //高风险企业舆情
     getPublicSentimentList() {
-      this.$axios.get("/statistics/highLevelEnt").then(({ data }) => {
-        this.publicSentimentList = data;
-      });
+      this.$axios
+        .get("/riskManager/statistics/highLevelEnt")
+        .then(({ data }) => {
+          this.publicSentimentList = data;
+        });
     },
     //风险指标云图
     getWordCloudData() {
-      this.$axios.get("/statistics/wordCount").then(({ data }) => {
+      this.$axios.get("/riskManager/statistics/wordCount").then(({ data }) => {
         this.wordCloudData = data;
       });
     },
     //高风险企业十大行业排名
     getRankingData() {
       this.$axios
-        .get("/statistics/highRiskIndustryRanking")
+        .get("/riskManager/statistics/highRiskIndustryRanking")
         .then(({ data }) => {
           this.rankingData = data.reverse();
         });
@@ -192,7 +198,7 @@ export default {
     //高风险企业规模分布
     getDistributionData() {
       this.$axios
-        .get("/statistics/highRiskRegisteredCapital")
+        .get("/riskManager/statistics/highRiskRegisteredCapital")
         .then(({ data }) => {
           this.distributionData = data;
         });

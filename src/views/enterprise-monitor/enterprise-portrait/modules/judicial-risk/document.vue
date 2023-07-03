@@ -146,7 +146,7 @@ export default {
         type: 1,
       };
       this.$axios
-        .get("/judicial/judicialInfoByType", params)
+        .get("/riskManager/judicial/judicialInfoByType", params)
         .then(({ data }) => {
           this.causePieData = data.map((item) => {
             return {
@@ -163,7 +163,7 @@ export default {
         type: 2,
       };
       this.$axios
-        .get("/judicial/judicialInfoByType", params)
+        .get("/riskManager/judicial/judicialInfoByType", params)
         .then(({ data }) => {
           this.typePieData = data.map((item) => {
             return {
@@ -182,13 +182,15 @@ export default {
         pageNum: this.documentCurrentPage,
         pageSize: this.documentPageSize,
       };
-      this.$axios.post("/judicial/judicialInfo", params).then(({ data }) => {
-        this.documentTotal = data.total;
-        this.documentData = data.list.map((item) => ({
-          ...item,
-          caseAmount: "-",
-        }));
-      });
+      this.$axios
+        .post("/riskManager/judicial/judicialInfo", params)
+        .then(({ data }) => {
+          this.documentTotal = data.total;
+          this.documentData = data.list.map((item) => ({
+            ...item,
+            caseAmount: "-",
+          }));
+        });
     },
     // 裁判文书分页
     documentCurrentChange(val) {

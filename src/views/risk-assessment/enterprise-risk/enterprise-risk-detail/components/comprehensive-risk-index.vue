@@ -86,21 +86,23 @@ export default {
       const params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entRisk/comprehensiveRisk", params).then(({ data }) => {
-        this.tableData = data;
-        const arr = data.filter((item) => item.rowspan);
-        this.comprehensiveRiskRadarData = arr.map((item) => item.total);
-        //r=得分与权重之比，列举r≥0.6的分类，没有则列举r最大的分类
-        const arrTemp = arr.filter((item) => item.total / item.sum >= 0.6);
-        this.aspectList =
-          arrTemp.length > 0
-            ? arrTemp.map((item) => item.type)
-            : [
-                arr.reduce((pre, cur) =>
-                  pre.total / pre.sum >= cur.total / cur.sum ? pre : cur
-                ).type,
-              ];
-      });
+      this.$axios
+        .get("/riskManager/entRisk/comprehensiveRisk", params)
+        .then(({ data }) => {
+          this.tableData = data;
+          const arr = data.filter((item) => item.rowspan);
+          this.comprehensiveRiskRadarData = arr.map((item) => item.total);
+          //r=得分与权重之比，列举r≥0.6的分类，没有则列举r最大的分类
+          const arrTemp = arr.filter((item) => item.total / item.sum >= 0.6);
+          this.aspectList =
+            arrTemp.length > 0
+              ? arrTemp.map((item) => item.type)
+              : [
+                  arr.reduce((pre, cur) =>
+                    pre.total / pre.sum >= cur.total / cur.sum ? pre : cur
+                  ).type,
+                ];
+        });
     },
     objectSpanMethod({ row, columnIndex }) {
       if (columnIndex === 0 || columnIndex === 1) {

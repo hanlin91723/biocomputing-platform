@@ -174,7 +174,7 @@ export default {
         type: 1,
       };
       this.$axios
-        .get("/businessInfo/recruitmentByType", params)
+        .get("/riskManager/businessInfo/recruitmentByType", params)
         .then(({ data }) => {
           data.forEach((item) => {
             this.recruitName.push(item.name);
@@ -190,7 +190,7 @@ export default {
         type: 2,
       };
       this.$axios
-        .get("/businessInfo/recruitmentByType", params)
+        .get("/riskManager/businessInfo/recruitmentByType", params)
         .then(({ data }) => {
           this.basicPieData = data;
         });
@@ -203,7 +203,7 @@ export default {
         type: 3,
       };
       this.$axios
-        .get("/businessInfo/recruitmentByType", params)
+        .get("/riskManager/businessInfo/recruitmentByType", params)
         .then(({ data }) => {
           this.diplomaPieData = data;
         });
@@ -216,7 +216,7 @@ export default {
         type: 4,
       };
       this.$axios
-        .get("/businessInfo/recruitmentByType", params)
+        .get("/riskManager/businessInfo/recruitmentByType", params)
         .then(({ data }) => {
           this.payPieData = data;
         });
@@ -229,7 +229,7 @@ export default {
         type: 5,
       };
       this.$axios
-        .get("/businessInfo/recruitmentByType", params)
+        .get("/riskManager/businessInfo/recruitmentByType", params)
         .then(({ data }) => {
           this.areaPieData = data;
         });
@@ -243,19 +243,21 @@ export default {
         pageNum: this.recruitmentCurrentPage,
         pageSize: this.recruitmentPageSize,
       };
-      this.$axios.post("/businessInfo/recruitment", params).then(({ data }) => {
-        this.recruitmentTotal = data.total;
-        this.recruitmentData = data.list.map((item) => {
-          return {
-            position: item.title,
-            recruitTime: item.startDate,
-            educationRequire: item.education,
-            workExperience: item.experience,
-            wages: item.salary,
-            area: item.city,
-          };
+      this.$axios
+        .post("/riskManager/businessInfo/recruitment", params)
+        .then(({ data }) => {
+          this.recruitmentTotal = data.total;
+          this.recruitmentData = data.list.map((item) => {
+            return {
+              position: item.title,
+              recruitTime: item.startDate,
+              educationRequire: item.education,
+              workExperience: item.experience,
+              wages: item.salary,
+              area: item.city,
+            };
+          });
         });
-      });
     },
     // 裁判文书分页
     recruitmentCurrentChange(val) {

@@ -119,9 +119,11 @@ export default {
     const params = {
       entId: this.$route.params.id,
     };
-    this.$axios.get("/entRisk/riskInfoByEntId", params).then(({ data }) => {
-      this.enterpriseInfo = data;
-    });
+    this.$axios
+      .get("/riskManager/entRisk/riskInfoByEntId", params)
+      .then(({ data }) => {
+        this.enterpriseInfo = data;
+      });
   },
   mounted() {},
   methods: {},

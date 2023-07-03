@@ -91,9 +91,9 @@ export default {
         if (valid) {
           this.loading = true;
           this.$axios
-            .post("/login", this.loginForm)
+            .post("/auth/login", this.loginForm)
             .then((res) => {
-              sessionStorage.setItem("token", res.token);
+              localStorage.setItem("token", res.token);
               this.$router.push({
                 path: this.$route.query.redirect || "/statistical-analysis",
               });

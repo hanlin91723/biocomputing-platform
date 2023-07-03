@@ -489,7 +489,7 @@ export default {
       }
       this.loading = true;
       this.$axios
-        .post("/entInfo/condition", params)
+        .post("/riskManager/entInfo/condition", params)
         .then(({ data }) => {
           this.total = data.total;
           this.tableData = data.list;
@@ -500,7 +500,7 @@ export default {
     },
     getIndustryList() {
       this.$axios
-        .get("/dict/queryDictByType", {
+        .get("/riskManager/dict/queryDictByType", {
           dictType: "industry",
         })
         .then(({ data }) => {
@@ -512,7 +512,7 @@ export default {
     },
     getEntTypeList() {
       this.$axios
-        .get("/dict/queryDictByType", {
+        .get("/riskManager/dict/queryDictByType", {
           dictType: "entType",
         })
         .then(({ data }) => {
@@ -646,7 +646,9 @@ export default {
       // 创建当前时间字符串，生成文件名称时使用
       const time = this.getCurentTime();
       this.$axios
-        .post("/entInfo/exportEnt", params, { responseType: "blob" })
+        .post("/riskManager/entInfo/exportEnt", params, {
+          responseType: "blob",
+        })
         .then((res) => {
           // 转化为blob对象
           let blob = new Blob([res.data], {

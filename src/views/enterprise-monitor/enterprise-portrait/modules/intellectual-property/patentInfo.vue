@@ -156,9 +156,11 @@ export default {
       let params = {
         entId: userStore.entId,
       };
-      this.$axios.get("/knowledge/patentApplyTrend", params).then((data) => {
-        this.patentBarData = data;
-      });
+      this.$axios
+        .get("/riskManager/knowledge/patentApplyTrend", params)
+        .then((data) => {
+          this.patentBarData = data;
+        });
     },
     // 获取专利类型数据
     getBasicPieData() {
@@ -167,9 +169,11 @@ export default {
         entId: userStore.entId,
         type: 2,
       };
-      this.$axios.get("/knowledge/patentType", params).then(({ data }) => {
-        this.pieData = data;
-      });
+      this.$axios
+        .get("/riskManager/knowledge/patentType", params)
+        .then(({ data }) => {
+          this.pieData = data;
+        });
     },
     // 裁判文书表格数据
     getPatentInfoData() {
@@ -180,21 +184,23 @@ export default {
         pageNum: this.patentInfoCurrentPage,
         pageSize: this.patentInfoPageSize,
       };
-      this.$axios.post("/knowledge/patentInfo", params).then(({ data }) => {
-        this.patentInfoTotal = data.total;
-        this.patentInfoData = data.list.map((item) => {
-          return {
-            applyDate: item.sqrq,
-            patentName: item.patname,
-            patentType: item.ptypeName,
-            // patentStatus: "公开",
-            applyNum: item.sgh,
-            openNum: item.gkggh,
-            openDate: item.gkggr,
-            inventor: item.fmr,
-          };
+      this.$axios
+        .post("/riskManager/knowledge/patentInfo", params)
+        .then(({ data }) => {
+          this.patentInfoTotal = data.total;
+          this.patentInfoData = data.list.map((item) => {
+            return {
+              applyDate: item.sqrq,
+              patentName: item.patname,
+              patentType: item.ptypeName,
+              // patentStatus: "公开",
+              applyNum: item.sgh,
+              openNum: item.gkggh,
+              openDate: item.gkggr,
+              inventor: item.fmr,
+            };
+          });
         });
-      });
     },
     // 裁判文书分页
     patentInfoCurrentChange(val) {

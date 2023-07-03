@@ -397,15 +397,17 @@ export default {
       const params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entRisk/judicialRisk", params).then(({ data }) => {
-        this.tableData = data;
-        const judicialRiskToalNum = Object.keys(data).reduce(
-          (prev, cur) => prev + data[cur].count,
-          0
-        );
-        const judicialRisk = judicialRiskStore();
-        judicialRisk.updateJudicialRiskNum(judicialRiskToalNum);
-      });
+      this.$axios
+        .get("/riskManager/entRisk/judicialRisk", params)
+        .then(({ data }) => {
+          this.tableData = data;
+          const judicialRiskToalNum = Object.keys(data).reduce(
+            (prev, cur) => prev + data[cur].count,
+            0
+          );
+          const judicialRisk = judicialRiskStore();
+          judicialRisk.updateJudicialRiskNum(judicialRiskToalNum);
+        });
     },
     handleCheckAllRiskTypes(val) {
       this.checkedRiskTypes = val
@@ -437,7 +439,7 @@ export default {
         case "personSubjectResp":
           this.personSubjectRespPageNum = val;
           this.$axios
-            .post("/judicial/personSubjectedExecution", {
+            .post("/riskManager/judicial/personSubjectedExecution", {
               entId,
               pageNum: this.personSubjectRespPageNum,
               pageSize: this.pageSize,
@@ -449,7 +451,7 @@ export default {
         case "breatchTrustResp":
           this.breatchTrustRespPageNum = val;
           this.$axios
-            .post("/judicial/disHonest", {
+            .post("/riskManager/judicial/disHonest", {
               entId,
               pageNum: this.breatchTrustRespPageNum,
               pageSize: this.pageSize,
@@ -461,7 +463,7 @@ export default {
         case "limitConsumptionResp":
           this.limitConsumptionRespPageNum = val;
           this.$axios
-            .post("/judicial/limitConsumption", {
+            .post("/riskManager/judicial/limitConsumption", {
               entId,
               pageNum: this.limitConsumptionRespPageNum,
               pageSize: this.pageSize,
@@ -474,7 +476,7 @@ export default {
         case "closingCaseResp":
           this.closingCaseRespPageNum = val;
           this.$axios
-            .post("/judicial/closingCase", {
+            .post("/riskManager/judicial/closingCase", {
               entId,
               pageNum: this.closingCaseRespPageNum,
               pageSize: this.pageSize,

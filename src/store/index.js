@@ -37,7 +37,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     getPermissionList() {
-      return http.get("/getRouters").then(({
+      return http.get("/riskManager/getRouters").then(({
         data,
       }) => {
         this.permissionList = data;

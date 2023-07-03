@@ -133,7 +133,7 @@ export default {
         pageSize: this.businessUnusualPageSize,
       };
       this.$axios
-        .post("/businessRisk/abnormalOperation", params)
+        .post("/riskManager/businessRisk/abnormalOperation", params)
         .then(({ data }) => {
           this.businessUnusualTotal = data.total;
           this.businessUnusualData = data.list.map((item) => {
@@ -160,7 +160,7 @@ export default {
         pageSize: this.oldBusinessUnusualPageSize,
       };
       this.$axios
-        .post("/businessRisk/abnormalOperationList", params)
+        .post("/riskManager/businessRisk/abnormalOperationList", params)
         .then(({ data }) => {
           this.oldBusinessUnusualTotal = data.total;
           this.oldBusinessUnusualData = data.list.map((item) => {

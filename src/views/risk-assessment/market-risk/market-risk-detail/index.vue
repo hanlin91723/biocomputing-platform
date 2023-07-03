@@ -109,24 +109,26 @@ export default {
         riskType: "全部",
         riskLevel: "全部",
       };
-      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
-        this.infoData = data.find(
-          (item) => item.id === parseInt(this.$route.query.id)
-        );
-        this.params = {
-          indexLargeTypeCode: this.infoData.indexLargeTypeCode,
-          indexSmallTypeCode: this.infoData.indexSmallTypeCode,
-        };
-        // 获取排行数据
-        this.getRankingData();
-        // 获取饼图数据
-        this.getRegisteredScaleData();
-      });
+      this.$axios
+        .get("/riskManager/marketRisk/byCondition", params)
+        .then(({ data }) => {
+          this.infoData = data.find(
+            (item) => item.id === parseInt(this.$route.query.id)
+          );
+          this.params = {
+            indexLargeTypeCode: this.infoData.indexLargeTypeCode,
+            indexSmallTypeCode: this.infoData.indexSmallTypeCode,
+          };
+          // 获取排行数据
+          this.getRankingData();
+          // 获取饼图数据
+          this.getRegisteredScaleData();
+        });
     },
     // 获取排行数据
     getRankingData() {
       this.$axios
-        .get("/marketRisk/industryRanking", this.params)
+        .get("/riskManager/marketRisk/industryRanking", this.params)
         .then(({ data }) => {
           this.rankingName = data.map((item) => item.name);
           this.rankingValue = data.map((item) => item.value);
@@ -135,7 +137,7 @@ export default {
     // 获取饼图数据
     getRegisteredScaleData() {
       this.$axios
-        .get("/marketRisk/registeredCapital", this.params)
+        .get("/riskManager/marketRisk/registeredCapital", this.params)
         .then(({ data }) => {
           this.registeredScaleData = data;
         });

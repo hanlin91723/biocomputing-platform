@@ -94,7 +94,7 @@ export default {
         pageSize: this.equityPledgePageSize,
       };
       this.$axios
-        .post("/businessRisk/pledgeEquity", params)
+        .post("/riskManager/businessRisk/pledgeEquity", params)
         .then(({ data, total }) => {
           this.amountTotal = total;
           this.equityPledgeTotal = data.total;

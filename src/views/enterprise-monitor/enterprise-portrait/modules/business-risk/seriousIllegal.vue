@@ -61,16 +61,18 @@ export default {
         pageNum: this.seriousIllegalCurrentPage,
         pageSize: this.seriousIllegalPageSize,
       };
-      this.$axios.post("/businessRisk/breachTrust", params).then(({ data }) => {
-        this.seriousIllegalTotal = data.total;
-        this.seriousIllegalData = data.list.map((item) => {
-          return {
-            inclusionTime: item.inDate,
-            office: item.inOrg,
-            inclusionReason: item.inReason,
-          };
+      this.$axios
+        .post("/riskManager/businessRisk/breachTrust", params)
+        .then(({ data }) => {
+          this.seriousIllegalTotal = data.total;
+          this.seriousIllegalData = data.list.map((item) => {
+            return {
+              inclusionTime: item.inDate,
+              office: item.inOrg,
+              inclusionReason: item.inReason,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     seriousIllegalCurrentChange(val) {

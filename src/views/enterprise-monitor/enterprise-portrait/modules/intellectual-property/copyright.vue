@@ -98,7 +98,7 @@ export default {
         type: 1,
       };
       this.$axios
-        .get("/knowledge/copyrightWorksType", params)
+        .get("/riskManager/knowledge/copyrightWorksType", params)
         .then(({ data }) => {
           data.forEach((item) => {
             this.recruitName.push(item.name);
@@ -114,7 +114,7 @@ export default {
         type: 2,
       };
       this.$axios
-        .get("/knowledge/copyrightWorksType", params)
+        .get("/riskManager/knowledge/copyrightWorksType", params)
         .then(({ data }) => {
           this.basicPieData = data;
         });
@@ -129,7 +129,7 @@ export default {
         pageSize: this.copyrightPageSize,
       };
       this.$axios
-        .post("/knowledge/copyrightWorksInfo", params)
+        .post("/riskManager/knowledge/copyrightWorksInfo", params)
         .then(({ data }) => {
           this.copyrightTotal = data.total;
           this.copyrightData = data.list.map((item) => {

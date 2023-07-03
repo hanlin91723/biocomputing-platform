@@ -72,11 +72,13 @@ export default {
   },
   methods: {
     getEnterpriseNumData() {
-      this.$axios.get("/statistics/entNumStatistic").then(({ data }) => {
-        this.enterpriseNumDataObj = data;
-        this.highEntNum = data.highEntNum;
-        this.middleEntNum = data.middleEntNum;
-      });
+      this.$axios
+        .get("/riskManager/statistics/entNumStatistic")
+        .then(({ data }) => {
+          this.enterpriseNumDataObj = data;
+          this.highEntNum = data.highEntNum;
+          this.middleEntNum = data.middleEntNum;
+        });
     },
     changeRiskType(type) {
       this.riskType = type;

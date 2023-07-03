@@ -82,21 +82,23 @@ export default {
         pageNum: this.voluntaryProductsCurrentPage,
         pageSize: this.voluntaryProductsPageSize,
       };
-      this.$axios.post("/other/voluntary", params).then(({ data }) => {
-        this.voluntaryProductsTotal = data.total;
-        this.voluntaryProductsData = data.list.map((item) => {
-          return {
-            projectName: item.certProject,
-            productName: item.productName,
-            certificateStatus: item.certStatus,
-            issuingAuthority: item.orgNum,
-            approvalMark: item.approvalMark,
-            standard: item.certificateBasis,
-            certificationTime: item.awardDate,
-            certificateExpireTime: item.expireDate,
-          };
+      this.$axios
+        .post("/riskManager/other/voluntary", params)
+        .then(({ data }) => {
+          this.voluntaryProductsTotal = data.total;
+          this.voluntaryProductsData = data.list.map((item) => {
+            return {
+              projectName: item.certProject,
+              productName: item.productName,
+              certificateStatus: item.certStatus,
+              issuingAuthority: item.orgNum,
+              approvalMark: item.approvalMark,
+              standard: item.certificateBasis,
+              certificationTime: item.awardDate,
+              certificateExpireTime: item.expireDate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     voluntaryProductsCurrentChange(val) {

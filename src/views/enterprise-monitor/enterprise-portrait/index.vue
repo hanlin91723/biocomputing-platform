@@ -446,9 +446,11 @@ export default {
       let params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entInfo/portrait", params).then(({ data }) => {
-        this.headerInfo = data;
-      });
+      this.$axios
+        .get("/riskManager/entInfo/portrait", params)
+        .then(({ data }) => {
+          this.headerInfo = data;
+        });
     },
     // 锚点链接功能
     anchorScroll(item, tabName) {

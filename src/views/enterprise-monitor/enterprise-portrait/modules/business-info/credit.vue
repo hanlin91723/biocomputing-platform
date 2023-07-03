@@ -65,18 +65,20 @@ export default {
         pageNum: this.creditCurrentPage,
         pageSize: this.creditPageSize,
       };
-      this.$axios.post("/businessInfo/creditLevel", params).then(({ data }) => {
-        this.creditTotal = data.total;
-        this.creditData = data.list.map((item) => {
-          return {
-            company: item.ratingEntName,
-            subjectGrade: item.subjectLevel,
-            DebtGrade: item.bondCreditLevel,
-            expectation: item.ratingOutLook,
-            dateTime: item.ratingDate,
-          };
+      this.$axios
+        .post("/riskManager/businessInfo/creditLevel", params)
+        .then(({ data }) => {
+          this.creditTotal = data.total;
+          this.creditData = data.list.map((item) => {
+            return {
+              company: item.ratingEntName,
+              subjectGrade: item.subjectLevel,
+              DebtGrade: item.bondCreditLevel,
+              expectation: item.ratingOutLook,
+              dateTime: item.ratingDate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     creditCurrentChange(val) {

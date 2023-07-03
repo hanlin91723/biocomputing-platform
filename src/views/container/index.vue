@@ -92,10 +92,6 @@
           <span class="value">{{ info.nickName }}</span>
         </div>
         <div class="user-info-item">
-          <span class="name">手机号：</span>
-          <span class="value">{{ info.phone }}</span>
-        </div>
-        <div class="user-info-item">
           <span class="name">角色：</span>
           <span class="value">{{ info.roleName }}</span>
         </div>
@@ -226,10 +222,9 @@ export default {
   },
   methods: {
     getUser() {
-      this.$axios.get("/getInfo").then(({ user, roles }) => {
+      this.$axios.get("/riskManager/getInfo").then(({ user, roles }) => {
         this.info = {
           nickName: user.userName,
-          phone: user.phonenumber,
           roleName: user.roles.map((item) => item.roleName).join("、"),
         };
         sessionStorage.setItem("userId", user.roleId);
@@ -253,6 +248,7 @@ export default {
             .then(() => {
               //清空缓存数据
               sessionStorage.clear();
+              localStorage.clear();
               userInfo.permissionList = [];
               this.$router.push({
                 path: "/login",
@@ -282,7 +278,7 @@ export default {
         newPassword: this.formData.checkedNewPwd,
         oldPassword: this.formData.oldPwd,
       };
-      this.$axios.put("/system/user/updatePwd", params).then(() => {
+      this.$axios.put("/auth/system/user/updatePwd", params).then(() => {
         this.$message.success("密码修改成功，下次登录后生效");
         this.handleCancel();
       });

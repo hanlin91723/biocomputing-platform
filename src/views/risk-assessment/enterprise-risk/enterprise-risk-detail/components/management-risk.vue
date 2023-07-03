@@ -454,15 +454,17 @@ export default {
       const params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entRisk/businessRisk", params).then(({ data }) => {
-        this.tableData = data;
-        const managementRiskToalNum = Object.keys(data).reduce(
-          (prev, cur) => prev + data[cur].count,
-          0
-        );
-        const managementRisk = managementRiskStore();
-        managementRisk.updateManagementRiskNum(managementRiskToalNum);
-      });
+      this.$axios
+        .get("/riskManager/entRisk/businessRisk", params)
+        .then(({ data }) => {
+          this.tableData = data;
+          const managementRiskToalNum = Object.keys(data).reduce(
+            (prev, cur) => prev + data[cur].count,
+            0
+          );
+          const managementRisk = managementRiskStore();
+          managementRisk.updateManagementRiskNum(managementRiskToalNum);
+        });
     },
     handleCheckAllRiskTypes(val) {
       this.checkedRiskTypes = val
@@ -494,7 +496,7 @@ export default {
         case "abnormalOperationResp":
           this.abnormalOperationRespPageNum = val;
           this.$axios
-            .post("/businessRisk/abnormalOperation", {
+            .post("/riskManager/businessRisk/abnormalOperation", {
               entId,
               pageNum: this.abnormalOperationRespPageNum,
               pageSize: this.pageSize,
@@ -507,7 +509,7 @@ export default {
         case "breatchTrustResp":
           this.breatchTrustRespPageNum = val;
           this.$axios
-            .post("/businessRisk/breachTrust", {
+            .post("/riskManager/businessRisk/breachTrust", {
               entId,
               pageNum: this.breatchTrustRespPageNum,
               pageSize: this.pageSize,
@@ -519,7 +521,7 @@ export default {
         case "pledgeEquityResp":
           this.pledgeEquityRespPageNum = val;
           this.$axios
-            .post("/businessRisk/pledgeEquity", {
+            .post("/riskManager/businessRisk/pledgeEquity", {
               entId,
               pageNum: this.pledgeEquityRespPageNum,
               pageSize: this.pageSize,
@@ -531,7 +533,7 @@ export default {
         case "adminPenaltyResp":
           this.adminPenaltyRespPageNum = val;
           this.$axios
-            .post("/businessRisk/adminPenalty", {
+            .post("/riskManager/businessRisk/adminPenalty", {
               entId,
               pageNum: this.adminPenaltyRespPageNum,
               pageSize: this.pageSize,
@@ -543,7 +545,7 @@ export default {
         case "taxArrearsResp":
           this.taxArrearsRespPageNum = val;
           this.$axios
-            .post("/businessRisk/taxArrears", {
+            .post("/riskManager/businessRisk/taxArrears", {
               entId,
               pageNum: this.taxArrearsRespPageNum,
               pageSize: this.pageSize,

@@ -78,20 +78,22 @@ export default {
         pageNum: this.farmProduceCurrentPage,
         pageSize: this.farmProducePageSize,
       };
-      this.$axios.post("/other/foodCert", params).then(({ data }) => {
-        this.farmProduceTotal = data.total;
-        this.farmProduceData = data.list.map((item) => {
-          return {
-            projectName: item.certProject,
-            productName: item.productName,
-            certificateStatus: item.certStatus,
-            issuingAuthority: item.orgNum,
-            standard: item.certBasis,
-            certificationTime: item.awardDate,
-            certificateExpireTime: item.expireDate,
-          };
+      this.$axios
+        .post("/riskManager/other/foodCert", params)
+        .then(({ data }) => {
+          this.farmProduceTotal = data.total;
+          this.farmProduceData = data.list.map((item) => {
+            return {
+              projectName: item.certProject,
+              productName: item.productName,
+              certificateStatus: item.certStatus,
+              issuingAuthority: item.orgNum,
+              standard: item.certBasis,
+              certificationTime: item.awardDate,
+              certificateExpireTime: item.expireDate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     farmProduceCurrentChange(val) {

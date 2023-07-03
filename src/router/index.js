@@ -204,7 +204,7 @@ const whiteList = constantRouterMap.map(item => item.path); //定义白名单
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   //判断是否有token
-  if (sessionStorage.getItem("token")) {
+  if (localStorage.getItem("token")) {
     const userInfo = useUserStore();
     // 路由添加进去了没有及时更新,需要重新进去一次拦截
     if (userInfo.permissionList.length === 0) {

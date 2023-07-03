@@ -65,11 +65,13 @@ export default {
       const params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entRisk/relationRisk", params).then(({ data }) => {
-        this.tableData = data;
-        const relatedRisk = relatedRiskStore();
-        relatedRisk.updateRelatedRiskNum(data.length);
-      });
+      this.$axios
+        .get("/riskManager/entRisk/relationRisk", params)
+        .then(({ data }) => {
+          this.tableData = data;
+          const relatedRisk = relatedRiskStore();
+          relatedRisk.updateRelatedRiskNum(data.length);
+        });
     },
     handleRiskDetail(row) {
       this.$router.push({

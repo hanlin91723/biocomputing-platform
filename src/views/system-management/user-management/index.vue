@@ -2,19 +2,6 @@
   <div class="user">
     <div class="header">
       <div class="header-left">
-        <el-select
-          v-model="roleVal"
-          placeholder="请选择角色"
-          class="user-select"
-          clearable
-        >
-          <el-option
-            v-for="item in roleOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
         <el-input
           class="input"
           placeholder="请输入用户名"
@@ -40,15 +27,9 @@
         label="序号"
         width="80"
       ></el-table-column>
-      <el-table-column
-        prop="userName"
-        label="用户名"
-        width="180"
-      ></el-table-column>
-      <el-table-column prop="phonenumber" label="手机"></el-table-column>
-      <el-table-column prop="remark" label="用户身份备注"></el-table-column>
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
+      <el-table-column prop="userName" label="用户名"></el-table-column>
       <el-table-column prop="roleNameList" label="角色"></el-table-column>
+      <el-table-column prop="createTime" label="注册时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="{ row }">
           <!-- 重置密码 -->
@@ -117,12 +98,7 @@
             :disabled="isEdit"
           />
         </el-form-item>
-        <el-form-item label="手机号" prop="phonenumber">
-          <el-input placeholder="请输入手机号" v-model="userInfo.phonenumber" />
-        </el-form-item>
-        <el-form-item label="用户身份备注" prop="remark">
-          <el-input placeholder="请输入身份备注" v-model="userInfo.remark" />
-        </el-form-item>
+
         <el-form-item label="用户权限" prop="roleIds">
           <el-select
             class="select"
@@ -169,24 +145,11 @@ export default {
       userId: "", //当前编辑的userId
       userInfo: {
         userName: "",
-        phonenumber: "",
-        remark: "",
         roleIds: [],
       },
       userInfoRules: {
         userName: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
-        ],
-        phonenumber: [
-          { required: true, message: "手机号不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "手机号格式不正确",
-            trigger: "blur",
-          },
-        ],
-        remark: [
-          { required: true, message: "用户身份备注不能为空", trigger: "blur" },
         ],
         roleIds: [
           { required: true, message: "用户权限不能为空", trigger: "change" },
@@ -210,7 +173,7 @@ export default {
         roleId: this.roleVal,
         userName: this.userName,
       };
-      this.$axios.get("/system/user/list", params).then(({ data }) => {
+      this.$axios.post("/auth/system/user/list", params).then(({ data }) => {
         this.tableData = data.list.map((item) => ({
           ...item,
           roleNameList: item.roles.map((item) => item.roleName).join("、"),
@@ -219,16 +182,18 @@ export default {
       });
     },
     getRoleOptions() {
-      this.$axios.get("/system/role/optionselect").then(({ data }) => {
-        this.roleOptions = data.map((item) => ({
-          label: item.roleName,
-          value: item.roleId,
-        }));
-      });
+      this.$axios
+        .get("/riskManager/system/role/optionselect")
+        .then(({ data }) => {
+          this.roleOptions = data.map((item) => ({
+            label: item.roleName,
+            value: item.roleId,
+          }));
+        });
     },
     // 删除用户
     deleteUser(row) {
-      this.$axios.delete(`/system/user/${row.userId}`).then(() => {
+      this.$axios.delete(`/auth/system/user/${row.userId}`).then(() => {
         this.$message.success("删除成功");
         this.getTableData();
       });
@@ -238,7 +203,7 @@ export default {
       const params = {
         userId: row.userId,
       };
-      this.$axios.put("/system/user/resetPwd", params).then(() => {
+      this.$axios.put("/auth/system/user/resetPwd", params).then(() => {
         this.$message.success("重置密码成功");
       });
     },
@@ -248,8 +213,6 @@ export default {
       if (this.isEdit) {
         this.userInfo = {
           userName: row.userName,
-          phonenumber: row.phonenumber,
-          remark: row.remark,
           roleIds: row.roleIds,
         };
         this.userId = row.userId;
@@ -265,15 +228,13 @@ export default {
         if (valid) {
           let params = {
             userName: this.userInfo.userName,
-            phonenumber: this.userInfo.phonenumber,
-            remark: this.userInfo.remark,
             roleIds: this.userInfo.roleIds,
           };
           if (this.isEdit) {
             params.userId = this.userId;
           }
           this.$axios[this.isEdit ? "put" : "post"](
-            "/system/user",
+            "/auth/system/user",
             params
           ).then(() => {
             this.$message.success(`${this.isEdit ? "修改" : "添加"}成功`);
@@ -288,8 +249,6 @@ export default {
       this.userId = "";
       this.userInfo = {
         userName: "",
-        phonenumber: "",
-        remark: "",
         roleIds: [],
       };
       this.$refs.userInfo.resetFields(); // 重置校验结果

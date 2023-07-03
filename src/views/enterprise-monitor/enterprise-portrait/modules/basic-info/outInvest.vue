@@ -157,26 +157,30 @@ export default {
       let params = {
         dictType: "entStatus",
       };
-      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
-        this.filterData = data.map((item) => {
-          return {
-            text: item.dictName,
-            value: item.dictName,
-          };
+      this.$axios
+        .get("/riskManager/dict/queryDictByType", params)
+        .then(({ data }) => {
+          this.filterData = data.map((item) => {
+            return {
+              text: item.dictName,
+              value: item.dictName,
+            };
+          });
         });
-      });
     },
     getMapData() {
       const userStore = useUserStore();
       let params = {
         entName: userStore.entName,
       };
-      this.$axios.get("/entInfo/foreignInvestArea", params).then(({ data }) => {
-        this.mapAndBarData = data.map((item) => ({
-          name: item.regionName,
-          value: item.num,
-        }));
-      });
+      this.$axios
+        .get("/riskManager/entInfo/foreignInvestArea", params)
+        .then(({ data }) => {
+          this.mapAndBarData = data.map((item) => ({
+            name: item.regionName,
+            value: item.num,
+          }));
+        });
     },
     getInvestPieData() {
       const userStore = useUserStore();
@@ -184,7 +188,7 @@ export default {
         entName: userStore.entName,
       };
       this.$axios
-        .get("/entInfo/foreignInvestIndustry", params)
+        .get("/riskManager/entInfo/foreignInvestIndustry", params)
         .then(({ data }) => {
           this.investPieData = data.map((item) => {
             return {
@@ -204,7 +208,7 @@ export default {
         pageSize: this.enterpriseInvestPageSize,
       };
       this.$axios
-        .post("/entInfo/foreignInvestmentEnt", params)
+        .post("/riskManager/entInfo/foreignInvestmentEnt", params)
         .then(({ data }) => {
           this.enterpriseInvestTotal = data.total;
           this.enterpriseInvestData = data.list.map((item) => {

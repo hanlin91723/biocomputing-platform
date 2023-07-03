@@ -182,15 +182,17 @@ export default {
         pageNum: this.shareholderCurrentPage,
         pageSize: this.shareholderPageSize,
       };
-      this.$axios.post("/entInfo/shareholderContr", params).then(({ data }) => {
-        this.shareholderTotal = data.total;
-        this.shareholderData = data.list.map((item) => {
-          return {
-            shareholder: item.inv,
-            scale: item.conprop,
-          };
+      this.$axios
+        .post("/riskManager/entInfo/shareholderContr", params)
+        .then(({ data }) => {
+          this.shareholderTotal = data.total;
+          this.shareholderData = data.list.map((item) => {
+            return {
+              shareholder: item.inv,
+              scale: item.conprop,
+            };
+          });
         });
-      });
     },
     // 股东信息分页
     shareholderCurrentChange(val) {
@@ -206,19 +208,21 @@ export default {
         pageNum: this.oldShareholderCurrentPage,
         pageSize: this.oldShareholderPageSize,
       };
-      this.$axios.post("/entInfo/hisShareholders", params).then(({ data }) => {
-        this.oldShareholderTotal = data.total;
-        this.oldShareholderData = data.list.map((item) => {
-          return {
-            oldShareholderName: item.inv,
-            scale: "",
-            shouldQuota: "",
-            shouldTime: "",
-            sharesTime: item.inDate?.split("T")[0],
-            exitTime: item.outDate,
-          };
+      this.$axios
+        .post("/riskManager/entInfo/hisShareholders", params)
+        .then(({ data }) => {
+          this.oldShareholderTotal = data.total;
+          this.oldShareholderData = data.list.map((item) => {
+            return {
+              oldShareholderName: item.inv,
+              scale: "",
+              shouldQuota: "",
+              shouldTime: "",
+              sharesTime: item.inDate?.split("T")[0],
+              exitTime: item.outDate,
+            };
+          });
         });
-      });
     },
     // 历史股东信息分页
     oldShareholderCurrentChange(val) {
@@ -235,7 +239,7 @@ export default {
         pageSize: this.stockRightPageSize,
       };
       this.$axios
-        .post("/entInfo/histShareholderChange", params)
+        .post("/riskManager/entInfo/histShareholderChange", params)
         .then(({ data }) => {
           this.stockRightTotal = data.total;
           this.stockRightData = data.list.map((item) => {

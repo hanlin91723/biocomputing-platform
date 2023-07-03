@@ -149,12 +149,14 @@ export default {
         riskType: this.classifyValue,
         riskLevel: this.riskGradeValue,
       };
-      this.$axios.get("/marketRisk/byCondition", params).then(({ data }) => {
-        this.tableData = data.map((item) => ({
-          ...item,
-          riskGrade: this.riskTrans(item.riskLevel),
-        }));
-      });
+      this.$axios
+        .get("/riskManager/marketRisk/byCondition", params)
+        .then(({ data }) => {
+          this.tableData = data.map((item) => ({
+            ...item,
+            riskGrade: this.riskTrans(item.riskLevel),
+          }));
+        });
     },
     // 风险指数
     riskColor(val) {

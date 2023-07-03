@@ -61,7 +61,7 @@ export default {
         pageSize: this.administrationPunishPageSize,
       };
       this.$axios
-        .post("/businessRisk/adminPenalty", params)
+        .post("/riskManager/businessRisk/adminPenalty", params)
         .then(({ data }) => {
           this.administrationPunishTotal = data.total;
           this.administrationPunishData = data.list;

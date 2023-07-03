@@ -221,38 +221,42 @@ export default {
         pageSize: this.pageSize,
         ...this.params,
       };
-      this.$axios.post("/marketRisk/marketEntList", params).then(({ data }) => {
-        this.total = data.total;
-        this.tableData = data.list.map((item, index) => {
-          return {
-            index: index + 1,
-            entId: item.entId,
-            enterpriseName: item.entName,
-            legalPerson: item.legalPerson,
-            creditCode: item.creditCode,
-            industry: item.industry,
-            riskIndex: item.entRiskScore,
-            earlyWarning: item.indexRisk,
-          };
+      this.$axios
+        .post("/riskManager/marketRisk/marketEntList", params)
+        .then(({ data }) => {
+          this.total = data.total;
+          this.tableData = data.list.map((item, index) => {
+            return {
+              index: index + 1,
+              entId: item.entId,
+              enterpriseName: item.entName,
+              legalPerson: item.legalPerson,
+              creditCode: item.creditCode,
+              industry: item.industry,
+              riskIndex: item.entRiskScore,
+              earlyWarning: item.indexRisk,
+            };
+          });
         });
-      });
     },
     getIndustryOptions() {
       let params = {
         dictType: "industry",
       };
-      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
-        this.industryOptions = data.map((item) => {
-          return {
-            value: item.dictName,
-            label: item.dictName,
-          };
+      this.$axios
+        .get("/riskManager/dict/queryDictByType", params)
+        .then(({ data }) => {
+          this.industryOptions = data.map((item) => {
+            return {
+              value: item.dictName,
+              label: item.dictName,
+            };
+          });
+          this.industryOptions.unshift({
+            value: "全部",
+            label: "全部",
+          });
         });
-        this.industryOptions.unshift({
-          value: "全部",
-          label: "全部",
-        });
-      });
     },
     // 查询
     search() {

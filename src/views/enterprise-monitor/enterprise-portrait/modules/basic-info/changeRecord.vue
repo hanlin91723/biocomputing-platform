@@ -70,17 +70,19 @@ export default {
         pageNum: this.changeCurrentPage,
         pageSize: this.changePageSize,
       };
-      this.$axios.post("/entInfo/changeRecord", params).then(({ data }) => {
-        this.changeTotal = data.total;
-        this.changeData = data.list.map((item) => {
-          return {
-            changeProject: item.altitem,
-            changeTime: item.altDate?.split(" ")[0],
-            beforeInfo: item.altbe,
-            afterInfo: item.altaf,
-          };
+      this.$axios
+        .post("/riskManager/entInfo/changeRecord", params)
+        .then(({ data }) => {
+          this.changeTotal = data.total;
+          this.changeData = data.list.map((item) => {
+            return {
+              changeProject: item.altitem,
+              changeTime: item.altDate?.split(" ")[0],
+              beforeInfo: item.altbe,
+              afterInfo: item.altaf,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     changeCurrentChange(val) {

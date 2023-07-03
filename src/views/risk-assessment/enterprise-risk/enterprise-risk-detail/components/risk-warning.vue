@@ -33,11 +33,13 @@ export default {
       const params = {
         entId: this.$route.params.id,
       };
-      this.$axios.get("/entRisk/riskWarning", params).then(({ data }) => {
-        this.tableData = data;
-        const enterpriseRisk = enterpriseRiskStore();
-        enterpriseRisk.updateRiskWarningNum(data.length);
-      });
+      this.$axios
+        .get("/riskManager/entRisk/riskWarning", params)
+        .then(({ data }) => {
+          this.tableData = data;
+          const enterpriseRisk = enterpriseRiskStore();
+          enterpriseRisk.updateRiskWarningNum(data.length);
+        });
     },
     // 预警等级
     riskColor(val) {

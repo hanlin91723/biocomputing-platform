@@ -219,15 +219,19 @@ export default {
         roleName: this.roleNameVal,
         roleDesc: this.permissionDescVal,
       };
-      this.$axios.post("/system/role/list", params).then(({ data }) => {
-        this.tableData = data.list;
-        this.total = data.total;
-      });
+      this.$axios
+        .post("/riskManager/system/role/list", params)
+        .then(({ data }) => {
+          this.tableData = data.list;
+          this.total = data.total;
+        });
     },
     getRoleList() {
-      this.$axios.get("/system/menu/treeSelect").then(({ data }) => {
-        this.roleList = data;
-      });
+      this.$axios
+        .get("/riskManager/system/menu/treeSelect")
+        .then(({ data }) => {
+          this.roleList = data;
+        });
     },
     // 全选
     handleCheckAllChange(item, val) {
@@ -251,7 +255,7 @@ export default {
     },
     // 删除角色
     deleteRole(row) {
-      this.$axios.delete(`/system/role/${row.roleId}`).then(() => {
+      this.$axios.delete(`/riskManager/system/role/${row.roleId}`).then(() => {
         this.$message.success("删除成功");
         this.getTableData();
       });
@@ -297,7 +301,7 @@ export default {
             params.roleId = this.roleId;
           }
           this.$axios[this.isEdit ? "put" : "post"](
-            "/system/role",
+            "/riskManager/system/role",
             params
           ).then(() => {
             this.$message.success(`${this.isEdit ? "修改" : "添加"}成功`);

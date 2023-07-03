@@ -163,18 +163,20 @@ export default {
         pageNum: this.websiteFilingCurrentPage,
         pageSize: this.websiteFilingPageSize,
       };
-      this.$axios.post("/knowledge/filingInfo", params).then(({ data }) => {
-        this.websiteFilingTotal = data.total;
-        this.websiteFilingData = data.list.map((item) => {
-          return {
-            auditDate: item.shDate,
-            homePage: item.hostName,
-            domainName: item.hostName,
-            websiteFiling: item.icpNum,
-            registerAuthority: item.beiAnDi,
-          };
+      this.$axios
+        .post("/riskManager/knowledge/filingInfo", params)
+        .then(({ data }) => {
+          this.websiteFilingTotal = data.total;
+          this.websiteFilingData = data.list.map((item) => {
+            return {
+              auditDate: item.shDate,
+              homePage: item.hostName,
+              domainName: item.hostName,
+              websiteFiling: item.icpNum,
+              registerAuthority: item.beiAnDi,
+            };
+          });
         });
-      });
     },
     // 网站备案分页
     websiteFilingCurrentChange(val) {
@@ -191,7 +193,7 @@ export default {
         pageSize: this.oldWebsiteFilingPageSize,
       };
       this.$axios
-        .post("/knowledge/filingInfoCancel", params)
+        .post("/riskManager/knowledge/filingInfoCancel", params)
         .then(({ data }) => {
           this.oldWebsiteFilingTotal = data.total;
           this.oldWebsiteFilingData = data.list.map((item) => {

@@ -131,15 +131,17 @@ export default {
         pageNum: this.keyPersonnelCurrentPage,
         pageSize: this.keyPersonnelPageSize,
       };
-      this.$axios.post("/entInfo/mainstaff", params).then(({ data }) => {
-        this.keyPersonnelTotal = data.total;
-        this.keyPersonnelData = data.list.map((item) => {
-          return {
-            fullName: item.staffName,
-            position: item.positionName,
-          };
+      this.$axios
+        .post("/riskManager/entInfo/mainstaff", params)
+        .then(({ data }) => {
+          this.keyPersonnelTotal = data.total;
+          this.keyPersonnelData = data.list.map((item) => {
+            return {
+              fullName: item.staffName,
+              position: item.positionName,
+            };
+          });
         });
-      });
     },
     // 主要人员分页
     keyPersonnelCurrentChange(val) {
@@ -155,17 +157,19 @@ export default {
         pageNum: this.oldManagerCurrentPage,
         pageSize: this.oldManagerPageSize,
       };
-      this.$axios.post("/entInfo/hisExecutives", params).then(({ data }) => {
-        this.oldManagerTotal = data.total;
-        this.oldManagerData = data.list.map((item) => {
-          return {
-            fullName: item.name,
-            position: item.positionName,
-            InductionTime: item.inDate?.split("T")[0],
-            quitTime: item.outDate,
-          };
+      this.$axios
+        .post("/riskManager/entInfo/hisExecutives", params)
+        .then(({ data }) => {
+          this.oldManagerTotal = data.total;
+          this.oldManagerData = data.list.map((item) => {
+            return {
+              fullName: item.name,
+              position: item.positionName,
+              InductionTime: item.inDate?.split("T")[0],
+              quitTime: item.outDate,
+            };
+          });
         });
-      });
     },
     // 历史高管分页
     oldManagerCurrentChange(val) {

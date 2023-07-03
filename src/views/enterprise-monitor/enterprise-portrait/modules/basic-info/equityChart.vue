@@ -139,17 +139,19 @@ export default {
         entId: userStore.entId,
         entName: userStore.entName,
       };
-      this.$axios.get("/entInfo/equityPenetration", params).then(({ data }) => {
-        this.threeData = data;
-        this.tree = new StockTree({
-          el: ".chart",
-          originTreeData: this.threeData,
-          // 节点点击事件
-          nodeClickEvent: function (e, d) {
-            console.log("当前节点的数据：", d);
-          },
+      this.$axios
+        .get("/riskManager/entInfo/equityPenetration", params)
+        .then(({ data }) => {
+          this.threeData = data;
+          this.tree = new StockTree({
+            el: ".chart",
+            originTreeData: this.threeData,
+            // 节点点击事件
+            nodeClickEvent: function (e, d) {
+              console.log("当前节点的数据：", d);
+            },
+          });
         });
-      });
     },
     fullScreen() {
       if (this.isFullScreen) {

@@ -124,18 +124,22 @@ export default {
         entId: userStore.entId,
         type: 1,
       };
-      this.$axios.get("/develop/publicInfoByType", params).then(({ data }) => {
-        this.pieData = data;
-      });
+      this.$axios
+        .get("/riskManager/develop/publicInfoByType", params)
+        .then(({ data }) => {
+          this.pieData = data;
+        });
     },
     getBarData() {
       const userStore = useUserStore();
       let params = {
         entId: userStore.entId,
       };
-      this.$axios.get("/develop/publicInfoChangeTrend", params).then((data) => {
-        this.barData = data;
-      });
+      this.$axios
+        .get("/riskManager/develop/publicInfoChangeTrend", params)
+        .then((data) => {
+          this.barData = data;
+        });
     },
     // 企业投资表格数据
     getPublicSentimentData() {
@@ -146,18 +150,20 @@ export default {
         pageNum: this.publicSentimentCurrentPage,
         pageSize: this.publicSentimentPageSize,
       };
-      this.$axios.post("/develop/publicInfo", params).then(({ data }) => {
-        this.publicSentimentTotal = data.total;
-        this.publicSentimentData = data.list.map((item) => {
-          return {
-            title: item.title,
-            time: item.pubTime,
-            classify: item.tabsEmotionLabels,
-            keyword: item.tabsEventLabels,
-            source: item.webSite,
-          };
+      this.$axios
+        .post("/riskManager/develop/publicInfo", params)
+        .then(({ data }) => {
+          this.publicSentimentTotal = data.total;
+          this.publicSentimentData = data.list.map((item) => {
+            return {
+              title: item.title,
+              time: item.pubTime,
+              classify: item.tabsEmotionLabels,
+              keyword: item.tabsEventLabels,
+              source: item.webSite,
+            };
+          });
         });
-      });
     },
     // 企业投资分页
     publicSentimentCurrentChangee(val) {

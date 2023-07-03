@@ -73,7 +73,7 @@ export default {
         pageSize: this.taxRecordPageSize,
       };
       this.$axios
-        .post("/businessRisk/taxArrears", params)
+        .post("/riskManager/businessRisk/taxArrears", params)
         .then(({ data, total }) => {
           this.amountTotal = total;
           this.taxRecordTotal = data.total;

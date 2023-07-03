@@ -57,10 +57,12 @@ export default {
         pageNum: this.contributorCurrentPage,
         pageSize: this.contributorPageSize,
       };
-      this.$axios.post("/develop/contribution", params).then(({ data }) => {
-        this.contributorTotal = data.total;
-        this.contributorData = data.list;
-      });
+      this.$axios
+        .post("/riskManager/develop/contribution", params)
+        .then(({ data }) => {
+          this.contributorTotal = data.total;
+          this.contributorData = data.list;
+        });
     },
     // 变更记录分页
     contributorCurrentChange(val) {

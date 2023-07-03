@@ -140,12 +140,14 @@ export default {
         entId: userStore.entId,
         type: 1,
       };
-      this.$axios.get("/knowledge/trademarkType", params).then(({ data }) => {
-        data.forEach((item) => {
-          this.recruitName.push(item.name);
-          this.recruitValue.push(item.value);
+      this.$axios
+        .get("/riskManager/knowledge/trademarkType", params)
+        .then(({ data }) => {
+          data.forEach((item) => {
+            this.recruitName.push(item.name);
+            this.recruitValue.push(item.value);
+          });
         });
-      });
     },
     // 获取商标类型数据
     getBasicPieData() {
@@ -154,9 +156,11 @@ export default {
         entId: userStore.entId,
         type: 2,
       };
-      this.$axios.get("/knowledge/trademarkType", params).then(({ data }) => {
-        this.basicPieData = data;
-      });
+      this.$axios
+        .get("/riskManager/knowledge/trademarkType", params)
+        .then(({ data }) => {
+          this.basicPieData = data;
+        });
     },
     // 裁判文书表格数据
     getBrandInfoData() {
@@ -167,10 +171,12 @@ export default {
         pageNum: this.brandInfoCurrentPage,
         pageSize: this.brandInfoPageSize,
       };
-      this.$axios.post("/knowledge/trademarkInfo", params).then(({ data }) => {
-        this.brandInfoTotal = data.total;
-        this.brandInfoData = data.list;
-      });
+      this.$axios
+        .post("/riskManager/knowledge/trademarkInfo", params)
+        .then(({ data }) => {
+          this.brandInfoTotal = data.total;
+          this.brandInfoData = data.list;
+        });
     },
     // 裁判文书分页
     brandInfoCurrentChange(val) {

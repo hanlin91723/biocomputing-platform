@@ -80,7 +80,7 @@ export default {
       let params = {
         entId: userStore.entId,
       };
-      this.$axios.get("/entInfo/info", params).then(({ data }) => {
+      this.$axios.get("/riskManager/entInfo/info", params).then(({ data }) => {
         this.registerInfo = data;
       });
     },

@@ -75,7 +75,7 @@ export default {
         pageSize: this.executeePageSize,
       };
       this.$axios
-        .post("/judicial/personSubjectedExecution", params)
+        .post("/riskManager/judicial/personSubjectedExecution", params)
         .then(({ data, total }) => {
           this.executeeTotal = data.total;
           this.totalMoney = total;

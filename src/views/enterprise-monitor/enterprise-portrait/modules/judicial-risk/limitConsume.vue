@@ -79,7 +79,7 @@ export default {
         pageSize: this.pageSize,
       };
       this.$axios
-        .post("/judicial/limitConsumption", params)
+        .post("/riskManager/judicial/limitConsumption", params)
         .then(({ data }) => {
           this.limitConsumeTotal = data.total;
           this.limitConsumeData = data.list.map((item) => {

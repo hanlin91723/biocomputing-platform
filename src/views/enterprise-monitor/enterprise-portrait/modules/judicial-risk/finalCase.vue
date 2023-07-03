@@ -49,14 +49,16 @@ export default {
         pageNum: this.currentPage,
         pageSize: this.pageSize,
       };
-      this.$axios.post("/judicial/closingCase", params).then(({ data }) => {
-        this.finalCaseTotal = data.total;
-        this.finalCaseData = data.list.map((item) => {
-          return {
-            referenceNum: item.caseCode,
-          };
+      this.$axios
+        .post("/riskManager/judicial/closingCase", params)
+        .then(({ data }) => {
+          this.finalCaseTotal = data.total;
+          this.finalCaseData = data.list.map((item) => {
+            return {
+              referenceNum: item.caseCode,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     finalCaseCurrentChange(val) {

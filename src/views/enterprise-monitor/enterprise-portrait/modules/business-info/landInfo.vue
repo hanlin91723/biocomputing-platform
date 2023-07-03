@@ -79,21 +79,23 @@ export default {
         pageNum: this.landInfoCurrentPage,
         pageSize: this.landInfoPageSize,
       };
-      this.$axios.post("/businessInfo/landInfo", params).then(({ data }) => {
-        this.landInfoTotal = data.total;
-        this.landInfoData = data.list.map((item) => {
-          return {
-            projectName: item.pname,
-            projectposition: item.address,
-            district: item.province + item.city,
-            area: item.darea,
-            transactionPrice: item.dprice,
-            landUse: item.duse,
-            company: item.authorg,
-            signingDate: item.tdate,
-          };
+      this.$axios
+        .post("/riskManager/businessInfo/landInfo", params)
+        .then(({ data }) => {
+          this.landInfoTotal = data.total;
+          this.landInfoData = data.list.map((item) => {
+            return {
+              projectName: item.pname,
+              projectposition: item.address,
+              district: item.province + item.city,
+              area: item.darea,
+              transactionPrice: item.dprice,
+              landUse: item.duse,
+              company: item.authorg,
+              signingDate: item.tdate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     landInfoCurrentChange(val) {

@@ -66,7 +66,7 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       this.$axios
-        .get("/entInfo/infoName", {
+        .get("/riskManager/entInfo/infoName", {
           entName: queryString,
         })
         .then(({ data }) => {

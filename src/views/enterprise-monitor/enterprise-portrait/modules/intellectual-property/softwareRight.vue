@@ -70,19 +70,21 @@ export default {
         pageNum: this.softwareRightCurrentPage,
         pageSize: this.softwareRightPageSize,
       };
-      this.$axios.post("/knowledge/softwareWorks", params).then(({ data }) => {
-        this.softwareRightTotal = data.total;
-        this.softwareRightData = data.list.map((item) => {
-          return {
-            approvalTime: item.rdate,
-            FullName: item.sname,
-            abbreviation: item.shortName,
-            registerNum: item.snum,
-            versionNum: item.vnum,
-            firstPublishDate: item.pdate,
-          };
+      this.$axios
+        .post("/riskManager/knowledge/softwareWorks", params)
+        .then(({ data }) => {
+          this.softwareRightTotal = data.total;
+          this.softwareRightData = data.list.map((item) => {
+            return {
+              approvalTime: item.rdate,
+              FullName: item.sname,
+              abbreviation: item.shortName,
+              registerNum: item.snum,
+              versionNum: item.vnum,
+              firstPublishDate: item.pdate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     softwareRightCurrentChange(val) {

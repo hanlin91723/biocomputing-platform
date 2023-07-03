@@ -78,20 +78,22 @@ export default {
         pageNum: this.copyrightCurrentPage,
         pageSize: this.copyrightPageSize,
       };
-      this.$axios.post("/other/mandatoryProduct", params).then(({ data }) => {
-        this.mandatoryProductsTotal = data.total;
-        this.mandatoryProductsData = data.list.map((item) => {
-          return {
-            projectName: item.certProject,
-            productName: item.productName,
-            certificateStatus: item.certStatus,
-            issuingAuthority: item.orgNum,
-            standard: item.certBasis,
-            certificationTime: item.awardDate,
-            certificateExpireTime: item.expireDate,
-          };
+      this.$axios
+        .post("/riskManager/other/mandatoryProduct", params)
+        .then(({ data }) => {
+          this.mandatoryProductsTotal = data.total;
+          this.mandatoryProductsData = data.list.map((item) => {
+            return {
+              projectName: item.certProject,
+              productName: item.productName,
+              certificateStatus: item.certStatus,
+              issuingAuthority: item.orgNum,
+              standard: item.certBasis,
+              certificationTime: item.awardDate,
+              certificateExpireTime: item.expireDate,
+            };
+          });
         });
-      });
     },
     // 变更记录分页
     mandatoryProductsCurrentChange(val) {

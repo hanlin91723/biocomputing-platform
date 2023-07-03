@@ -161,7 +161,7 @@ export default {
       };
       this.loading = true;
       this.$axios
-        .post("/entRisk/queryEntRiskByCondition", params)
+        .post("/riskManager/entRisk/queryEntRiskByCondition", params)
         .then(({ data }) => {
           this.total = data.total;
           this.tableData = data.list;
@@ -174,16 +174,18 @@ export default {
       let params = {
         dictType: "industry",
       };
-      this.$axios.get("/dict/queryDictByType", params).then(({ data }) => {
-        this.industryOptions = data.map((item) => ({
-          value: item.dictName,
-          label: item.dictName,
-        }));
-        this.industryOptions.unshift({
-          value: "全部",
-          label: "全部",
+      this.$axios
+        .get("/riskManager/dict/queryDictByType", params)
+        .then(({ data }) => {
+          this.industryOptions = data.map((item) => ({
+            value: item.dictName,
+            label: item.dictName,
+          }));
+          this.industryOptions.unshift({
+            value: "全部",
+            label: "全部",
+          });
         });
-      });
     },
     // 查询
     search() {
