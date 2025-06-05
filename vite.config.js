@@ -6,11 +6,9 @@ import {
 } from "vite";
 import path from "path";
 
-export default defineConfig(({
-  mode,
-}) => {
+export default defineConfig(() => {
   return {
-    base: mode === "development" ? "/enterprise-risk-management/" : "/risk-manager/", //生产环境服务的公共基础路径
+    base: "/", //生产环境服务的公共基础路径
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
@@ -36,8 +34,8 @@ export default defineConfig(({
       https: false, // 是否开启 https
       proxy: {
         "/api": {
-          // target: "http://183.66.214.98:8958", //微服务端
-          target: "http://192.168.2.255:8090", //本地
+          target: "http://119.27.172.203:5000", //微服务端
+          // target: "http://192.168.2.255:8090", //本地
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },

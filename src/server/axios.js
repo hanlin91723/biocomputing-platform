@@ -6,8 +6,8 @@ import router from "../router/index";
 
 const env =
   import.meta.env.MODE; //应用运行的模式
-const devUrl = "/api"; //开发环境
-const proUrl = ""; //生产环境
+const devUrl = "/api/api"; //开发环境
+const proUrl = "/api"; //生产环境
 const baseUrl = env === "production" ? proUrl : devUrl;
 
 //基础配置
@@ -24,8 +24,8 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     //默认往所有接口headers传入token校验
-    if (localStorage.getItem("token")) {
-      config.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
+    if (sessionStorage.getItem("token")) {
+      config.headers["Userid"] = sessionStorage.getItem("token");
     }
     return config;
   },
@@ -40,14 +40,14 @@ service.interceptors.response.use(
     if (result.config.responseType === "blob") {
       return result;
     }
-    if (result.data.code === "0") {
+    if (result.data.code === 20000) {
       return result.config.responseType === "arraybuffer" ||
         result.config.responseType === "blob" ?
         result :
         result.data;
     } else if (result.data.code === "401") {
       //长时间未操作,登录信息过期
-      localStorage.getItem("token") &&
+      sessionStorage.getItem("token") &&
         Message.error("登录信息过期，请重新登录");
       setTimeout(() => {
         router.push({
@@ -55,10 +55,9 @@ service.interceptors.response.use(
         });
       }, 500);
       sessionStorage.clear();
-      localStorage.clear();
       return;
     } else {
-      Message.error(result.data.msg);
+      Message.error(result.data.message);
       return Promise.reject(result);
     }
   },

@@ -1,12 +1,12 @@
 <template>
-  <div class="login-bg" ref="loginBg">
+  <div class="register-bg" ref="registerBg">
     <div class="wrap">
       <h3 class="title">生物计算集成平台</h3>
       <el-form
         class="form"
-        ref="loginForm"
-        :rules="loginFormRules"
-        :model="loginForm"
+        ref="registerForm"
+        :rules="registerFormRules"
+        :model="registerForm"
         @keyup.enter.native="submitForm"
       >
         <el-form-item class="form-item" prop="username">
@@ -14,7 +14,7 @@
             class="input"
             placeholder="请输入用户名"
             prefix-icon="el-icon-user"
-            v-model="loginForm.username"
+            v-model="registerForm.username"
           ></el-input>
         </el-form-item>
         <el-form-item class="form-item" prop="password">
@@ -22,7 +22,16 @@
             class="input"
             placeholder="请输入密码"
             prefix-icon="el-icon-lock"
-            v-model="loginForm.password"
+            v-model="registerForm.password"
+            show-password
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" prop="checkedPwd">
+          <el-input
+            class="input"
+            placeholder="请再次输入新密码"
+            prefix-icon="el-icon-lock"
+            v-model="registerForm.checkedPwd"
             show-password
           ></el-input>
         </el-form-item>
@@ -33,13 +42,13 @@
             type="primary"
             @click="submitForm"
           >
-            <span>登</span>
-            <span>录</span>
+            <span>注</span>
+            <span>册</span>
           </el-button>
         </el-form-item>
       </el-form>
-      <el-button class="register-btn" type="text" @click="toRegister">
-        注册账号
+      <el-button class="register-btn" type="text" @click="toLogin">
+        返回登录
       </el-button>
     </div>
   </div>
@@ -48,16 +57,26 @@
 <script>
 import CanvasNest from "canvas-nest.js";
 export default {
-  name: "Login",
+  name: "Register",
   data() {
+    const validatePassCheck = (_rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入新密码"));
+      } else if (value !== this.registerForm.password) {
+        callback(new Error("两次密码输入不一致"));
+      } else {
+        callback();
+      }
+    };
     return {
       bgCanvas: null,
       loading: false,
-      loginForm: {
+      registerForm: {
         username: "",
         password: "",
+        checkedPwd: "",
       },
-      loginFormRules: {
+      registerFormRules: {
         username: [
           {
             required: true,
@@ -69,6 +88,13 @@ export default {
           {
             required: true,
             message: "密码不能为空",
+            trigger: "blur",
+          },
+        ],
+        checkedPwd: [
+          {
+            required: true,
+            validator: validatePassCheck,
             trigger: "blur",
           },
         ],
@@ -88,20 +114,18 @@ export default {
         count: 200, // 线条数量
         zIndex: 1, // 画面层级
       };
-      this.bgCanvas = new CanvasNest(this.$refs.loginBg, config);
+      this.bgCanvas = new CanvasNest(this.$refs.registerBg, config);
     },
     submitForm() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.registerForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$axios
-            .post("/user/login", this.loginForm)
-            .then(({ data }) => {
-              sessionStorage.setItem("username", data.username);
-              sessionStorage.setItem("token", data.id);
-              sessionStorage.setItem("permission", data.level);
+            .post("/user/register", this.registerForm)
+            .then(() => {
+              this.$message.success("账号注册成功");
               this.$router.push({
-                path: this.$route.query.redirect || "/module-list",
+                path: "/login",
               });
             })
             .finally(() => {
@@ -110,9 +134,9 @@ export default {
         }
       });
     },
-    toRegister() {
+    toLogin() {
       this.$router.push({
-        path: "/register",
+        path: "/login",
       });
     },
   },
@@ -123,7 +147,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login-bg {
+.register-bg {
   position: relative;
   width: 100%;
   height: 100vh;

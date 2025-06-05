@@ -1,102 +1,55 @@
 <template>
   <el-container class="container">
-    <el-aside width="200px">
-      <h3 :class="{ ['header-title']: true, isCollapse: isCollapse }">
-        <i class="el-icon-menu"></i>
-        {{ isCollapse ? "" : "企业风险管理" }}
-      </h3>
-      <el-menu
-        ref="menu"
-        class="menu-list"
-        @select="handleSelect"
-        unique-opened
-        :default-active="activeMenuItem"
-        :collapse="isCollapse"
-        :collapse-transition="false"
-        background-color="#1A3885"
-        text-color="#fff"
-        active-text-color="#FFFFFF"
+    <el-header class="header section">
+      <h3 class="header-title">生物计算集成平台</h3>
+      <el-dropdown
+        class="dropdown-wrap"
+        @command="handleCommand"
+        placement="bottom"
       >
-        <el-submenu
-          v-for="item in menuList"
-          :index="item.meta.title"
-          :key="item.meta.title"
-          class="menu-item"
-        >
-          <template slot="title">
-            <i :class="item.meta.ico" style="color: #fff"></i>
-            <span>{{ item.meta.title }}</span>
-          </template>
-          <el-menu-item
-            v-for="subItem in filterSubmenu(item.children)"
-            :index="subItem.path"
-            :key="subItem.meta.title"
-            class="submenu-item"
-            >{{ subItem.meta.title }}</el-menu-item
+        <div class="el-dropdown-link username-wrap">
+          <i class="el-icon-user-solid user-ico"></i>
+          <span class="username">{{ username }}</span>
+        </div>
+        <el-dropdown-menu class="dropdown-menu" slot="dropdown">
+          <el-dropdown-item class="dropdown-menu-item" command="modifyPwd"
+            >修改密码</el-dropdown-item
           >
-        </el-submenu>
-      </el-menu>
-    </el-aside>
+          <el-dropdown-item class="dropdown-menu-item" command="exit"
+            >退出登录</el-dropdown-item
+          >
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-header>
     <el-container>
-      <el-header :class="['header', 'section', isCollapse ? 'collapse' : '']">
-        <i
-          @click="isCollapse = !isCollapse"
-          :class="[
-            'collapse-btn',
-            isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold',
-          ]"
-        ></i>
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item
-            class="breadcrumb-txt"
-            v-for="item in breadcrumbList"
-            :key="item.meta.title"
-            >{{ item.meta.title }}</el-breadcrumb-item
-          >
-        </el-breadcrumb>
-        <el-dropdown
-          class="dropdown-wrap"
-          @command="handleCommand"
-          placement="bottom"
+      <el-aside width="200px">
+        <el-menu
+          ref="menu"
+          class="menu-list"
+          @select="handleSelect"
+          unique-opened
+          :default-active="activeMenuItem"
+          background-color="#1a3885"
+          text-color="#fff"
+          active-text-color="#ff0"
         >
-          <div class="el-dropdown-link username-wrap">
-            <i class="el-icon-user-solid user-ico"></i>
-            <span class="username">{{ info.nickName }}</span>
-          </div>
-          <el-dropdown-menu class="dropdown-menu" slot="dropdown">
-            <el-dropdown-item class="dropdown-menu-item" command="personalInfo"
-              >个人信息</el-dropdown-item
-            >
-            <el-dropdown-item class="dropdown-menu-item" command="modifyPwd"
-              >修改密码</el-dropdown-item
-            >
-            <el-dropdown-item class="dropdown-menu-item" command="exit"
-              >退出登录</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-header>
-      <el-main :class="['section', isCollapse ? 'collapse' : '']" ref="main">
+          <el-menu-item
+            v-for="item in menuList"
+            :index="item.path"
+            :key="item.meta.title"
+            class="menu-item"
+          >
+            <template slot="title">
+              <i :class="item.meta.ico" style="color: #fff"></i>
+              <span>{{ item.meta.title }}</span>
+            </template>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main class="section" ref="main">
         <router-view />
       </el-main>
     </el-container>
-    <el-dialog
-      title="个人信息"
-      :visible="showUserDialog"
-      width="700px"
-      @close="handleCancel"
-    >
-      <div class="user-info-wrap">
-        <div class="user-info-item">
-          <span class="name">用户名：</span>
-          <span class="value">{{ info.nickName }}</span>
-        </div>
-        <div class="user-info-item">
-          <span class="name">角色：</span>
-          <span class="value">{{ info.roleName }}</span>
-        </div>
-      </div>
-    </el-dialog>
     <el-dialog
       title="修改密码"
       :visible="showPwdDialog"
@@ -159,21 +112,21 @@ const userInfo = useUserStore();
 export default {
   name: "Container",
   data() {
-    const validatePassCheck = (rule, value, callback) => {
-      if (this.formData.checkedNewPwd === "") {
+    const validatePassCheck = (_rule, value, callback) => {
+      if (value === "") {
         callback(new Error("请再次输入新密码"));
-      } else if (this.formData.checkedNewPwd !== this.formData.newPwd) {
+      } else if (value !== this.formData.newPwd) {
         callback(new Error("两次密码输入不一致"));
       } else {
         callback();
       }
     };
+    const routes = userInfo.hasPermissionRoutes[0].children;
+    const menuList = routes.filter((item) => item.meta);
     return {
-      isCollapse: false,
-      menuList: userInfo.hasPermissionRoutes[0].children,
-      showUserDialog: false,
+      menuList,
       showPwdDialog: false,
-      info: {},
+      username: sessionStorage.getItem("username"),
       formData: {
         oldPwd: "",
         newPwd: "",
@@ -206,6 +159,7 @@ export default {
   },
   computed: {
     activeMenuItem() {
+      console.log("/" + this.$route.path.split("/")[1]);
       return "/" + this.$route.path.split("/")[1];
     },
     breadcrumbList() {
@@ -217,25 +171,10 @@ export default {
       this.$refs.main.$el.scrollTop = 0;
     },
   },
-  created() {
-    this.getUser();
-  },
+  created() {},
   methods: {
-    getUser() {
-      this.$axios.get("/riskManager/getInfo").then(({ user, roles }) => {
-        this.info = {
-          nickName: user.userName,
-          roleName: user.roles.map((item) => item.roleName).join("、"),
-        };
-        sessionStorage.setItem("userId", user.roleId);
-        sessionStorage.setItem("userRoles", roles);
-      });
-    },
     handleCommand(command) {
       switch (command) {
-        case "personalInfo":
-          this.showUserDialog = true;
-          break;
         case "modifyPwd":
           this.showPwdDialog = true;
           break;
@@ -248,8 +187,7 @@ export default {
             .then(() => {
               //清空缓存数据
               sessionStorage.clear();
-              localStorage.clear();
-              userInfo.permissionList = [];
+              userInfo.hasPermissionRoutes = [];
               this.$router.push({
                 path: "/login",
               });
@@ -261,6 +199,7 @@ export default {
       }
     },
     handleSelect(index) {
+      console.log(index);
       this.$router.push({
         path: `${index}`,
       });
@@ -270,15 +209,15 @@ export default {
       return submenuList?.filter((item) => !item.meta.hidden);
     },
     handleCancel() {
-      this.showUserDialog = false;
       this.showPwdDialog = false;
     },
     isOk() {
       const params = {
-        newPassword: this.formData.checkedNewPwd,
-        oldPassword: this.formData.oldPwd,
+        id: sessionStorage.getItem("token"),
+        new_pwd: this.formData.checkedNewPwd,
+        old_pwd: this.formData.oldPwd,
       };
-      this.$axios.put("/auth/system/user/updatePwd", params).then(() => {
+      this.$axios.patch("/user/passwordmodify", params).then(() => {
         this.$message.success("密码修改成功，下次登录后生效");
         this.handleCancel();
       });
@@ -289,116 +228,42 @@ export default {
 
 <style lang="less" scoped>
 @headerTitleHeight: 60px;
-
 .container {
   height: fit-content;
-
-  .header-title {
-    width: 200px;
-    text-align: center;
-    line-height: @headerTitleHeight;
-    // background: #545c64;
-    background: #1a3885;
-    color: #fff;
-    &.isCollapse {
-      width: 64px;
-    }
-  }
-
   .menu-list {
     height: calc(100vh - @headerTitleHeight);
     border-right: none;
-    /deep/.el-submenu__title {
-      font-weight: 700;
-      font-size: 17px;
-    }
-    .submenu-item {
-      min-width: auto;
-      padding-left: 57px !important;
-      background: rgba(21, 45, 106, 0.6) !important;
-      &:hover {
-        background: rgba(21, 45, 106, 1) !important;
-      }
-
-      &.is-active {
-        // background: rgb(67, 74, 80) !important;
-        background: #5d77ff !important;
-      }
+    .menu-item.is-active {
+      background-color: rgb(21, 45, 106) !important;
     }
   }
-
   .header {
     display: flex;
-    // justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    // background: #545c64;
     z-index: 2;
-    background: #ffffff;
+    background: #fff;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 12%), 0 0 6px 0 rgb(0 0 0 / 4%);
-
-    .collapse-btn {
-      padding-right: 20px;
-      // color: #fff;
-      color: #acb1bc;
-      font-size: 32px;
-      cursor: pointer;
-    }
-
-    .breadcrumb-txt {
-      /deep/ .el-breadcrumb__inner {
-        // color: #fff;
-        color: #1e293b;
-      }
-    }
-
     .dropdown-wrap {
       margin-left: auto;
       padding: 0 20px;
-
       .username-wrap {
         display: flex;
         align-items: baseline;
-        cursor: pointer;
-        // color: #fff;
         color: #1e293b;
-
+        cursor: pointer;
         .username {
           padding-left: 10px;
         }
       }
     }
   }
-
   .section {
     overflow-x: hidden;
     height: calc(100vh - @headerTitleHeight);
-
-    &.collapse {
-      margin-left: -136px;
-    }
   }
 }
-
 .dropdown-menu-item {
   padding: 0 20px;
-}
-.user-info-wrap {
-  padding-left: 50px;
-  .user-info-item {
-    padding: 10px 0;
-    font-size: 16px;
-    .name {
-      display: inline-block;
-      width: 130px;
-      padding-right: 10px;
-      font-weight: 700;
-      text-align: right;
-      color: #303133;
-    }
-    .value {
-      color: #606266;
-    }
-  }
 }
 </style>

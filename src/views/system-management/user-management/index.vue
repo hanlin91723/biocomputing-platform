@@ -1,54 +1,52 @@
 <template>
   <div class="user">
-    <div class="header">
-      <div class="header-left">
-        <el-input
-          class="input"
-          placeholder="请输入用户名"
-          v-model="userName"
-          clearable
-        ></el-input>
-        <el-button type="primary" @click="getTableData">查询</el-button>
-      </div>
-      <el-button
-        type="primary"
-        :disabled="!userRoles.includes('超级管理员')"
-        icon="el-icon-plus"
-        @click="handleEdit()"
-        >添加用户</el-button
-      >
-    </div>
-    <el-divider></el-divider>
+    <el-form inline class="btn-form">
+      <el-form-item>
+        <el-button type="primary" plain @click="refresh">刷新</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" plain @click="handleEdit()"
+          >添加用户</el-button
+        >
+      </el-form-item>
+    </el-form>
     <!-- 表格 -->
-    <el-table :data="tableData" stripe header-cell-class-name="header-row">
+    <el-table :data="tableData" header-cell-class-name="table-header-row">
       <el-table-column
         type="index"
         :index="indexMethod"
         label="序号"
-        width="80"
+        width="100"
       ></el-table-column>
-      <el-table-column prop="userName" label="用户名"></el-table-column>
-      <el-table-column prop="roleNameList" label="角色"></el-table-column>
-      <el-table-column prop="createTime" label="注册时间"></el-table-column>
+      <el-table-column prop="username" label="用户名"></el-table-column>
+      <el-table-column label="权限等级">
+        <template slot-scope="{ row }">{{
+          roleOptions.find((item) => item.value === row.level).label
+        }}</template>
+      </el-table-column>
+      <el-table-column prop="ctime" label="创建时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="{ row }">
-          <!-- 重置密码 -->
           <el-popconfirm
             hide-icon
-            title="确定要重置密码吗？"
-            @confirm="handlePassword(row)"
+            title="确定要重置该用户密码吗？"
+            @confirm="handleResetPwd(row)"
           >
             <el-button
-              type="text"
-              :disabled="!userRoles.includes('超级管理员')"
+              type="warning"
+              plain
+              size="small"
+              :disabled="!isAdmin(userRole)"
               slot="reference"
               >重置密码</el-button
             >
           </el-popconfirm>
           <el-button
             class="edit-btn"
-            type="text"
-            :disabled="!userRoles.includes('超级管理员')"
+            type="primary"
+            plain
+            size="small"
+            :disabled="!isAdmin(userRole)"
             @click="handleEdit(row)"
             >编辑</el-button
           >
@@ -58,8 +56,10 @@
             @confirm="deleteUser(row)"
           >
             <el-button
-              type="text"
-              :disabled="!userRoles.includes('超级管理员')"
+              type="danger"
+              plain
+              size="small"
+              :disabled="!isAdmin(userRole)"
               slot="reference"
               >删除</el-button
             >
@@ -69,8 +69,7 @@
     </el-table>
     <!-- 分页器 -->
     <el-pagination
-      background
-      layout="total, prev, pager, next"
+      layout="total, prev, pager, next, jumper"
       :page-size="pageSize"
       :total="total"
       :current-page="currentPage"
@@ -91,21 +90,19 @@
         :rules="userInfoRules"
         ref="userInfo"
       >
-        <el-form-item label="用户名" prop="userName">
+        <el-form-item label="用户名" prop="username">
           <el-input
             placeholder="请输入用户名"
-            v-model="userInfo.userName"
+            v-model="userInfo.username"
             :disabled="isEdit"
           />
         </el-form-item>
-
-        <el-form-item label="用户权限" prop="roleIds">
+        <el-form-item label="权限等级" prop="level">
           <el-select
             class="select"
-            placeholder="请选择用户权限"
-            v-model="userInfo.roleIds"
+            placeholder="请选择权限等级"
+            v-model="userInfo.level"
             clearable
-            multiple
           >
             <el-option
               v-for="item in roleOptions"
@@ -135,24 +132,39 @@
 export default {
   data() {
     return {
-      userRoles: sessionStorage.getItem("userRoles").split(","), //当前用户的角色
+      userRole: sessionStorage.getItem("permission"), //当前用户的角色
       tableData: [],
-      roleOptions: [],
-      roleVal: "",
-      userName: "",
+      roleOptions: [
+        {
+          label: "超级管理员",
+          value: "admin",
+        },
+        {
+          label: "普通用户",
+          value: "guest",
+        },
+      ],
       showUserDialog: false,
       isEdit: false,
-      userId: "", //当前编辑的userId
+      id: "", //当前编辑的id
       userInfo: {
-        userName: "",
-        roleIds: [],
+        username: "",
+        level: "",
       },
       userInfoRules: {
-        userName: [
-          { required: true, message: "用户名不能为空", trigger: "blur" },
+        username: [
+          {
+            required: true,
+            message: "用户名不能为空",
+            trigger: "blur",
+          },
         ],
-        roleIds: [
-          { required: true, message: "用户权限不能为空", trigger: "change" },
+        level: [
+          {
+            required: true,
+            message: "权限等级不能为空",
+            trigger: "change",
+          },
         ],
       },
       // 分页
@@ -163,48 +175,39 @@ export default {
   },
   created() {
     this.getTableData();
-    this.getRoleOptions();
   },
   methods: {
+    refresh() {
+      this.currentPage = 1;
+      this.getTableData();
+    },
     getTableData() {
       const params = {
-        pageSize: this.pageSize,
-        pageNum: this.currentPage,
-        roleId: this.roleVal,
-        userName: this.userName,
+        pagesize: this.pageSize,
+        currentpage: this.currentPage,
       };
-      this.$axios.post("/auth/system/user/list", params).then(({ data }) => {
-        this.tableData = data.list.map((item) => ({
-          ...item,
-          roleNameList: item.roles.map((item) => item.roleName).join("、"),
-        }));
+      this.$axios.get("/user/account", params).then((data) => {
+        this.tableData = data.data_list;
         this.total = data.total;
       });
     },
-    getRoleOptions() {
-      this.$axios
-        .get("/riskManager/system/role/optionselect")
-        .then(({ data }) => {
-          this.roleOptions = data.map((item) => ({
-            label: item.roleName,
-            value: item.roleId,
-          }));
-        });
-    },
     // 删除用户
     deleteUser(row) {
-      this.$axios.delete(`/auth/system/user/${row.userId}`).then(() => {
+      const params = {
+        id: row.id,
+      };
+      this.$axios.delete("/user/account", params).then(() => {
         this.$message.success("删除成功");
-        this.getTableData();
+        this.refresh();
       });
     },
-    // 重置密码
-    handlePassword(row) {
+    //重置密码
+    handleResetPwd(row) {
       const params = {
-        userId: row.userId,
+        id: row.id,
       };
-      this.$axios.put("/auth/system/user/resetPwd", params).then(() => {
-        this.$message.success("重置密码成功");
+      this.$axios.patch("/user/passwordreset", params).then(() => {
+        this.$message.success("密码重置成功");
       });
     },
     // 添加/编辑用户
@@ -212,10 +215,10 @@ export default {
       this.isEdit = Boolean(row);
       if (this.isEdit) {
         this.userInfo = {
-          userName: row.userName,
-          roleIds: row.roleIds,
+          username: row.username,
+          level: row.level,
         };
-        this.userId = row.userId;
+        this.id = row.id;
       }
       this.showUserDialog = true;
     },
@@ -227,18 +230,18 @@ export default {
       this.$refs.userInfo.validate((valid) => {
         if (valid) {
           let params = {
-            userName: this.userInfo.userName,
-            roleIds: this.userInfo.roleIds,
+            username: this.userInfo.username,
+            level: this.userInfo.level,
           };
           if (this.isEdit) {
-            params.userId = this.userId;
+            params.id = this.id;
           }
-          this.$axios[this.isEdit ? "put" : "post"](
-            "/auth/system/user",
+          this.$axios[this.isEdit ? "patch" : "post"](
+            "/user/account",
             params
           ).then(() => {
             this.$message.success(`${this.isEdit ? "修改" : "添加"}成功`);
-            this.getTableData();
+            this.refresh();
             this.isCancel();
           });
         }
@@ -246,16 +249,20 @@ export default {
     },
     // 取消
     isCancel() {
-      this.userId = "";
+      this.id = "";
       this.userInfo = {
-        userName: "",
-        roleIds: [],
+        username: "",
+        level: "",
       };
       this.$refs.userInfo.resetFields(); // 重置校验结果
       this.showUserDialog = false;
     },
     indexMethod(index) {
       return (this.currentPage - 1) * this.pageSize + index + 1;
+    },
+    //是否是超级管理员
+    isAdmin(permission) {
+      return permission === "admin";
     },
   },
 };
@@ -286,6 +293,7 @@ export default {
   .pagination {
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
   }
 }
 </style>

@@ -26,7 +26,11 @@
     </div>
     <el-divider></el-divider>
     <!-- 表格 -->
-    <el-table :data="tableData" stripe header-cell-class-name="header-row">
+    <el-table
+      :data="tableData"
+      stripe
+      header-cell-class-name="table-header-row"
+    >
       <el-table-column
         type="index"
         :index="indexMethod"
@@ -156,7 +160,6 @@ export default {
         : callback();
     };
     return {
-      userRoles: sessionStorage.getItem("userRoles").split(","), //当前用户的角色
       roleNameVal: "",
       permissionDescVal: "",
       tableData: [],

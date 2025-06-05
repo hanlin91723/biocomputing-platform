@@ -1,5 +1,5 @@
 {
-  "name": "enterprise-risk-management",
+  "name": "biocomputing-platform",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -8,23 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "3dmol": "^2.1.0",
     "axios": "^1.1.3",
     "canvas-nest.js": "^2.0.4",
-    "d3": "^7.4.0",
     "dayjs": "^1.11.6",
-    "echarts-wordcloud": "^2.1.0",
     "element-ui": "^2.15.10",
-    "file-saver": "^2.0.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.23",
-    "uuid": "^9.0.0",
-    "vue": "2.6.14",
-    "vue-bmap-gl": "^0.0.30",
+    "vue": "^2.7.16",
     "vue-echarts": "^6.2.3",
-    "vue-mapvgl": "^0.0.34",
-    "vue-router": "^3.0.2",
-    "vue-seamless-scroll": "^1.1.23",
-    "xlsx": "^0.16.0"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",

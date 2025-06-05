@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
-import Layout from "@/views/layout/index.vue";
 
 import {
   PiniaVuePlugin
@@ -24,6 +23,11 @@ const constantRouterMap = [{
     component: () => import("@/views/login/index.vue"),
   },
   {
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/register/index.vue"),
+  },
+  {
     path: "/404",
     name: "NotFound",
     component: () => import("@/views/notFound/index.vue"),
@@ -34,158 +38,44 @@ const asyncRouterMap = [{
     path: "/container",
     name: "Container",
     component: () => import("@/views/container/index.vue"),
-    redirect: "/risk-map",
+    redirect: "/module-list",
     children: [{
-        path: "/home",
-        name: "Home",
-        component: Layout,
-        redirect: "/statistical-analysis",
+        path: "/module-list",
+        name: "ModuleList",
+        component: () => import("@/views/module-list/index.vue"),
         meta: {
-          title: "概览",
-          ico: "el-icon-monitor",
-          permission: ["1-1", "1-2", ],
+          title: "计算模块",
         },
-        children: [{
-            path: "/statistical-analysis", //统计分析
-            name: "StatisticalAnalysis",
-            component: () => import("@/views/home/statistical-analysis/index.vue"),
-            meta: {
-              title: "统计分析",
-              permission: ["1-1", ],
-            },
-          },
-          {
-            path: "/risk-map", //风险地图
-            name: "RiskMap",
-            component: () => import("@/views/home/risk-map/index.vue"),
-            meta: {
-              title: "风险地图",
-              permission: ["1-2", ],
-            },
-          },
-        ],
       },
       {
-        path: "/enterprise-monitor",
-        name: "EnterpriseMonitor",
-        component: Layout,
-        redirect: "/enterprise-retrieval",
-        meta: {
-          title: "企业监测",
-          ico: "el-icon-data-line",
-          permission: ["2-1", ],
-        },
-        children: [{
-            path: "/enterprise-retrieval", //企业检索
-            name: "EnterpriseRetrieval",
-            component: () => import("@/views/enterprise-monitor/enterprise-retrieval/index.vue"),
-            meta: {
-              title: "企业检索",
-              permission: ["2-1", ],
-            },
-          },
-          {
-            path: "/enterprise-retrieval/enterprise-list", //企业检索列表
-            name: "EnterpriseList",
-            component: () => import("@/views/enterprise-monitor/enterprise-retrieval/enterprise-list/index.vue"),
-            meta: {
-              title: "企业检索列表",
-              hidden: true,
-              permission: ["2-1", ],
-            },
-          },
-          {
-            path: "/enterprise-retrieval/enterprise-portrait/:id", //企业画像
-            name: "EnterprisePortrait",
-            component: () => import("@/views/enterprise-monitor/enterprise-portrait/index.vue"),
-            meta: {
-              title: "企业画像",
-              hidden: true,
-              permission: ["2-1", ],
-            },
-          },
-        ],
+        path: "/modules/:id",
+        name: "Modules",
+        component: () => import("@/views/modules/index.vue"),
       },
       {
-        path: "/risk-assessment",
-        name: "RiskAssessment",
-        component: Layout,
-        redirect: "/risk-map",
+        path: "/result-list",
+        name: "ResultList",
+        component: () => import("@/views/result-list/index.vue"),
         meta: {
-          title: "风险评估",
-          ico: "el-icon-notebook-1",
-          permission: ["3-1", "3-2", ],
+          title: "数据中心",
         },
-        children: [{
-            path: "/enterprise-risk", //企业风险
-            name: "EnterpriseRisk",
-            component: () => import("@/views/risk-assessment/enterprise-risk/index.vue"),
-            meta: {
-              title: "企业风险",
-              permission: ["3-1", ],
-            },
-          },
-          {
-            path: "/enterprise-risk/detail/:id", //企业风险详情
-            name: "EnterpriseRiskDetail",
-            component: () => import("@/views/risk-assessment/enterprise-risk/enterprise-risk-detail/index.vue"),
-            meta: {
-              title: "企业风险详情",
-              hidden: true,
-              permission: ["3-1", ],
-            },
-          },
-          {
-            path: "/market-risk", //市场风险
-            name: "MarketRisk",
-            component: () => import("@/views/risk-assessment/market-risk/index.vue"),
-            meta: {
-              title: "市场风险",
-              permission: ["3-2", ],
-            },
-          },
-          {
-            path: "/market-risk/detail", //市场风险详情
-            name: "MarketRiskDetail",
-            component: () => import("@/views/risk-assessment/market-risk/market-risk-detail/index.vue"),
-            meta: {
-              title: "市场风险详情",
-              hidden: true,
-              permission: ["3-2", ],
-            },
-          },
-        ],
       },
       {
-        path: "/system-management",
-        name: "SystemManagement",
-        component: Layout,
-        redirect: "/user-management",
+        path: "/user",
+        name: "UserManagement",
+        component: () => import("@/views/system-management/user-management/index.vue"),
         meta: {
-          title: "系统管理",
-          ico: "el-icon-set-up",
-          permission: ["4-1", "4-2", ],
+          title: "用户管理",
         },
-        children: [{
-            path: "/user", //用户管理
-            name: "UserManagement",
-            component: () => import("@/views/system-management/user-management/index.vue"),
-            meta: {
-              title: "用户管理",
-              permission: ["4-1", ],
-            },
-          },
-          {
-            path: "/permission", //权限管理
-            name: "PermissionManagement",
-            component: () => import("@/views/system-management/permission-management/index.vue"),
-            meta: {
-              title: "权限管理",
-              permission: ["4-2", ],
-            },
-          },
-        ],
       },
+      // {
+      //   path: "/permission",
+      //   name: "PermissionManagement",
+      //   component: () => import("@/views/system-management/permission-management/index.vue"),
+      //   meta: {
+      //     title: "权限管理",
+      //   },
+      // },
     ],
   },
   {
@@ -204,14 +94,17 @@ const whiteList = constantRouterMap.map(item => item.path); //定义白名单
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   //判断是否有token
-  if (localStorage.getItem("token")) {
+  if (sessionStorage.getItem("token")) {
     const userInfo = useUserStore();
+    console.log(userInfo.hasPermissionRoutes);
     // 路由添加进去了没有及时更新,需要重新进去一次拦截
-    if (userInfo.permissionList.length === 0) {
+    if (userInfo.hasPermissionRoutes.value?.length === 0 || userInfo.hasPermissionRoutes.length === 0) {
       // 获取处理好的路由
       await userInfo.getPermissionList();
       userInfo.getHasPermissionRoutes(asyncRouterMap, userInfo.permissionList);
-      router.addRoutes(userInfo.hasPermissionRoutes);
+      userInfo.hasPermissionRoutes.forEach(item => {
+        router.addRoute(item);
+      });
       next({
         ...to,
         replace: true,
@@ -226,15 +119,17 @@ router.beforeEach(async (to, from, next) => {
     } else {
       next({
         path: "/login",
-        query: {
-          redirect: to.path,
-        },
       });
     }
   }
 });
 router.afterEach(() => {
   NProgress.done();
+});
+router.onError((error, to) => {
+  if (error.message.includes("Failed to fetch dynamically imported module")) {
+    window.location = to.fullPath;
+  }
 });
 
 //重置路由,切换用户或者退出时,清除动态加载的路由
