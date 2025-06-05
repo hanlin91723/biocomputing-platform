@@ -103,7 +103,7 @@ router.beforeEach(async (to, from, next) => {
       await userInfo.getPermissionList();
       userInfo.getHasPermissionRoutes(asyncRouterMap, userInfo.permissionList);
       userInfo.hasPermissionRoutes.forEach(item => {
-        router.addRoute(item);//添加路由,vue-router4.0新方法
+        router.addRoute(item);//添加路由, vue-router4.0新方法
       });
       next({
         ...to,
