@@ -13,7 +13,7 @@
           <el-input
             class="input"
             placeholder="请输入用户名"
-            prefix-icon="el-icon-user"
+            prefix-icon="User"
             v-model="loginForm.username"
           ></el-input>
         </el-form-item>
@@ -21,8 +21,9 @@
           <el-input
             class="input"
             placeholder="请输入密码"
-            prefix-icon="el-icon-lock"
             v-model="loginForm.password"
+            prefix-icon="Lock"
+            type="password"
             show-password
           ></el-input>
         </el-form-item>
@@ -38,9 +39,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <el-button class="register-btn" type="text" @click="toRegister">
-        注册账号
-      </el-button>
+      <el-link class="register-btn" type="primary" @click="toRegister">注册账号</el-link>
     </div>
   </div>
 </template>
@@ -150,12 +149,12 @@ export default {
       // width: 500px;
       .form-item {
         margin-bottom: 30px;
-        /deep/ .el-form-item__error {
+        :deep(.el-form-item__error) {
           padding-top: 8px;
           font-size: 16px;
         }
         .input {
-          /deep/ .el-input__inner {
+          :deep(.el-input__inner) {
             padding: 0 30px;
             font-size: 16px;
             &::-webkit-input-placeholder {
@@ -163,10 +162,10 @@ export default {
               font-weight: 400;
             }
           }
-          /deep/ .el-input__prefix {
+          :deep(.el-input__prefix) {
             font-size: 20px;
           }
-          /deep/ .el-input__suffix {
+          :deep(.el-input__suffix) {
             .el-input__clear {
               font-size: 18px;
             }

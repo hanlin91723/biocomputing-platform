@@ -8,21 +8,23 @@
         placement="bottom"
       >
         <div class="el-dropdown-link username-wrap">
-          <i class="el-icon-user-solid user-ico"></i>
+          <el-icon class="el-icon-user-solid user-ico"><Avatar /></el-icon>
           <span class="username">{{ username }}</span>
         </div>
-        <el-dropdown-menu class="dropdown-menu" slot="dropdown">
-          <el-dropdown-item class="dropdown-menu-item" command="modifyPwd"
-            >修改密码</el-dropdown-item
-          >
-          <el-dropdown-item class="dropdown-menu-item" command="exit"
-            >退出登录</el-dropdown-item
-          >
-        </el-dropdown-menu>
+        <template #dropdown>
+          <el-dropdown-menu class="dropdown-menu" slot="dropdown">
+            <el-dropdown-item class="dropdown-menu-item" command="modifyPwd"
+              >修改密码</el-dropdown-item
+            >
+            <el-dropdown-item class="dropdown-menu-item" command="exit"
+              >退出登录</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </template>
       </el-dropdown>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="200px" style="height: 100%;">
         <el-menu
           ref="menu"
           class="menu-list"
@@ -39,21 +41,21 @@
             :key="item.meta.title"
             class="menu-item"
           >
-            <template slot="title">
-              <i :class="item.meta.ico" style="color: #fff"></i>
-              <span>{{ item.meta.title }}</span>
-            </template>
+            <!-- <i :class="item.meta.ico" style="color: #fff"></i> -->
+            <span>{{ item.meta.title }}</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main class="section" ref="main">
-        <router-view />
-      </el-main>
+      <el-scrollbar class="section" :style="{ height: `calc(100vh - ${headerTitleHeight})` }">
+        <el-main ref="main">
+          <router-view />
+        </el-main>
+      </el-scrollbar>
     </el-container>
     <el-dialog
       title="修改密码"
-      :visible="showPwdDialog"
-      width="700px"
+      v-model="showPwdDialog"
+      width="500px"
       @close="handleCancel"
     >
       <el-form
@@ -69,6 +71,7 @@
             placeholder="请输入当前密码"
             prefix-icon="el-icon-lock"
             v-model="formData.oldPwd"
+            type="password"
             show-password
           ></el-input>
         </el-form-item>
@@ -78,6 +81,7 @@
             placeholder="请输入新密码"
             prefix-icon="el-icon-lock"
             v-model="formData.newPwd"
+            type="password"
             show-password
           ></el-input>
         </el-form-item>
@@ -87,6 +91,7 @@
             placeholder="请再次输入新密码"
             prefix-icon="el-icon-lock"
             v-model="formData.checkedNewPwd"
+            type="password"
             show-password
           ></el-input>
         </el-form-item>
@@ -94,10 +99,10 @@
       <template v-slot:footer>
         <el-row type="flex" justify="center">
           <el-col :span="8">
-            <el-button size="medium" type="primary" @click="isOk"
+            <el-button type="primary" @click="isOk"
               >确定</el-button
             >
-            <el-button size="medium" @click="handleCancel">取消</el-button>
+            <el-button @click="handleCancel">取消</el-button>
           </el-col>
         </el-row>
       </template>
@@ -165,6 +170,9 @@ export default {
     breadcrumbList() {
       return this.$route.matched.filter((item) => item.meta.title);
     },
+    headerTitleHeight() {
+      return '60px';
+    }
   },
   watch: {
     activeMenuItem() {
@@ -227,11 +235,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@headerTitleHeight: 60px;
+// @headerTitleHeight: 60px;
 .container {
   height: fit-content;
   .menu-list {
-    height: calc(100vh - @headerTitleHeight);
+    height: calc(100vh - v-bind(headerTitleHeight));
     border-right: none;
     .menu-item.is-active {
       background-color: rgb(21, 45, 106) !important;
@@ -260,7 +268,8 @@ export default {
   }
   .section {
     overflow-x: hidden;
-    height: calc(100vh - @headerTitleHeight);
+    width: 100%;
+    // height: calc(100vh - @headerTitleHeight);
   }
 }
 .dropdown-menu-item {

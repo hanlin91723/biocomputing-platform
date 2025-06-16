@@ -20,26 +20,27 @@
       ></el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
       <el-table-column label="权限等级">
-        <template slot-scope="{ row }">{{
-          roleOptions.find((item) => item.value === row.level).label
+        <template #default="{ row }">{{
+          roleOptions.find((item) => item.value === row.level)?.label
         }}</template>
       </el-table-column>
       <el-table-column prop="ctime" label="创建时间"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="{ row }">
+        <template #default="{ row }">
           <el-popconfirm
             hide-icon
             title="确定要重置该用户密码吗？"
             @confirm="handleResetPwd(row)"
           >
-            <el-button
-              type="warning"
-              plain
-              size="small"
-              :disabled="!isAdmin(userRole)"
-              slot="reference"
-              >重置密码</el-button
-            >
+            <template #reference>
+              <el-button
+                type="warning"
+                plain
+                size="small"
+                :disabled="!isAdmin(userRole)"
+                >重置密码</el-button
+              >
+            </template>
           </el-popconfirm>
           <el-button
             class="edit-btn"
@@ -55,14 +56,16 @@
             title="确认删除该用户吗？"
             @confirm="deleteUser(row)"
           >
-            <el-button
-              type="danger"
-              plain
-              size="small"
-              :disabled="!isAdmin(userRole)"
-              slot="reference"
-              >删除</el-button
-            >
+            <template #reference>
+              <el-button
+                type="danger"
+                plain
+                size="small"
+                class="del-btn"
+                :disabled="!isAdmin(userRole)"
+                >删除</el-button
+              >
+            </template>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -80,7 +83,7 @@
     <!-- 编辑和添加用户弹窗 -->
     <el-dialog
       :title="isEdit ? '编辑用户' : '添加用户'"
-      :visible="showUserDialog"
+      v-model="showUserDialog"
       width="500px"
       @close="isCancel"
     >
@@ -286,6 +289,9 @@ export default {
   }
   .edit-btn {
     margin: 0 10px;
+  }
+  .del-btn {
+    margin-left: 0;
   }
   .select {
     width: 100%;

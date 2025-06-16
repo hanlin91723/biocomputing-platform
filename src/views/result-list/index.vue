@@ -21,8 +21,14 @@
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="expand">
-        <template slot-scope="{ row }" v-if="row.status === '已完成'">
-          <el-descriptions class="desc" direction="vertical" border :column="5">
+        <template #default="{ row }">
+          <el-descriptions
+            class="desc"
+            direction="vertical"
+            border
+            :column="5"
+            v-if="row.status === '已完成'"
+          >
             <el-descriptions-item
               :labelStyle="{ background: 'transparent' }"
               :contentStyle="{ background: '#fafafa', color: '#909399' }"
@@ -67,54 +73,13 @@
               </div>
             </el-descriptions-item>
           </el-descriptions>
-          <!-- <ul class="info-table">
-            <li class="info">
-              <div class="info-title"></div>
-              <div class="info-value">原始数据集</div>
-              <div class="info-value">结果数据集</div>
-            </li>
-            <li class="info name">
-              <div class="info-title">名称</div>
-              <div class="info-value">{{ row.sname }}</div>
-              <div class="info-value">{{ row.dname }}</div>
-            </li>
-            <li class="info size">
-              <div class="info-title">大小</div>
-              <div class="info-value">{{ row.ssize }}</div>
-              <div class="info-value">{{ row.dsize }}</div>
-            </li>
-            <li class="info suffix">
-              <div class="info-title">后缀</div>
-              <div class="info-value">{{ row.ssuffix }}</div>
-              <div class="info-value">{{ row.dsuffix }}</div>
-            </li>
-            <li class="info operate">
-              <div class="info-title">操作</div>
-              <div class="info-value">
-                <a
-                  class="download-btn"
-                  :href="$urlPrev + row.spath"
-                  :download="row.sname"
-                  >下载</a
-                >
-              </div>
-              <div class="info-value">
-                <a
-                  class="download-btn"
-                  :href="$urlPrev + row.dpath"
-                  :download="row.dname"
-                  >下载</a
-                >
-              </div>
-            </li>
-          </ul> -->
         </template>
       </el-table-column>
       <el-table-column prop="id" label="任务编号"></el-table-column>
       <el-table-column prop="taskname" label="任务名称"></el-table-column>
       <el-table-column prop="algoname" label="算法名称"></el-table-column>
       <el-table-column label="状态">
-        <template slot-scope="{ row }">
+        <template #default="{ row }">
           <el-tag
             :type="
               row.status === '已完成'
@@ -129,7 +94,7 @@
       </el-table-column>
       <el-table-column prop="ctime" label="创建时间"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="{ row }">
+        <template #default="{ row }">
           <el-button
             type="primary"
             plain
@@ -139,9 +104,11 @@
             >详细参数</el-button
           >
           <el-popconfirm title="您确定删除吗？" @confirm="handleDelete(row)">
-            <el-button slot="reference" type="danger" plain size="small"
-              >删除</el-button
-            >
+            <template #reference>
+              <el-button type="danger" plain size="small" class="del-btn"
+                >删除</el-button
+              >
+            </template>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -157,20 +124,16 @@
     ></el-pagination>
     <el-drawer
       title="详细参数"
-      :visible.sync="drawerIsVisible"
+      v-model="drawerIsVisible"
       direction="rtl"
       :size="600"
     >
-      <el-descriptions
-        class="params"
-        :column="1"
-        :labelStyle="{ fontWeight: 700 }"
-        :contentStyle="{ color: '#909399' }"
-      >
+      <el-descriptions class="params" :column="1">
         <el-descriptions-item
           v-for="(value, key) in paramsObj"
-          :label="key"
+          :label="key + '：'"
           :key="key"
+          class-name="drawer-desc-value"
           >{{ value }}</el-descriptions-item
         >
       </el-descriptions>
@@ -237,6 +200,7 @@ export default {
         .then((data) => {
           this.tableData = data.data_list;
           this.total = data.total;
+          console.log(this.tableData);
         })
         .finally(() => {
           this.loading = false;
@@ -263,10 +227,10 @@ export default {
     .desc {
       width: 60%;
       margin-left: 113px;
-      .el-descriptions-item__label {
+      :deep(.el-descriptions__label) {
         padding: 12px 10px;
       }
-      /deep/ .el-descriptions-item__content {
+      :deep(.el-descriptions__content) {
         padding: 12px 0;
       }
       .desc-item-content-top {
@@ -279,7 +243,7 @@ export default {
         border-top: 1px solid #ebeef5;
       }
       .download-btn {
-        padding: 7px 15px;
+        padding: 4px 12px;
         font-size: 12px;
         color: #409eff;
         text-decoration: none;
@@ -345,6 +309,9 @@ export default {
     .param-btn {
       margin-right: 10px;
     }
+    .del-btn {
+      margin-left: 0;
+    }
   }
   .pagination {
     display: flex;
@@ -352,7 +319,10 @@ export default {
     margin-top: 10px;
   }
   .params {
-    padding: 20px;
+    padding: 0;
+    :deep(.drawer-desc-value) {
+      word-break: break-all;
+    }
   }
 }
 </style>

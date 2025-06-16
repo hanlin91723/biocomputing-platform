@@ -1,17 +1,13 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
 import NProgress from "nprogress";
-
 import {
-  PiniaVuePlugin
-} from "pinia";
-Vue.use(PiniaVuePlugin);
+  createRouter,
+  createWebHistory
+} from "vue-router";
 
 import {
   useUserStore
 } from "@/store/index.js";
 
-Vue.use(VueRouter);
 
 const constantRouterMap = [{
     path: "/",
@@ -61,6 +57,14 @@ const asyncRouterMap = [{
         },
       },
       {
+        path: "/viewer",
+        name: "Viewer",
+        component: () => import("@/views/viewer/index.vue"),
+        meta: {
+          title: "展示中心",
+        },
+      },
+      {
         path: "/user",
         name: "UserManagement",
         component: () => import("@/views/system-management/user-management/index.vue"),
@@ -79,16 +83,14 @@ const asyncRouterMap = [{
     ],
   },
   {
-    path: "*",
+    path: "/:pathMatch(.*)*",
     redirect: "/404",
   },
 ];
-const createRouter = () => new VueRouter({
-  mode: "history",
-  base: import.meta.env.BASE_URL, //部署应用时的基本URL
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: constantRouterMap,
 });
-const router = createRouter();
 const whiteList = constantRouterMap.map(item => item.path); //定义白名单
 // 路由守卫功能,可以控制当用户没有登陆的时候自动跳转回登录页
 router.beforeEach(async (to, from, next) => {
@@ -105,6 +107,7 @@ router.beforeEach(async (to, from, next) => {
       userInfo.hasPermissionRoutes.forEach(item => {
         router.addRoute(item);//添加路由, vue-router4.0新方法
       });
+      console.log(router.getRoutes());
       next({
         ...to,
         replace: true,

@@ -9,32 +9,36 @@
       @submit.native.prevent
     >
       <el-form-item prop="taskname">
-        <template slot="label">
+        <template #label>
           <span>taskname</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>This is taskname.</div>
           </el-popover>
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item prop="heavy_sequence">
-        <template slot="label">
+        <template #label>
           <span>heavy_sequence</span>
         </template>
         <el-input v-model="formObj.heavy_sequence"></el-input>
       </el-form-item>
       <el-form-item prop="light_sequence">
-        <template slot="label">
+        <template #label>
           <span>light_sequence</span>
         </template>
         <el-input v-model="formObj.light_sequence"></el-input>
       </el-form-item>
       <el-form-item prop="decoys">
-        <template slot="label">
+        <template #label>
           <span>decoys</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>
               Number of decoys to create. The lowest energy decoy will be
               selected as final predicted structure.
@@ -47,29 +51,30 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="renumber">
-        <template slot="label">
+        <template #label>
           <span>renumber</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>
               Convert final predicted structure to Chothia format using AbNum.
             </div>
           </el-popover>
         </template>
         <el-radio-group v-model="formObj.renumber">
-          <el-radio :label="true">是</el-radio>
-          <el-radio :label="false">否</el-radio>
+          <el-radio :value="true">是</el-radio>
+          <el-radio :value="false">否</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item class="form-tools" label-width="0">
         <el-button
           type="primary"
-          size="small"
           @click="handleSubmitForm"
           :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" size="small" @click="handleResetForm"
+        <el-button type="default" @click="handleResetForm"
           >重置</el-button
         >
       </el-form-item>
@@ -183,7 +188,7 @@ export default {
   .rule-form {
     width: 800px;
     margin: 20px auto 0;
-    /deep/ .el-form-item__label {
+    :deep(.el-form-item__label) {
       display: flex;
       justify-content: flex-end;
       .tip {

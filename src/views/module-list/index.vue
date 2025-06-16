@@ -1,9 +1,9 @@
 <template>
   <div class="module-wrap">
     <ul class="list">
-      <li class="item" @click="handleClick({ num: 0 })">
+      <!-- <li class="item" @click="handleClick({ num: 0 })">
         <div class="name">3D模型demo</div>
-      </li>
+      </li> -->
       <li
         class="item"
         v-for="item in list"
@@ -68,7 +68,7 @@ export default {
         width: 80px;
         height: 80px;
         border: 1px solid #e4e7ed;
-        transition: 0.2s;
+        transition: 0.1s;
       }
       .name {
         margin-top: 10px;

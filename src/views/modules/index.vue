@@ -10,31 +10,36 @@
       </div>
     </el-card>
     <el-card class="card">
-      <component :is="currentTabComponent"></component>
+      <component
+        :is="currentTabComponent"
+        v-if="currentTabComponent"
+      ></component>
     </el-card>
   </div>
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 export default {
-  components: {
-    computingModule0: () => import("./components/computingModule0.vue"),
-    computingModule1: () => import("./components/computingModule1.vue"),
-    computingModule2: () => import("./components/computingModule2.vue"),
-    computingModule3: () => import("./components/computingModule3.vue"),
-    computingModule4: () => import("./components/computingModule4.vue"),
-    computingModule5: () => import("./components/computingModule5.vue"),
-    computingModule6: () => import("./components/computingModule6.vue"),
-  },
   data() {
     return {
       info: {},
       id: this.$route.params.id,
+      moduleMap: {
+        0: () => import("./components/computingModule0.vue"),
+        1: () => import("./components/computingModule1.vue"),
+        2: () => import("./components/computingModule2.vue"),
+        3: () => import("./components/computingModule3.vue"),
+        4: () => import("./components/computingModule4.vue"),
+        5: () => import("./components/computingModule5.vue"),
+        6: () => import("./components/computingModule6.vue"),
+      },
     };
   },
   computed: {
     currentTabComponent() {
-      return "computingModule" + this.$route.params.id;
+      const loader = this.moduleMap[this.id];
+      return loader ? defineAsyncComponent(loader) : null;
     },
   },
   created() {

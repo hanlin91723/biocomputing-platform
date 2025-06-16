@@ -27,30 +27,34 @@
           :file-list="formObj.file1List"
           :http-request="handleRequest"
         >
-          <el-button
-            slot="trigger"
-            icon="el-icon-upload"
-            type="primary"
-            size="small"
-            >select file</el-button
-          >
+          <template #trigger>
+            <el-button
+              icon="Upload"
+              type="primary"
+              >select file</el-button
+            >
+          </template>
         </el-upload>
       </el-form-item>
       <el-form-item prop="taskname">
-        <template slot="label">
+        <template #label>
           <span>taskname</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>This is taskname.</div>
           </el-popover>
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item prop="partners">
-        <template slot="label">
+        <template #label>
           <span>partners</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>the relative chain partners for docking</div>
           </el-popover>
         </template>
@@ -60,10 +64,12 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="translation">
-        <template slot="label">
+        <template #label>
           <span>translation</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>
               magnitude of the random translation applied (in Angstroms)
             </div>
@@ -75,10 +81,12 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="rotation">
-        <template slot="label">
+        <template #label>
           <span>rotation</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>magnitude of the random rotation applied (in degrees)</div>
           </el-popover>
         </template>
@@ -88,10 +96,12 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="jobs">
-        <template slot="label">
+        <template #label>
           <span>jobs</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>the number of jobs (trajectories) to perform</div>
           </el-popover>
         </template>
@@ -103,12 +113,11 @@
       <el-form-item class="form-tools" label-width="0">
         <el-button
           type="primary"
-          size="small"
           @click="handleSubmitForm"
           :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" size="small" @click="handleResetForm"
+        <el-button type="default" @click="handleResetForm"
           >重置</el-button
         >
       </el-form-item>
@@ -236,7 +245,7 @@ export default {
         }
       }
     }
-    /deep/ .el-form-item__label {
+    :deep(.el-form-item__label) {
       display: flex;
       justify-content: flex-end;
       .tip {

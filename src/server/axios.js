@@ -1,6 +1,6 @@
 import {
-  Message
-} from "element-ui";
+  ElMessage
+} from "element-plus";
 import axios from "axios";
 import router from "../router/index";
 
@@ -48,7 +48,7 @@ service.interceptors.response.use(
     } else if (result.data.code === "401") {
       //长时间未操作,登录信息过期
       sessionStorage.getItem("token") &&
-        Message.error("登录信息过期，请重新登录");
+        ElMessage.error("登录信息过期，请重新登录");
       setTimeout(() => {
         router.push({
           path: "/login",
@@ -57,22 +57,22 @@ service.interceptors.response.use(
       sessionStorage.clear();
       return;
     } else {
-      Message.error(result.data.message);
+      ElMessage.error(result.data.message);
       return Promise.reject(result);
     }
   },
   error => {
     if (error.response) {
-      Message.error(error.response.data.message);
+      ElMessage.error(error.response.data.message);
     } else {
       //请求超时状态
       if (error.message.includes("timeout")) {
-        Message.error("网络请求超时，请稍后再试");
+        ElMessage.error("网络请求超时，请稍后再试");
       } else if (error.message.includes("canceled")) {
         // 取消请求
       } else {
         //可以展示断网组件
-        Message.error("网络请求异常，请稍后再试");
+        ElMessage.error("网络请求异常，请稍后再试");
       }
     }
     return Promise.reject(error);

@@ -10,9 +10,9 @@
       label-position="top"
     >
       <el-form-item label="Input mode" prop="input_mode">
-        <el-radio-group v-model="formObj.input_mode" size="small">
-          <el-radio-button label="single">Single sequence</el-radio-button>
-          <el-radio-button label="bulk">Bulk input</el-radio-button>
+        <el-radio-group v-model="formObj.input_mode">
+          <el-radio-button value="single">Single sequence</el-radio-button>
+          <el-radio-button value="bulk">Bulk input</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="taskname" prop="taskname">
@@ -20,10 +20,9 @@
       </el-form-item>
       <template v-if="formObj.input_mode === 'single'">
         <el-form-item prop="vh">
-          <template slot="label">
+          <template #label>
             <span>Antibody heavy chain sequence</span>
             <el-link
-              :underline="false"
               type="primary"
               class="example"
               @click="
@@ -41,10 +40,9 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="vl">
-          <template slot="label">
+          <template #label>
             <span>Antibody light chain sequence</span>
             <el-link
-              :underline="false"
               type="primary"
               class="example"
               @click="
@@ -69,10 +67,9 @@
           _VH/_VL suffix.
         </div>
         <el-form-item prop="sequence_text">
-          <template slot="label">
+          <template #label>
             <span>Antibody sequences (FASTA)</span>
             <el-link
-              :underline="false"
               type="primary"
               class="example"
               @click="
@@ -115,20 +112,19 @@ DIVMT..."
             :file-list="formObj.file2"
             :http-request="handleRequest"
           >
-            <el-button
-              slot="trigger"
-              icon="el-icon-upload"
-              type="primary"
-              size="small"
-              >select file</el-button
-            >
+            <template #trigger>
+              <el-button
+                icon="Upload"
+                type="primary"
+                >select file</el-button
+              >
+            </template>
           </el-upload>
         </el-form-item>
         <!-- <el-form-item prop="pdb_ids">
-          <template slot="label">
+          <template #label>
             <span>PDB IDs</span>
             <el-link
-              :underline="false"
               type="primary"
               class="example"
               @click="formObj.pdb_ids = '5DK3'"
@@ -139,10 +135,12 @@ DIVMT..."
         </el-form-item> -->
       </template>
       <el-form-item prop="scheme">
-        <template slot="label">
+        <template #label>
           <span>Numbering</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>
               ANARCI numbering scheme used to align the sequence and annotate
               position numbers.
@@ -157,10 +155,12 @@ DIVMT..."
         </el-select>
       </el-form-item>
       <el-form-item prop="cdr_definition">
-        <template slot="label">
+        <template #label>
           <span>CDR Definition</span>
           <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
             <div>
               Scheme used to define the CDR regions. Given regions are not
               humanized, the parental sequence is preserved.
@@ -176,9 +176,9 @@ DIVMT..."
         </el-select>
       </el-form-item>
       <el-form-item label="Humanization method" prop="method">
-        <el-radio-group v-model="formObj.method" size="small">
-          <el-radio-button label="sapiens">Sapiens</el-radio-button>
-          <el-radio-button label="cdr_grafting">CDR Grafting</el-radio-button>
+        <el-radio-group v-model="formObj.method">
+          <el-radio-button value="sapiens">Sapiens</el-radio-button>
+          <el-radio-button value="cdr_grafting">CDR Grafting</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <template v-if="formObj.method === 'sapiens'">
@@ -195,10 +195,12 @@ DIVMT..."
           database.
         </div>
         <el-form-item prop="iterations">
-          <template slot="label">
+          <template #label>
             <span>Humanization iterations</span>
             <el-popover trigger="hover">
-              <i class="el-icon-warning-outline tip" slot="reference"></i>
+              <template #reference>
+                <el-icon class="tip"><Warning /></el-icon>
+              </template>
               <div>
                 Sapiens humanization can be repeated multiple times to produce a
                 more human sequence.
@@ -208,10 +210,12 @@ DIVMT..."
           <el-input v-model.number="formObj.iterations"></el-input>
         </el-form-item>
         <el-form-item prop="humanize_cdrs">
-          <el-checkbox v-model="formObj.humanize_cdrs" true-label="yes">
+          <el-checkbox v-model="formObj.humanize_cdrs" true-value="yes">
             <span>Humanization iterations</span>
             <el-popover trigger="hover">
-              <i class="el-icon-warning-outline tip" slot="reference"></i>
+              <template #reference>
+                <el-icon class="tip"><Warning /></el-icon>
+              </template>
               <div>
                 Allow predicting humanizing mutations in
                 complementarity-determining regions (will impact binding).
@@ -226,10 +230,12 @@ DIVMT..."
           based on % sequence identity.
         </div>
         <el-form-item prop="heavy_v_germline">
-          <template slot="label">
+          <template label>
             <span>Heavy germline</span>
             <el-popover trigger="hover">
-              <i class="el-icon-warning-outline tip" slot="reference"></i>
+              <template #reference>
+                <el-icon class="tip"><Warning /></el-icon>
+              </template>
               <div>
                 Germline heavy V gene to use as template for humanization. Use
                 Auto to pick nearest germline based on sequence homology.
@@ -245,10 +251,12 @@ DIVMT..."
           </el-select>
         </el-form-item>
         <el-form-item prop="light_v_germline">
-          <template slot="label">
+          <template #label>
             <span>Light germline</span>
             <el-popover trigger="hover">
-              <i class="el-icon-warning-outline tip" slot="reference"></i>
+              <template #reference>
+                <el-icon class="tip"><Warning /></el-icon>
+              </template>
               <div>
                 Germline light V gene to use as template for humanization. Use
                 Auto to pick nearest germline based on sequence homology.
@@ -264,10 +272,12 @@ DIVMT..."
           </el-select>
         </el-form-item>
         <el-form-item prop="sapiens_final_pass">
-          <el-checkbox v-model="formObj.sapiens_final_pass" true-label="yes">
+          <el-checkbox v-model="formObj.sapiens_final_pass" true-value="yes">
             <span>Perform final humanization pass using Sapiens</span>
             <el-popover trigger="hover">
-              <i class="el-icon-warning-outline tip" slot="reference"></i>
+              <template #reference>
+                <el-icon class="tip"><Warning /></el-icon>
+              </template>
               <div>
                 After creating the CDR graft, apply Sapiens to humanize the
                 sequence further and repair potential issues.
@@ -277,11 +287,13 @@ DIVMT..."
         </el-form-item>
       </template>
       <el-form-item prop="min_subjects">
-        <template slot="label">
+        <template #label>
           <span>OASis prevalence threshold</span>
-          <el-popover trigger="hover">
-            <i class="el-icon-warning-outline tip" slot="reference"></i>
-            <div style="max-width: 600px">
+          <el-popover trigger="hover" :popper-style="{width: '600px'}">
+            <template #reference>
+              <el-icon class="tip"><Warning /></el-icon>
+            </template>
+            <div>
               OASis identity score of an antibody is calculated as the fraction
               of its 9-mer peptides that are considered human. The prevalence
               threshold determines what fraction of human subjects from the
@@ -293,14 +305,13 @@ DIVMT..."
         </template>
         <el-radio-group
           v-model="formObj.min_subjects"
-          size="small"
           class="radio-group"
         >
-          <el-radio label="loose">loose (≥1% subjects)</el-radio>
-          <el-radio label="relaxed">relaxed (≥10% subjects)</el-radio>
-          <el-radio label="medium">medium (≥50% subjects)</el-radio>
-          <el-radio label="strict">strict (≥90% subjects)</el-radio>
-          <el-radio label="custom"
+          <el-radio value="loose">loose (≥1% subjects)</el-radio>
+          <el-radio value="relaxed">relaxed (≥10% subjects)</el-radio>
+          <el-radio value="medium">medium (≥50% subjects)</el-radio>
+          <el-radio value="strict">strict (≥90% subjects)</el-radio>
+          <el-radio value="custom"
             >custom
             <el-form-item
               prop="custom_min_subjects"
@@ -323,12 +334,11 @@ DIVMT..."
       <el-form-item class="form-tools" label-width="0">
         <el-button
           type="primary"
-          size="small"
           @click="handleSubmitForm"
           :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" size="small" @click="handleResetForm"
+        <el-button type="default" @click="handleResetForm"
           >重置</el-button
         >
       </el-form-item>
@@ -735,7 +745,7 @@ export default {
   .rule-form {
     width: 800px;
     margin: 20px auto 0;
-    /deep/ .el-form-item__label {
+    :deep(.el-form-item__label) {
       display: flex;
       align-items: center;
       padding: 0;
@@ -756,20 +766,21 @@ export default {
       }
     }
     .textarea {
-      /deep/ .el-textarea__inner {
+      :deep(.el-textarea__inner) {
         min-height: 96px !important;
       }
     }
     .radio-group {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       .el-radio {
         margin-bottom: 10px;
       }
     }
     .custom-min-input {
       width: auto;
-      /deep/ .el-input__inner {
+      :deep(.el-input__inner) {
         width: 55px;
         height: 32px;
         line-height: 32px;

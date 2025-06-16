@@ -1,14 +1,13 @@
-import {
-  createVuePlugin
-} from "vite-plugin-vue2";
+
 import {
   defineConfig
 } from "vite";
 import path from "path";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig(() => {
   return {
-    base: "/", //生产环境服务的公共基础路径
+    base: "./", //生产环境服务的公共基础路径
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
@@ -23,9 +22,7 @@ export default defineConfig(() => {
         },
       },
     },
-    plugins: [
-      createVuePlugin( /* options */ ),
-    ],
+    plugins: [vue()],
     server: {
       host: "localhost",
       port: 8080,
