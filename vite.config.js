@@ -1,7 +1,4 @@
-
-import {
-  defineConfig
-} from "vite";
+import { defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 
@@ -18,7 +15,7 @@ export default defineConfig(() => {
         less: {
           // 引入 global.less 这样就可以在全局中使用 global.less 中预定义的变量了
           // 必须给导入的路径最后加上;
-          additionalData: "@import \"@/assets/css/global.less\";",
+          additionalData: '@import "@/assets/css/global.less";',
         },
       },
     },
@@ -31,7 +28,8 @@ export default defineConfig(() => {
       https: false, // 是否开启 https
       proxy: {
         "/api": {
-          target: "http://119.27.172.203:5000", //微服务端
+          target: "http://36.103.199.196:8888", //微服务端
+          // target: "http://119.27.172.203:5000", //微服务端
           // target: "http://192.168.2.255:8090", //本地
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),

@@ -49,11 +49,12 @@ export default {
   .list {
     display: flex;
     justify-content: flex-start;
+    align-items: stretch;
     flex-wrap: wrap;
     .item {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
       width: 160px;
       // height: 120px;
