@@ -20,11 +20,11 @@
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
-      <el-form-item prop="peoteinsequence">
+      <el-form-item prop="proteinsequence">
         <template #label>
-          <span>peoteinsequence</span>
+          <span>proteinsequence</span>
         </template>
-        <el-input v-model="formObj.peoteinsequence"></el-input>
+        <el-input v-model="formObj.proteinsequence"></el-input>
       </el-form-item>
       <el-form-item prop="ligandsequence">
         <template #label>
@@ -48,7 +48,7 @@ export default {
     return {
       formObj: {
         taskname: "",
-        peoteinsequence: "",
+        proteinsequence: "",
         ligandsequence: "",
       },
       formRules: {
@@ -59,10 +59,10 @@ export default {
             trigger: "blur",
           },
         ],
-        peoteinsequence: [
+        proteinsequence: [
           {
             required: true,
-            message: "The peoteinsequence is required.",
+            message: "The proteinsequence is required.",
             trigger: "blur",
           },
         ],
@@ -85,7 +85,7 @@ export default {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
             subparam: {
-              peoteinsequence: this.formObj.peoteinsequence,
+              proteinsequence: this.formObj.proteinsequence,
               ligandsequence: this.formObj.ligandsequence,
             },
           };

@@ -20,17 +20,17 @@
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
-      <el-form-item prop="peoteinsequence1">
+      <el-form-item prop="proteinsequence1">
         <template #label>
-          <span>peoteinsequence1</span>
+          <span>proteinsequence1</span>
         </template>
-        <el-input v-model="formObj.peoteinsequence1"></el-input>
+        <el-input v-model="formObj.proteinsequence1"></el-input>
       </el-form-item>
-      <el-form-item prop="peoteinsequence2">
+      <el-form-item prop="proteinsequence2">
         <template #label>
-          <span>peoteinsequence2</span>
+          <span>proteinsequence2</span>
         </template>
-        <el-input v-model="formObj.peoteinsequence2"></el-input>
+        <el-input v-model="formObj.proteinsequence2"></el-input>
       </el-form-item>
       <!-- <el-form-item prop="seeds">
         <template #label>
@@ -64,8 +64,8 @@ export default {
       formObj: {
         taskname: "",
         // seeds: "101",
-        peoteinsequence1: "",
-        peoteinsequence2: "",
+        proteinsequence1: "",
+        proteinsequence2: "",
       },
       formRules: {
         taskname: [
@@ -75,17 +75,17 @@ export default {
             trigger: "blur",
           },
         ],
-        peoteinsequence1: [
+        proteinsequence1: [
           {
             required: true,
-            message: "The peoteinsequence1 is required.",
+            message: "The proteinsequence1 is required.",
             trigger: "blur",
           },
         ],
-        peoteinsequence2: [
+        proteinsequence2: [
           {
             required: true,
-            message: "The peoteinsequence2 is required.",
+            message: "The proteinsequence2 is required.",
             trigger: "blur",
           },
         ],
@@ -101,8 +101,8 @@ export default {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
             subparam: {
-              peoteinsequence1: this.formObj.peoteinsequence1,
-              peoteinsequence2: this.formObj.peoteinsequence2,
+              proteinsequence1: this.formObj.proteinsequence1,
+              proteinsequence2: this.formObj.proteinsequence2,
               // seeds: this.formObj.seeds,
             },
           };
