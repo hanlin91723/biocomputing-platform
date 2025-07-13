@@ -39,7 +39,9 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <el-link class="register-btn" type="primary" @click="toRegister">注册账号</el-link>
+      <el-link class="register-btn" type="primary" @click="toRegister"
+        >注册账号</el-link
+      >
     </div>
   </div>
 </template>
@@ -126,24 +128,25 @@ export default {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-image: url("@/assets/images/bg.png");
+  // background-image: url("@/assets/images/bg.png");
   .wrap {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
-    bottom: 0;
+    bottom: 160px;
     z-index: 2;
     margin: auto;
-    width: 500px;
+    width: 400px;
     height: fit-content;
     padding: 20px;
-    background: rgb(17, 20, 75);
+    // background: rgb(32, 36, 110);
+    box-shadow: var(--el-box-shadow-light);
     .title {
       padding-bottom: 20px;
       font-size: 24px;
       text-align: center;
-      color: #fff;
+      // color: #fff;
     }
     .form {
       // width: 500px;
@@ -174,15 +177,16 @@ export default {
       }
       .submit-btn {
         width: 100%;
-        height: 48px;
+        height: 32px;
         // margin-top: 20px;
-        font-size: 18px;
+        padding: 0;
+        font-size: 16px;
         font-weight: 700;
         text-align: center;
         // text-indent: 100px;
         // letter-spacing: 100px;
         span {
-          padding: 0 20px;
+          padding: 0 12px;
         }
       }
     }

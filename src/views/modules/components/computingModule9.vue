@@ -20,33 +20,18 @@
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
-      <el-form-item prop="peoteinsequence1">
+      <el-form-item prop="peoteinsequence">
         <template #label>
-          <span>peoteinsequence1</span>
+          <span>peoteinsequence</span>
         </template>
-        <el-input v-model="formObj.peoteinsequence1"></el-input>
+        <el-input v-model="formObj.peoteinsequence"></el-input>
       </el-form-item>
-      <el-form-item prop="peoteinsequence2">
+      <el-form-item prop="ligandsequence">
         <template #label>
-          <span>peoteinsequence2</span>
+          <span>ligandsequence</span>
         </template>
-        <el-input v-model="formObj.peoteinsequence2"></el-input>
+        <el-input v-model="formObj.ligandsequence"></el-input>
       </el-form-item>
-      <!-- <el-form-item prop="seeds">
-        <template #label>
-          <span>seeds</span>
-          <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>多个用","割开，比如101,102</div>
-          </el-popover>
-        </template>
-        <el-input
-          v-model="formObj.seeds"
-          placeholder='多个用","割开，比如101,102'
-        ></el-input>
-      </el-form-item> -->
       <el-form-item class="form-tools" label-width="0">
         <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
@@ -63,9 +48,8 @@ export default {
     return {
       formObj: {
         taskname: "",
-        // seeds: "101",
-        peoteinsequence1: "",
-        peoteinsequence2: "",
+        peoteinsequence: "",
+        ligandsequence: "",
       },
       formRules: {
         taskname: [
@@ -75,17 +59,17 @@ export default {
             trigger: "blur",
           },
         ],
-        peoteinsequence1: [
+        peoteinsequence: [
           {
             required: true,
-            message: "The peoteinsequence1 is required.",
+            message: "The peoteinsequence is required.",
             trigger: "blur",
           },
         ],
-        peoteinsequence2: [
+        ligandsequence: [
           {
             required: true,
-            message: "The peoteinsequence2 is required.",
+            message: "The ligandsequence is required.",
             trigger: "blur",
           },
         ],
@@ -101,9 +85,8 @@ export default {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
             subparam: {
-              peoteinsequence1: this.formObj.peoteinsequence1,
-              peoteinsequence2: this.formObj.peoteinsequence2,
-              // seeds: this.formObj.seeds,
+              peoteinsequence: this.formObj.peoteinsequence,
+              ligandsequence: this.formObj.ligandsequence,
             },
           };
           let formData = new FormData();

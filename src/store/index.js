@@ -1,20 +1,17 @@
-import http from "@/server/axios.js";
-import {
-  defineStore
-} from "pinia";
+// import http from "@/server/axios.js";
+import { defineStore } from "pinia";
 
 const hasPermission = (permissions, route) => {
-
   if (route.meta && route.meta.permission) {
     console.log(permissions, route);
-    return permissions.some(item => route.meta.permission.includes(item));
+    return permissions.some((item) => route.meta.permission.includes(item));
   } else {
     return true; //不需要权限的路由直接返回
   }
 };
 const filterAsyncRoutes = (routes, permissions) => {
   let res = [];
-  routes.forEach(item => {
+  routes.forEach((item) => {
     let tmp = {
       ...item,
     };
@@ -36,11 +33,12 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     getPermissionList() {
-      return http.get("/algo/list", {
-        algonum: "all",
-      }).then(() => {
-        this.permissionList = [];
-      });
+      this.permissionList = [];
+      // return http.get("/algo/list", {
+      //   algonum: "all",
+      // }).then(() => {
+      //   this.permissionList = [];
+      // });
     },
     getHasPermissionRoutes(routes, permissions) {
       this.hasPermissionRoutes = filterAsyncRoutes(routes, permissions);

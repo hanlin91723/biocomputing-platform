@@ -34,6 +34,8 @@ export default {
         5: () => import("./components/computingModule5.vue"),
         6: () => import("./components/computingModule6.vue"),
         7: () => import("./components/computingModule7.vue"),
+        8: () => import("./components/computingModule8.vue"),
+        9: () => import("./components/computingModule9.vue"),
       },
     };
   },

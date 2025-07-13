@@ -24,16 +24,14 @@
       </el-dropdown>
     </el-header>
     <el-container>
-      <el-aside width="200px" style="height: 100%;">
+      <el-aside width="200px" style="height: 100%">
         <el-menu
           ref="menu"
           class="menu-list"
           @select="handleSelect"
           unique-opened
           :default-active="activeMenuItem"
-          background-color="#1a3885"
-          text-color="#fff"
-          active-text-color="#ff0"
+          background-color="rgb(236, 245, 255)"
         >
           <el-menu-item
             v-for="item in menuList"
@@ -46,7 +44,10 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-scrollbar class="section" :style="{ height: `calc(100vh - ${headerTitleHeight})` }">
+      <el-scrollbar
+        class="section"
+        :style="{ height: `calc(100vh - ${headerTitleHeight})` }"
+      >
         <el-main ref="main">
           <router-view />
         </el-main>
@@ -99,9 +100,7 @@
       <template v-slot:footer>
         <el-row type="flex" justify="center">
           <el-col :span="8">
-            <el-button type="primary" @click="isOk"
-              >确定</el-button
-            >
+            <el-button type="primary" @click="isOk">确定</el-button>
             <el-button @click="handleCancel">取消</el-button>
           </el-col>
         </el-row>
@@ -171,8 +170,8 @@ export default {
       return this.$route.matched.filter((item) => item.meta.title);
     },
     headerTitleHeight() {
-      return '60px';
-    }
+      return "60px";
+    },
   },
   watch: {
     activeMenuItem() {
@@ -241,8 +240,11 @@ export default {
   .menu-list {
     height: calc(100vh - v-bind(headerTitleHeight));
     border-right: none;
-    .menu-item.is-active {
-      background-color: rgb(21, 45, 106) !important;
+    .menu-item {
+      font-size: 16px;
+      &.is-active {
+        background-color: rgb(198, 226, 255) !important;
+      }
     }
   }
   .header {

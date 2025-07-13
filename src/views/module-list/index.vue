@@ -1,19 +1,38 @@
 <template>
   <div class="module-wrap">
-    <ul class="list">
-      <!-- <li class="item" @click="handleClick({ num: 0 })">
+    <!-- <li class="item" @click="handleClick({ num: 0 })">
         <div class="name">3D模型demo</div>
       </li> -->
+    <!-- <ul class="list">
       <li
         class="item"
         v-for="item in list"
         :key="item.num"
         @click="handleClick(item)"
       >
+        <div>{{ item.module }}</div>
         <img class="ico" :src="$urlPrev + item.image_path" />
         <div class="name">{{ item.name }}</div>
       </li>
-    </ul>
+    </ul> -->
+    <el-card v-for="item in list" :key="item.moduleName" class="card">
+      <template #header>
+        <div class="card-header">
+          <span>{{ item.moduleName }}</span>
+        </div>
+      </template>
+      <ul class="list">
+        <li
+          class="item"
+          v-for="item in item.list"
+          :key="item.num"
+          @click="handleClick(item)"
+        >
+          <img class="ico" :src="$urlPrev + item.image_path" />
+          <div class="name">{{ item.name }}</div>
+        </li>
+      </ul>
+    </el-card>
   </div>
 </template>
 
@@ -28,10 +47,23 @@ export default {
     this.getMarketRiskData();
   },
   methods: {
-    //市场风险概况
     getMarketRiskData() {
       this.$axios.get("/algo/list", { algonum: "all" }).then((data) => {
-        this.list = data.data_list;
+        const moduleMap = data.data_list.reduce((pre, cur) => {
+          const moduleName = cur.module;
+          if (!pre[moduleName]) {
+            pre[moduleName] = [];
+          }
+          pre[moduleName].push(cur);
+          return pre;
+        }, {});
+        // 转换为数组形式
+        const result = Object.keys(moduleMap).map((moduleName) => ({
+          moduleName,
+          list: moduleMap[moduleName],
+        }));
+        this.list = result;
+        console.log(result);
       });
     },
     handleClick(item) {
@@ -46,6 +78,9 @@ export default {
 
 <style lang="less" scoped>
 .module-wrap {
+  .card + .card {
+    margin-top: 20px;
+  }
   .list {
     display: flex;
     justify-content: flex-start;
