@@ -10,32 +10,32 @@
     >
       <el-form-item prop="taskname">
         <template #label>
-          <span>taskname</span>
-          <el-popover trigger="hover">
+          <span>任务名称</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>This is taskname.</div>
-          </el-popover>
+          </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item prop="heavy_sequence">
         <template #label>
-          <span>heavy_sequence</span>
+          <span>抗体重链序列</span>
         </template>
         <el-input v-model="formObj.heavy_sequence"></el-input>
       </el-form-item>
       <el-form-item prop="light_sequence">
         <template #label>
-          <span>light_sequence</span>
+          <span>抗体轻链序列</span>
         </template>
         <el-input v-model="formObj.light_sequence"></el-input>
       </el-form-item>
       <el-form-item prop="decoys">
         <template #label>
-          <span>decoys</span>
-          <el-popover trigger="hover">
+          <span>生成数量</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
@@ -43,24 +43,21 @@
               Number of decoys to create. The lowest energy decoy will be
               selected as final predicted structure.
             </div>
-          </el-popover>
+          </el-popover> -->
         </template>
-        <el-input
-          v-model.number="formObj.decoys"
-          placeholder="magnitude of the random decoys applied (in degrees)"
-        ></el-input>
+        <el-input v-model.number="formObj.decoys"></el-input>
       </el-form-item>
       <el-form-item prop="renumber">
         <template #label>
-          <span>renumber</span>
-          <el-popover trigger="hover">
+          <span>重新编号</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>
               Convert final predicted structure to Chothia format using AbNum.
             </div>
-          </el-popover>
+          </el-popover> -->
         </template>
         <el-radio-group v-model="formObj.renumber">
           <el-radio :value="true">是</el-radio>
@@ -68,15 +65,10 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item class="form-tools" label-width="0">
-        <el-button
-          type="primary"
-          @click="handleSubmitForm"
-          :loading="loading"
+        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" @click="handleResetForm"
-          >重置</el-button
-        >
+        <el-button type="default" @click="handleResetForm">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -90,7 +82,7 @@ export default {
       if (value === "" || regExp.test(value)) {
         callback();
       } else {
-        callback(new Error("This decoys must be a non-negative integer."));
+        callback(new Error("生成数量必须是一个整数"));
       }
     };
     return {
@@ -105,28 +97,28 @@ export default {
         taskname: [
           {
             required: true,
-            message: "The taskname is required.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
         light_sequence: [
           {
             required: true,
-            message: "The light_sequence is required.",
+            message: "抗体轻链序列不能为空",
             trigger: "blur",
           },
         ],
         heavy_sequence: [
           {
             required: true,
-            message: "The heavy_sequence is required.",
+            message: "抗体重链序列不能为空",
             trigger: "blur",
           },
         ],
         renumber: [
           {
             required: true,
-            message: "The renumber is required.",
+            message: "重新编号不能为空",
             trigger: "change",
           },
         ],

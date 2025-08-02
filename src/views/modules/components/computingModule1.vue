@@ -8,7 +8,7 @@
       class="rule-form"
       @submit.native.prevent
     >
-      <el-form-item label="PDB File" prop="file1List">
+      <el-form-item label="输入文件" prop="file1List">
         <el-upload
           ref="uploadFile1"
           action=""
@@ -28,74 +28,61 @@
           :http-request="handleRequest"
         >
           <template #trigger>
-            <el-button
-              icon="Upload"
-              type="primary"
-              >select file</el-button
-            >
+            <el-button icon="Upload" type="primary">选择文件</el-button>
           </template>
         </el-upload>
       </el-form-item>
       <el-form-item prop="taskname">
         <template #label>
-          <span>taskname</span>
-          <el-popover trigger="hover">
+          <span>任务名称</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
-            <div>This is taskname.</div>
-          </el-popover>
+            <div>这是任务名称</div>
+          </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item prop="partners">
         <template #label>
-          <span>partners</span>
-          <el-popover trigger="hover">
+          <span>对接对象</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
-            <div>the relative chain partners for docking</div>
-          </el-popover>
+            <div>A_HL表示文件中A链与HL链对接</div>
+          </el-popover> -->
         </template>
-        <el-input
-          v-model="formObj.partners"
-          placeholder="the relative chain partners for docking"
-        ></el-input>
+        <el-input v-model="formObj.partners"></el-input>
       </el-form-item>
       <el-form-item prop="translation">
         <template #label>
-          <span>translation</span>
-          <el-popover trigger="hover">
+          <span>平移参数</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>
               magnitude of the random translation applied (in Angstroms)
             </div>
-          </el-popover>
+          </el-popover> -->
         </template>
-        <el-input
-          v-model="formObj.translation"
-          placeholder="magnitude of the random translation applied (in Angstroms)"
-        ></el-input>
+        <el-input v-model="formObj.translation"></el-input>
       </el-form-item>
       <el-form-item prop="rotation">
         <template #label>
-          <span>rotation</span>
-          <el-popover trigger="hover">
+          <span>旋转参数</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>magnitude of the random rotation applied (in degrees)</div>
-          </el-popover>
+          </el-popover> -->
         </template>
-        <el-input
-          v-model="formObj.rotation"
-          placeholder="magnitude of the random rotation applied (in degrees)"
-        ></el-input>
+        <el-input v-model="formObj.rotation"></el-input>
       </el-form-item>
-      <el-form-item prop="jobs">
+      <!-- <el-form-item prop="jobs">
         <template #label>
           <span>jobs</span>
           <el-popover trigger="hover">
@@ -107,19 +94,13 @@
         </template>
         <el-input
           v-model="formObj.jobs"
-          placeholder="the number of jobs (trajectories) to perform"
         ></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item class="form-tools" label-width="0">
-        <el-button
-          type="primary"
-          @click="handleSubmitForm"
-          :loading="loading"
+        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" @click="handleResetForm"
-          >重置</el-button
-        >
+        <el-button type="default" @click="handleResetForm">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -141,14 +122,14 @@ export default {
         taskname: [
           {
             required: true,
-            message: "The taskname is required.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
         file1List: [
           {
             required: true,
-            message: "The file is required.",
+            message: "输入文件不能为空",
             trigger: "change",
           },
         ],

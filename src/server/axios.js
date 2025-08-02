@@ -1,11 +1,8 @@
-import {
-  ElMessage
-} from "element-plus";
+import { ElMessage } from "element-plus";
 import axios from "axios";
 import router from "../router/index";
 
-const env =
-  import.meta.env.MODE; //应用运行的模式
+const env = import.meta.env.MODE; //应用运行的模式
 const devUrl = "/api/api"; //开发环境
 const proUrl = "/api"; //生产环境
 const baseUrl = env === "production" ? proUrl : devUrl;
@@ -22,29 +19,29 @@ const service = axios.create({
 
 //请求拦截
 service.interceptors.request.use(
-  config => {
+  (config) => {
     //默认往所有接口headers传入token校验
     if (sessionStorage.getItem("token")) {
       config.headers["Userid"] = sessionStorage.getItem("token");
     }
     return config;
   },
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
 );
 
 //响应拦截
 service.interceptors.response.use(
-  result => {
+  (result) => {
     if (result.config.responseType === "blob") {
       return result;
     }
     if (result.data.code === 20000) {
       return result.config.responseType === "arraybuffer" ||
-        result.config.responseType === "blob" ?
-        result :
-        result.data;
+        result.config.responseType === "blob"
+        ? result
+        : result.data;
     } else if (result.data.code === "401") {
       //长时间未操作,登录信息过期
       sessionStorage.getItem("token") &&
@@ -61,7 +58,7 @@ service.interceptors.response.use(
       return Promise.reject(result);
     }
   },
-  error => {
+  (error) => {
     if (error.response) {
       ElMessage.error(error.response.data.message);
     } else {
@@ -84,7 +81,8 @@ service.interceptors.response.use(
  */
 function request(method, url, params = {}, options = {}) {
   return new Promise((resolve, reject) => {
-    const config = Object.assign({
+    const config = Object.assign(
+      {
         url,
         method,
         [method === "get" || method === "delete" ? "params" : "data"]: params,
@@ -93,10 +91,10 @@ function request(method, url, params = {}, options = {}) {
     );
     service
       .request(config)
-      .then(res => {
+      .then((res) => {
         resolve(res);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });

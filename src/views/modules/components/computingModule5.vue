@@ -8,7 +8,7 @@
       class="rule-form"
       @submit.native.prevent
     >
-      <el-form-item label="receptor" prop="file1List">
+      <el-form-item label="受体蛋白" prop="file1List">
         <el-upload
           ref="uploadFile1"
           action=""
@@ -29,15 +29,11 @@
           :http-request="handleRequest"
         >
           <template #trigger>
-            <el-button
-              icon="Upload"
-              type="primary"
-              >select file</el-button
-            >
+            <el-button icon="Upload" type="primary">选择文件</el-button>
           </template>
         </el-upload>
       </el-form-item>
-      <el-form-item label="ligand" prop="file2List">
+      <el-form-item label="给体蛋白" prop="file2List">
         <el-upload
           ref="uploadFile2"
           action=""
@@ -55,36 +51,27 @@
           :http-request="handleRequest"
         >
           <template #trigger>
-            <el-button
-              icon="Upload"
-              type="primary"
-              >select file</el-button
-            >
+            <el-button icon="Upload" type="primary">选择文件</el-button>
           </template>
         </el-upload>
       </el-form-item>
       <el-form-item prop="taskname">
         <template #label>
-          <span>taskname</span>
-          <el-popover trigger="hover">
+          <span>任务名称</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>This is taskname.</div>
-          </el-popover>
+          </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item class="form-tools" label-width="0">
-        <el-button
-          type="primary"
-          @click="handleSubmitForm"
-          :loading="loading"
+        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" @click="handleResetForm"
-          >重置</el-button
-        >
+        <el-button type="default" @click="handleResetForm">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -103,21 +90,21 @@ export default {
         taskname: [
           {
             required: true,
-            message: "The taskname is required.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
         file1List: [
           {
             required: true,
-            message: "The file is required.",
+            message: "受体蛋白不能为空",
             trigger: "change",
           },
         ],
         file2List: [
           {
             required: true,
-            message: "The file is required.",
+            message: "给体蛋白不能为空",
             trigger: "change",
           },
         ],

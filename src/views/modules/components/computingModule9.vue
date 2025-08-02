@@ -8,27 +8,27 @@
       class="rule-form"
       @submit.native.prevent
     >
-      <el-form-item prop="taskname">
+      <el-form-item prop="taskname" :label-width="165">
         <template #label>
-          <span>taskname</span>
-          <el-popover trigger="hover">
+          <span>任务名称</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>This is taskname.</div>
-          </el-popover>
+          </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
-      <el-form-item prop="proteinsequence">
+      <el-form-item prop="proteinsequence" :label-width="165">
         <template #label>
-          <span>proteinsequence</span>
+          <span>蛋白质序列</span>
         </template>
         <el-input v-model="formObj.proteinsequence"></el-input>
       </el-form-item>
-      <el-form-item prop="ligandsequence">
+      <el-form-item prop="ligandsequence" :label-width="165">
         <template #label>
-          <span>ligandsequence</span>
+          <span>小分子信息（SMILES）</span>
         </template>
         <el-input v-model="formObj.ligandsequence"></el-input>
       </el-form-item>
@@ -55,21 +55,21 @@ export default {
         taskname: [
           {
             required: true,
-            message: "The taskname is required.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
         proteinsequence: [
           {
             required: true,
-            message: "The proteinsequence is required.",
+            message: "蛋白质序列不能为空",
             trigger: "blur",
           },
         ],
         ligandsequence: [
           {
             required: true,
-            message: "The ligandsequence is required.",
+            message: "小分子信息（SMILES）不能为空",
             trigger: "blur",
           },
         ],

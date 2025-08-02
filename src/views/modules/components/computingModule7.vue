@@ -10,25 +10,25 @@
     >
       <el-form-item prop="taskname">
         <template #label>
-          <span>taskname</span>
-          <el-popover trigger="hover">
+          <span>任务名称</span>
+          <!-- <el-popover trigger="hover">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
             <div>This is taskname.</div>
-          </el-popover>
+          </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
       </el-form-item>
       <el-form-item prop="proteinsequence1">
         <template #label>
-          <span>proteinsequence1</span>
+          <span>蛋白质序列1</span>
         </template>
         <el-input v-model="formObj.proteinsequence1"></el-input>
       </el-form-item>
       <el-form-item prop="proteinsequence2">
         <template #label>
-          <span>proteinsequence2</span>
+          <span>蛋白质序列2</span>
         </template>
         <el-input v-model="formObj.proteinsequence2"></el-input>
       </el-form-item>
@@ -71,21 +71,21 @@ export default {
         taskname: [
           {
             required: true,
-            message: "The taskname is required.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
         proteinsequence1: [
           {
             required: true,
-            message: "The proteinsequence1 is required.",
+            message: "蛋白质序列1不能为空",
             trigger: "blur",
           },
         ],
         proteinsequence2: [
           {
             required: true,
-            message: "The proteinsequence2 is required.",
+            message: "蛋白质序列2不能为空",
             trigger: "blur",
           },
         ],

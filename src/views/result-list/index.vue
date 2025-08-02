@@ -73,6 +73,64 @@
               </div>
             </el-descriptions-item>
           </el-descriptions>
+          <div v-if="row.codeflag === '1'">
+            <div class="desc score-wrap">
+              <h4 class="score-name">结构合理性评分</h4>
+              <el-popover
+                trigger="hover"
+                :width="400"
+                popper-class="score-popover"
+              >
+                <template #reference>
+                  <el-icon class="tip"><Warning /></el-icon>
+                </template>
+                <div>
+                  <span class="score-tip">90~100 (很高置信度)</span>
+                  <span>：预测非常准确，接近实验结构</span>
+                </div>
+                <div>
+                  <span class="score-tip">70~90 (高置信度)</span>
+                  <span>：预测通常准确，可用于大多数应用</span>
+                </div>
+                <div>
+                  <span class="score-tip">50~70 (低置信度)</span>
+                  <span>：预测可能有误差，需谨慎使用</span>
+                </div>
+                <div>
+                  <span class="score-tip">&lt; 50 (很低置信度)</span>
+                  <span>：预测不可靠，通常为无序区域</span>
+                </div>
+              </el-popover>
+              <h4>：</h4>
+              <h4 class="score-value">{{ row.plddt }}</h4>
+            </div>
+            <div class="desc score-wrap">
+              <h4 class="score-name">结合界面评分</h4>
+              <el-popover
+                trigger="hover"
+                :width="300"
+                popper-class="score-popover"
+              >
+                <template #reference>
+                  <el-icon class="tip"><Warning /></el-icon>
+                </template>
+                <div>
+                  <span class="score-tip">&gt; 0.8</span>
+                  <span>：高置信度，界面预测很可能准确</span>
+                </div>
+                <div>
+                  <span class="score-tip">0.5~0.8</span>
+                  <span>：中等置信度</span>
+                </div>
+                <div>
+                  <span class="score-tip">&lt; 0.5</span>
+                  <span>：低置信度，界面预测可能不准确</span>
+                </div>
+              </el-popover>
+              <h4>：</h4>
+              <h4 class="score-value">{{ row.iptm }}</h4>
+            </div>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="id" label="任务编号"></el-table-column>
@@ -200,7 +258,6 @@ export default {
         .then((data) => {
           this.tableData = data.data_list;
           this.total = data.total;
-          console.log(this.tableData);
         })
         .finally(() => {
           this.loading = false;
@@ -255,6 +312,20 @@ export default {
           color: #fff;
           background: #409eff;
           border-color: #409eff;
+        }
+      }
+      &.score-wrap {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        .score-name {
+        }
+        .tip {
+          margin: 0 3px;
+        }
+        .score-value {
+          font-size: 14px;
+          color: var(--el-color-primary);
         }
       }
     }
@@ -323,6 +394,11 @@ export default {
     :deep(.drawer-desc-value) {
       word-break: break-all;
     }
+  }
+}
+.score-popover {
+  .score-tip {
+    font-weight: 700;
   }
 }
 </style>

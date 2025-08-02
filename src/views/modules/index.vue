@@ -22,21 +22,34 @@
 import { defineAsyncComponent } from "vue";
 export default {
   data() {
+    // 使用import.meta.glob预加载所有模块
+    const modules = import.meta.glob("./components/computingModule*.vue");
+    // 创建moduleMap对象
+    const moduleMap = {};
+    Object.keys(modules).forEach((path) => {
+      // 从路径中提取模块编号
+      const match = path.match(/computingModule(\d+)\.vue$/);
+      if (match && match[1]) {
+        const moduleId = parseInt(match[1]);
+        moduleMap[moduleId] = modules[path]; // 直接使用Vite提供的动态导入函数
+      }
+    });
     return {
       info: {},
       id: this.$route.params.id,
-      moduleMap: {
-        0: () => import("./components/computingModule0.vue"),
-        1: () => import("./components/computingModule1.vue"),
-        2: () => import("./components/computingModule2.vue"),
-        3: () => import("./components/computingModule3.vue"),
-        4: () => import("./components/computingModule4.vue"),
-        5: () => import("./components/computingModule5.vue"),
-        6: () => import("./components/computingModule6.vue"),
-        7: () => import("./components/computingModule7.vue"),
-        8: () => import("./components/computingModule8.vue"),
-        9: () => import("./components/computingModule9.vue"),
-      },
+      moduleMap,
+      // moduleMap: {
+      //   0: () => import("./components/computingModule0.vue"),
+      //   1: () => import("./components/computingModule1.vue"),
+      //   2: () => import("./components/computingModule2.vue"),
+      //   3: () => import("./components/computingModule3.vue"),
+      //   4: () => import("./components/computingModule4.vue"),
+      //   5: () => import("./components/computingModule5.vue"),
+      //   6: () => import("./components/computingModule6.vue"),
+      //   7: () => import("./components/computingModule7.vue"),
+      //   8: () => import("./components/computingModule8.vue"),
+      //   9: () => import("./components/computingModule9.vue"),
+      // },
     };
   },
   computed: {
