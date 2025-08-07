@@ -8,6 +8,31 @@
       class="rule-form"
       @submit.native.prevent
     >
+      <el-form-item label="输入文件" prop="file1List">
+        <el-upload
+          ref="uploadFile1"
+          action=""
+          :multiple="false"
+          :limit="1"
+          :on-change="
+            (file, fileList) =>
+              handleChangeFileList(file, fileList, 'file1List')
+          "
+          :on-remove="
+            (file, fileList) =>
+              handleChangeFileList(file, fileList, 'file1List')
+          "
+          :on-exceed="
+            (file, fileList) => handleExceed(file, fileList, 'file1List')
+          "
+          :file-list="formObj.file1List"
+          :http-request="handleRequest"
+        >
+          <template #trigger>
+            <el-button icon="Upload" type="primary">选择文件</el-button>
+          </template>
+        </el-upload>
+      </el-form-item>
       <el-form-item prop="taskname">
         <template #label>
           <span>任务名称</span>
@@ -15,22 +40,10 @@
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
-            <div>This is taskname.</div>
+            <div>这是任务名称</div>
           </el-popover> -->
         </template>
         <el-input v-model="formObj.taskname"></el-input>
-      </el-form-item>
-      <el-form-item prop="proteinsequence">
-        <template #label>
-          <span>蛋白质序列</span>
-        </template>
-        <el-input v-model="formObj.proteinsequence"></el-input>
-      </el-form-item>
-      <el-form-item prop="dnasequence">
-        <template #label>
-          <span>DNA序列</span>
-        </template>
-        <el-input v-model="formObj.dnasequence"></el-input>
       </el-form-item>
       <el-form-item class="form-tools" label-width="0">
         <el-button type="primary" @click="handleSubmitForm" :loading="loading"
@@ -48,29 +61,21 @@ export default {
     return {
       formObj: {
         taskname: "",
-        proteinsequence: "",
-        dnasequence: "",
+        file1List: [],
       },
       formRules: {
         taskname: [
           {
             required: true,
-            message: "任务名称不能为空.",
+            message: "任务名称不能为空",
             trigger: "blur",
           },
         ],
-        proteinsequence: [
+        file1List: [
           {
             required: true,
-            message: "蛋白质序列不能为空.",
-            trigger: "blur",
-          },
-        ],
-        dnasequence: [
-          {
-            required: true,
-            message: "DNA序列不能为空.",
-            trigger: "blur",
+            message: "输入文件不能为空",
+            trigger: "change",
           },
         ],
       },
@@ -78,19 +83,37 @@ export default {
     };
   },
   methods: {
+    //单文件上传时新文件替换已选文件
+    handleExceed(file, _fileList, name) {
+      this.formObj[name] = [
+        {
+          raw: file[0],
+          name: file[0].name,
+        },
+      ];
+    },
+    //单、多文件上传
+    handleChangeFileList(_file, fileList, name) {
+      this.formObj[name] = fileList;
+      this.$refs.formRef.validateField(name);
+    },
+    //覆盖默认的上传行为,不能删掉
+    handleRequest(params) {
+      console.log(params);
+    },
     handleSubmitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          const param = {
+          let formData = new FormData();
+          this.formObj.file1List.forEach((item) => {
+            formData.append("file1", item.raw);
+          });
+          const params = {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
-            subparam: {
-              proteinsequence: this.formObj.proteinsequence,
-              dnasequence: this.formObj.dnasequence,
-            },
+            subparam: {},
           };
-          let formData = new FormData();
-          formData.append("param", JSON.stringify(param));
+          formData.append("param", JSON.stringify(params));
           const headers = {
             "Content-Type": "multipart/form-data",
           };
@@ -111,6 +134,8 @@ export default {
       });
     },
     handleResetForm() {
+      this.$refs.uploadFile1.clearFiles();
+      this.formObj.file1List = [];
       this.$refs.formRef.resetFields();
     },
   },
@@ -122,6 +147,25 @@ export default {
   .rule-form {
     width: 800px;
     margin: 20px auto 0;
+    .upload-file {
+      position: relative;
+      .file-wrap {
+        position: absolute;
+        left: 120px;
+        top: 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .close {
+          margin-left: 10px;
+          font-size: 20px;
+          cursor: pointer;
+          &:hover {
+            color: #409eff;
+          }
+        }
+      }
+    }
     :deep(.el-form-item__label) {
       display: flex;
       justify-content: flex-end;

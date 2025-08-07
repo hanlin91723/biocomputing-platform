@@ -88,7 +88,7 @@
       @close="isCancel"
     >
       <el-form
-        label-width="100px"
+        label-width="110px"
         :model="roleInfo"
         :rules="roleInfoRules"
         ref="roleInfo"

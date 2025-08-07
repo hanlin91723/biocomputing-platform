@@ -4,7 +4,7 @@
       :model="formObj"
       :rules="formRules"
       ref="formRef"
-      label-width="150px"
+      label-width="110px"
       class="rule-form"
       @submit.native.prevent
     >

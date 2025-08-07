@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue";
 
 export default defineConfig(() => {
   return {
-    base: "./", //生产环境服务的公共基础路径
+    base: "/", //生产环境服务的公共基础路径
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
@@ -28,7 +28,7 @@ export default defineConfig(() => {
       https: false, // 是否开启 https
       proxy: {
         "/api": {
-          target: "http://36.103.199.181:8888", //微服务端
+          target: "http://36.103.199.39:8888", //微服务端
           // target: "http://119.27.172.203:5000", //微服务端
           // target: "http://192.168.2.255:8090", //本地
           changeOrigin: true,

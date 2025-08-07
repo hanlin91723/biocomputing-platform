@@ -64,7 +64,7 @@
         ref="form"
         :rules="formRules"
         :model="formData"
-        label-width="120px"
+        label-width="110px"
       >
         <el-form-item class="form-item" prop="oldPwd" label="当前密码">
           <el-input

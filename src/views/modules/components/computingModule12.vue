@@ -1,5 +1,9 @@
 <template>
   <div class="computing-module">
+    <el-steps :active="currentStep" finish-status="success" simple>
+      <el-step title="第一步" />
+      <el-step title="第二步" />
+    </el-steps>
     <el-form
       :model="formObj"
       :rules="formRules"
@@ -8,11 +12,12 @@
       class="rule-form"
       @submit.native.prevent
     >
-      <el-form-item label="PDB文件" prop="file1List">
+      <el-form-item label="输入文件" prop="file1List" v-if="currentStep === 0">
         <el-upload
           ref="uploadFile1"
           action=""
-          multiple
+          :multiple="false"
+          :limit="1"
           :on-change="
             (file, fileList) =>
               handleChangeFileList(file, fileList, 'file1List')
@@ -32,23 +37,43 @@
           </template>
         </el-upload>
       </el-form-item>
-      <el-form-item prop="taskname">
-        <template #label>
-          <span>任务名称</span>
-        </template>
-        <el-input v-model="formObj.taskname"></el-input>
-      </el-form-item>
-      <el-form-item prop="chainid">
-        <template #label>
-          <span>链名</span>
-        </template>
-        <el-input v-model="formObj.chainid"></el-input>
-      </el-form-item>
-      <el-form-item class="form-tools" label-width="0">
-        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
-          >确定</el-button
+      <template v-else-if="currentStep === 1">
+        <el-form-item prop="taskname">
+          <template #label>
+            <span>任务名称</span>
+          </template>
+          <el-input v-model="formObj.taskname"></el-input>
+        </el-form-item>
+
+        <!-- 动态生成链的表单项 -->
+        <el-form-item
+          v-for="chain in chain_list"
+          :key="chain"
+          :prop="chain"
+          :label="chain"
         >
-        <el-button type="default" @click="handleResetForm">重置</el-button>
+          <el-input
+            v-model="formObj[chain]"
+            maxlength="1"
+            placeholder="1个字符，推荐大写字母或数字"
+          ></el-input>
+        </el-form-item>
+      </template>
+      <el-form-item class="form-tools" label-width="0">
+        <el-button
+          type="primary"
+          @click="next"
+          v-if="currentStep === 0"
+          :loading="loading"
+          >下一步</el-button
+        >
+        <template v-else-if="currentStep === 1">
+          <el-button type="primary" @click="prev">上一步</el-button>
+          <el-button type="primary" @click="handleSubmitForm" :loading="loading"
+            >确定</el-button
+          >
+          <el-button type="default" @click="handleResetForm">重置</el-button>
+        </template>
       </el-form-item>
     </el-form>
   </div>
@@ -58,10 +83,12 @@
 export default {
   data() {
     return {
+      currentStep: 0,
+      chain_list: [], // 添加这一行，用于存储链信息
       formObj: {
         taskname: "",
-        chainid: "AHL",
         file1List: [],
+        // 动态表单项的值会在后面添加
       },
       formRules: {
         taskname: [
@@ -71,17 +98,10 @@ export default {
             trigger: "blur",
           },
         ],
-        chainid: [
-          {
-            required: true,
-            message: "链名不能为空",
-            trigger: "blur",
-          },
-        ],
         file1List: [
           {
             required: true,
-            message: "PDB文件不能为空",
+            message: "输入文件不能为空",
             trigger: "change",
           },
         ],
@@ -90,6 +110,57 @@ export default {
     };
   },
   methods: {
+    prev() {
+      this.currentStep = 0;
+    },
+    next() {
+      this.$refs.formRef.validateField("file1List", (valid) => {
+        if (valid) {
+          // 验证通过，进入下一步
+          let formData = new FormData();
+          this.formObj.file1List.forEach((item) => {
+            formData.append("file1", item.raw);
+          });
+          const headers = {
+            "Content-Type": "multipart/form-data",
+          };
+          this.loading = true;
+          this.$axios
+            .post("/algo/chain_rename_step1", formData, { headers })
+            .then((data) => {
+              this.chain_list = data.chain_list; // 保存链列表
+              // 为每个链初始化表单项 - Vue3直接赋值
+              this.chain_list.forEach((chain) => {
+                // 直接赋值，Vue3会自动跟踪这些新属性
+                this.formObj[chain] = "";
+                // 同样直接为formRules添加验证规则
+                this.formRules[chain] = [
+                  {
+                    required: true,
+                    message: `${chain}不能为空`,
+                    trigger: "blur",
+                  },
+                  {
+                    validator: (_rule, value, callback) => {
+                      if (!/^[A-Z0-9]$/.test(value)) {
+                        callback(new Error("请输入大写字母或数字"));
+                      } else {
+                        callback();
+                      }
+                    },
+                    trigger: "blur",
+                  },
+                ];
+              });
+              this.currentStep = 1;
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        }
+        // 验证不通过时不执行任何操作，表单会自动显示错误信息
+      });
+    },
     //单文件上传时新文件替换已选文件
     handleExceed(file, _fileList, name) {
       this.formObj[name] = [
@@ -115,13 +186,17 @@ export default {
           this.formObj.file1List.forEach((item) => {
             formData.append("file1", item.raw);
           });
-          const params = {
+          let new_chain_ids = Object.assign({}, this.formObj);
+          delete new_chain_ids.taskname;
+          delete new_chain_ids.file1List;
+
+          const params = Object.assign({}, this.formObj, {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
             subparam: {
-              chainid: this.formObj.chainid,
+              new_chain_ids,
             },
-          };
+          });
           formData.append("param", JSON.stringify(params));
           const headers = {
             "Content-Type": "multipart/form-data",
@@ -143,8 +218,8 @@ export default {
       });
     },
     handleResetForm() {
-      this.$refs.uploadFile1.clearFiles();
-      this.formObj.file1List = [];
+      // this.$refs.uploadFile1.clearFiles();
+      // this.formObj.file1List = [];
       this.$refs.formRef.resetFields();
     },
   },

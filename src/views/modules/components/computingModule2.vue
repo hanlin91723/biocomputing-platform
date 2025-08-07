@@ -4,7 +4,7 @@
       :model="formObj"
       :rules="formRules"
       ref="formRef"
-      label-width="150px"
+      label-width="110px"
       class="rule-form"
       @submit.native.prevent
     >
@@ -29,11 +29,7 @@
           :http-request="handleRequest"
         >
           <template #trigger>
-            <el-button
-              icon="Upload"
-              type="primary"
-              >select file</el-button
-            >
+            <el-button icon="Upload" type="primary">select file</el-button>
           </template>
         </el-upload>
       </el-form-item>
@@ -54,11 +50,7 @@
           :http-request="handleRequest"
         >
           <template #trigger>
-            <el-button
-              icon="Upload"
-              type="primary"
-              >select file</el-button
-            >
+            <el-button icon="Upload" type="primary">select file</el-button>
           </template>
         </el-upload>
       </el-form-item>
@@ -105,15 +97,10 @@
         ></el-input>
       </el-form-item>
       <el-form-item class="form-tools" label-width="0">
-        <el-button
-          type="primary"
-          @click="handleSubmitForm"
-          :loading="loading"
+        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" @click="handleResetForm"
-          >重置</el-button
-        >
+        <el-button type="default" @click="handleResetForm">重置</el-button>
       </el-form-item>
     </el-form>
   </div>

@@ -6,7 +6,7 @@
       ref="formRef"
       class="rule-form"
       @submit.native.prevent
-      label-width="150px"
+      label-width="110px"
       label-position="top"
     >
       <el-form-item label="Input mode" prop="input_mode">
@@ -113,11 +113,7 @@ DIVMT..."
             :http-request="handleRequest"
           >
             <template #trigger>
-              <el-button
-                icon="Upload"
-                type="primary"
-                >select file</el-button
-              >
+              <el-button icon="Upload" type="primary">select file</el-button>
             </template>
           </el-upload>
         </el-form-item>
@@ -289,7 +285,7 @@ DIVMT..."
       <el-form-item prop="min_subjects">
         <template #label>
           <span>OASis prevalence threshold</span>
-          <el-popover trigger="hover" :popper-style="{width: '600px'}">
+          <el-popover trigger="hover" :popper-style="{ width: '600px' }">
             <template #reference>
               <el-icon class="tip"><Warning /></el-icon>
             </template>
@@ -303,10 +299,7 @@ DIVMT..."
             </div>
           </el-popover>
         </template>
-        <el-radio-group
-          v-model="formObj.min_subjects"
-          class="radio-group"
-        >
+        <el-radio-group v-model="formObj.min_subjects" class="radio-group">
           <el-radio value="loose">loose (≥1% subjects)</el-radio>
           <el-radio value="relaxed">relaxed (≥10% subjects)</el-radio>
           <el-radio value="medium">medium (≥50% subjects)</el-radio>
@@ -332,15 +325,10 @@ DIVMT..."
         and accessible under a secret URL.
       </div>
       <el-form-item class="form-tools" label-width="0">
-        <el-button
-          type="primary"
-          @click="handleSubmitForm"
-          :loading="loading"
+        <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
         >
-        <el-button type="default" @click="handleResetForm"
-          >重置</el-button
-        >
+        <el-button type="default" @click="handleResetForm">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
