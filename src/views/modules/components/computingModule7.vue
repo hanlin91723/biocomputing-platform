@@ -32,6 +32,18 @@
         </template>
         <el-input v-model="formObj.proteinsequence2"></el-input>
       </el-form-item>
+      <el-form-item prop="proteinsequence3">
+        <template #label>
+          <span>蛋白质序列3</span>
+        </template>
+        <el-input v-model="formObj.proteinsequence3"></el-input>
+      </el-form-item>
+      <el-form-item prop="proteinsequence4">
+        <template #label>
+          <span>蛋白质序列4</span>
+        </template>
+        <el-input v-model="formObj.proteinsequence4"></el-input>
+      </el-form-item>
       <!-- <el-form-item prop="seeds">
         <template #label>
           <span>seeds</span>
@@ -66,6 +78,8 @@ export default {
         // seeds: "101",
         proteinsequence1: "",
         proteinsequence2: "",
+        proteinsequence3: "",
+        proteinsequence4: "",
       },
       formRules: {
         taskname: [
@@ -77,15 +91,29 @@ export default {
         ],
         proteinsequence1: [
           {
-            required: true,
+            // required: true,
             message: "蛋白质序列1不能为空",
             trigger: "blur",
           },
         ],
         proteinsequence2: [
           {
-            required: true,
+            // required: true,
             message: "蛋白质序列2不能为空",
+            trigger: "blur",
+          },
+        ],
+        proteinsequence3: [
+          {
+            // required: true,
+            message: "蛋白质序列3不能为空",
+            trigger: "blur",
+          },
+        ],
+        proteinsequence4: [
+          {
+            // required: true,
+            message: "蛋白质序列4不能为空",
             trigger: "blur",
           },
         ],
@@ -97,12 +125,25 @@ export default {
     handleSubmitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
+          const arr = [
+            this.formObj.proteinsequence1,
+            this.formObj.proteinsequence2,
+            this.formObj.proteinsequence3,
+            this.formObj.proteinsequence4,
+          ];
+          const len = arr.filter((v) => v && v.trim() !== "").length;
+          if (len < 2) {
+            this.$message.error("至少填写两个蛋白质序列");
+            return;
+          }
           const param = {
             algonum: this.$route.params.id,
             taskname: this.formObj.taskname,
             subparam: {
               proteinsequence1: this.formObj.proteinsequence1,
               proteinsequence2: this.formObj.proteinsequence2,
+              proteinsequence3: this.formObj.proteinsequence3,
+              proteinsequence4: this.formObj.proteinsequence4,
               // seeds: this.formObj.seeds,
             },
           };

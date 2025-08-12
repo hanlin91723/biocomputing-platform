@@ -310,12 +310,12 @@ export default {
           delete new_chain_ids.file1List;
           delete new_chain_ids.rename_flag;
           delete new_chain_ids.renumber_flag;
+          const keyNameArr = Object.keys(new_chain_ids);
           if (
             this.formObj.rename_flag === "1" &&
-            Object.keys(new_chain_ids).every((key) => new_chain_ids[key] === "")
+            keyNameArr.every((key) => new_chain_ids[key] === "")
           ) {
-            const keyNames = Object.keys(new_chain_ids).join("、");
-            this.$message.error(`${keyNames}请至少填写一个选项`);
+            this.$message.error(`${keyNameArr.join("、")}请至少填写一个选项`);
             return;
           }
           let formData = new FormData();
