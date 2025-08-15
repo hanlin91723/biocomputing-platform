@@ -163,81 +163,6 @@ export default {
     };
   },
   methods: {
-    next() {
-      this.$refs.formRef.validateField("file1List", (valid) => {
-        if (valid) {
-          // 验证通过，进入下一步
-          let formData = new FormData();
-          this.formObj.file1List.forEach((item) => {
-            formData.append("file1", item.raw);
-          });
-          const headers = {
-            "Content-Type": "multipart/form-data",
-          };
-          this.loading = true;
-          this.$axios
-            .post("/algo/chain_rename_step1", formData, { headers })
-            .then((data) => {
-              this.chainList = data.chain_list; // 保存链列表
-              // 为每个链初始化表单项 - Vue3直接赋值
-              this.chainList.forEach((chain) => {
-                // 直接赋值，Vue3会自动跟踪这些新属性
-                this.formObj[chain] = "";
-                // 同样直接为formRules添加验证规则
-                this.formRules[chain] = [
-                  {
-                    required: true,
-                    message: `${chain}不能为空`,
-                    trigger: "blur",
-                  },
-                  {
-                    validator: (_rule, value, callback) => {
-                      if (!/^[A-Z0-9]$/.test(value)) {
-                        callback(new Error("请输入大写字母或数字"));
-                      } else {
-                        callback();
-                      }
-                    },
-                    trigger: "blur",
-                  },
-                ];
-              });
-              this.currentStep = 1;
-            })
-            .finally(() => {
-              this.loading = false;
-
-              this.chainList = ["A", "B", "C", "D"]; // 保存链列表
-
-              // 为每个链初始化表单项 - Vue3直接赋值
-              this.chainList.forEach((chain) => {
-                // 直接赋值，Vue3会自动跟踪这些新属性
-                this.formObj[chain] = "";
-                // 同样直接为formRules添加验证规则
-                this.formRules[chain] = [
-                  {
-                    required: true,
-                    message: `${chain}不能为空`,
-                    trigger: "blur",
-                  },
-                  {
-                    validator: (_rule, value, callback) => {
-                      if (!/^[A-Z0-9]$/.test(value)) {
-                        callback(new Error("请输入大写字母或数字"));
-                      } else {
-                        callback();
-                      }
-                    },
-                    trigger: "blur",
-                  },
-                ];
-              });
-              this.currentStep = 1;
-            });
-        }
-        // 验证不通过时不执行任何操作，表单会自动显示错误信息
-      });
-    },
     //单文件上传时新文件替换已选文件
     handleExceed(file, _fileList, name) {
       this.formObj[name] = [
@@ -269,7 +194,6 @@ export default {
       this.$axios
         .post("/algo/proteinx_file_handle_step1", formData, { headers })
         .then((data) => {
-          console.log(data);
           this.showFlag = true;
           this.parserList = data.parser_list;
           this.chainList = data.chain_list; // 保存链列表
@@ -286,7 +210,6 @@ export default {
               // },
               {
                 validator: (_rule, value, callback) => {
-                  console.log(_rule, value);
                   if (value === "") {
                     callback();
                   }

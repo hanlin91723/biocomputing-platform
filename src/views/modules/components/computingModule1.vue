@@ -4,7 +4,7 @@
       :model="formObj"
       :rules="formRules"
       ref="formRef"
-      label-width="110px"
+      label-width="130px"
       class="rule-form"
       @submit.native.prevent
     >
@@ -12,7 +12,8 @@
         <el-upload
           ref="uploadFile1"
           action=""
-          multiple
+          :multiple="false"
+          :limit="1"
           :on-change="
             (file, fileList) =>
               handleChangeFileList(file, fileList, 'file1List')
@@ -32,70 +33,45 @@
           </template>
         </el-upload>
       </el-form-item>
-      <el-form-item prop="taskname">
-        <template #label>
-          <span>任务名称</span>
-          <!-- <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>这是任务名称</div>
-          </el-popover> -->
-        </template>
-        <el-input v-model="formObj.taskname"></el-input>
-      </el-form-item>
-      <el-form-item prop="partners">
-        <template #label>
-          <span>对接对象</span>
-          <!-- <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>A_HL表示文件中A链与HL链对接</div>
-          </el-popover> -->
-        </template>
-        <el-input v-model="formObj.partners"></el-input>
-      </el-form-item>
-      <el-form-item prop="translation">
-        <template #label>
-          <span>平移参数</span>
-          <!-- <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>
-              magnitude of the random translation applied (in Angstroms)
+      <template v-if="showFlag">
+        <el-form-item label="结构信息解析结果">
+          <el-descriptions
+            class="parser-wrap"
+            :column="1"
+            border
+            :label-width="100"
+            v-for="item in parserList"
+            :key="item.model"
+          >
+            <el-descriptions-item label="Model" class-name="parser">{{
+              item.model
+            }}</el-descriptions-item>
+            <div v-for="chain in item.chain_list" :key="chain.chain_id">
+              <el-descriptions-item label="Chain ID" class-name="parser">{{
+                chain.chain_id
+              }}</el-descriptions-item>
+              <el-descriptions-item label="Sequence" class-name="parser">{{
+                chain.sequence
+              }}</el-descriptions-item>
             </div>
-          </el-popover> -->
-        </template>
-        <el-input v-model="formObj.translation"></el-input>
-      </el-form-item>
-      <el-form-item prop="rotation">
-        <template #label>
-          <span>旋转参数</span>
-          <!-- <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>magnitude of the random rotation applied (in degrees)</div>
-          </el-popover> -->
-        </template>
-        <el-input v-model="formObj.rotation"></el-input>
-      </el-form-item>
-      <!-- <el-form-item prop="jobs">
-        <template #label>
-          <span>jobs</span>
-          <el-popover trigger="hover">
-            <template #reference>
-              <el-icon class="tip"><Warning /></el-icon>
-            </template>
-            <div>the number of jobs (trajectories) to perform</div>
-          </el-popover>
-        </template>
-        <el-input
-          v-model="formObj.jobs"
-        ></el-input>
-      </el-form-item> -->
+          </el-descriptions>
+        </el-form-item>
+        <el-form-item label="任务名称" prop="taskname">
+          <el-input v-model="formObj.taskname"></el-input>
+        </el-form-item>
+        <el-form-item label="对接对象" prop="partners">
+          <el-input v-model="formObj.partners"></el-input>
+        </el-form-item>
+        <el-form-item label="平移参数" prop="translation">
+          <el-input v-model="formObj.translation"></el-input>
+        </el-form-item>
+        <el-form-item label="平移参数" prop="rotation">
+          <el-input v-model="formObj.rotation"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="jobs" prop="jobs">
+          <el-input v-model="formObj.jobs"></el-input>
+        </el-form-item> -->
+      </template>
       <el-form-item class="form-tools" label-width="0">
         <el-button type="primary" @click="handleSubmitForm" :loading="loading"
           >确定</el-button
@@ -110,6 +86,8 @@
 export default {
   data() {
     return {
+      showFlag: false,
+      parserList: [],
       formObj: {
         taskname: "",
         jobs: "1",
@@ -155,6 +133,23 @@ export default {
     //覆盖默认的上传行为,不能删掉
     handleRequest(params) {
       console.log(params);
+      let formData = new FormData();
+      this.formObj.file1List.forEach((item) => {
+        formData.append("file1", item.raw);
+      });
+      const param = {
+        algonum: this.$route.params.id,
+      };
+      formData.append("param", JSON.stringify(param));
+      const headers = {
+        "Content-Type": "multipart/form-data",
+      };
+      this.$axios
+        .post("/algo/proteinx_file_handle_step1", formData, { headers })
+        .then((data) => {
+          this.showFlag = true;
+          this.parserList = data.parser_list;
+        });
     },
     handleSubmitForm() {
       this.$refs.formRef.validate((valid) => {
