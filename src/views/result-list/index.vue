@@ -75,7 +75,7 @@
           </el-descriptions>
           <div v-if="row.codeflag === '1'">
             <div class="desc score-wrap">
-              <h4 class="score-name">结构合理性评分标准</h4>
+              <h4 class="score-name">结构合理性评分</h4>
               <el-popover
                 trigger="hover"
                 :width="400"
@@ -105,7 +105,7 @@
               <h4 class="score-value">{{ row.plddt }}</h4>
             </div>
             <div class="desc score-wrap">
-              <h4 class="score-name">结合界面评分标准</h4>
+              <h4 class="score-name">结合界面评分</h4>
               <el-popover
                 trigger="hover"
                 :width="300"
@@ -133,7 +133,7 @@
           </div>
           <div v-else-if="row.codeflag === '2'">
             <div class="desc score-wrap">
-              <h4 class="score-name">亲和能力评分说明</h4>
+              <h4 class="score-name">亲和能力评分</h4>
               <el-popover
                 trigger="hover"
                 :width="300"
@@ -143,6 +143,23 @@
                   <el-icon class="tip"><Warning /></el-icon>
                 </template>
                 <div>越低说明复合物越稳定，亲和能力越高</div>
+              </el-popover>
+              <h4>：</h4>
+              <h4 class="score-value">{{ row.total_score }}</h4>
+            </div>
+          </div>
+          <div v-else-if="row.codeflag === '3'">
+            <div class="desc score-wrap">
+              <h4 class="score-name">基于能量打分</h4>
+              <el-popover
+                trigger="hover"
+                :width="300"
+                popper-class="score-popover"
+              >
+                <template #reference>
+                  <el-icon class="tip"><Warning /></el-icon>
+                </template>
+                <div>刚性对接打分</div>
               </el-popover>
               <h4>：</h4>
               <h4 class="score-value">{{ row.total_score }}</h4>
