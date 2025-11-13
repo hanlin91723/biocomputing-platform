@@ -28,7 +28,7 @@ export default defineConfig(() => {
       https: false, // 是否开启 https
       proxy: {
         "/api": {
-          target: "http://36.103.199.61:8888", //微服务端
+          target: "http://36.103.199.69:8888", //微服务端
           // target: "http://119.27.172.203:5000", //微服务端
           // target: "http://192.168.2.255:8090", //本地
           changeOrigin: true,

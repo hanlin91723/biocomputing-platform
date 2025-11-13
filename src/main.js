@@ -35,7 +35,7 @@ app.config.globalProperties.$dayjs = dayjs;
 app.config.globalProperties.$axios = http;
 app.config.globalProperties.$userInfo = {}; //全局变量用户信息
 app.config.globalProperties.$urlPrev =
-  import.meta.env.PROD ? "" : "http://119.27.172.203:8086"; //图片和下载文件的路径(前半截)
+  import.meta.env.PROD ? "" : "http://36.103.199.69:8888"; //图片和下载文件的路径(前半截)
 
 NProgress.inc(0.2);
 NProgress.configure({

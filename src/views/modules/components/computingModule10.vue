@@ -9,29 +9,38 @@
       @submit.native.prevent
     >
       <el-form-item label="输入文件" prop="file1List">
-        <el-upload
-          ref="uploadFile1"
-          action=""
-          :multiple="false"
-          :limit="1"
-          :on-change="
-            (file, fileList) =>
-              handleChangeFileList(file, fileList, 'file1List')
-          "
-          :on-remove="
-            (file, fileList) =>
-              handleChangeFileList(file, fileList, 'file1List')
-          "
-          :on-exceed="
-            (file, fileList) => handleExceed(file, fileList, 'file1List')
-          "
-          :file-list="formObj.file1List"
-          :http-request="handleRequest"
-        >
-          <template #trigger>
-            <el-button icon="Upload" type="primary">选择文件</el-button>
-          </template>
-        </el-upload>
+        <el-space alignment="stretch" :size="20">
+          <el-upload
+            ref="uploadFile1"
+            action=""
+            :multiple="false"
+            :limit="1"
+            :on-change="
+              (file, fileList) =>
+                handleChangeFileList(file, fileList, 'file1List')
+            "
+            :on-remove="
+              (file, fileList) =>
+                handleChangeFileList(file, fileList, 'file1List')
+            "
+            :on-exceed="
+              (file, fileList) => handleExceed(file, fileList, 'file1List')
+            "
+            :file-list="formObj.file1List"
+            :http-request="handleRequest"
+          >
+            <template #trigger>
+              <el-button icon="Upload" type="primary">选择文件</el-button>
+            </template>
+          </el-upload>
+          <el-button
+            icon="Download"
+            type="primary"
+            plain
+            @click="handleDownloadTemplate"
+            >下载模板</el-button
+          >
+        </el-space>
       </el-form-item>
       <el-form-item prop="taskname">
         <template #label>
@@ -138,6 +147,19 @@ export default {
       this.formObj.file1List = [];
       this.$refs.formRef.resetFields();
     },
+    handleDownloadTemplate() {
+      const url =
+        this.$urlPrev +
+        "/download/usr/local/bin/BCIService/algo/template/10/0_template.csv";
+      // 创建临时链接元素触发下载
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "高通量模板.csv"; // 设置下载文件名
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
   },
 };
 </script>
@@ -147,25 +169,6 @@ export default {
   .rule-form {
     width: 800px;
     margin: 20px auto 0;
-    .upload-file {
-      position: relative;
-      .file-wrap {
-        position: absolute;
-        left: 120px;
-        top: 0;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        .close {
-          margin-left: 10px;
-          font-size: 20px;
-          cursor: pointer;
-          &:hover {
-            color: #409eff;
-          }
-        }
-      }
-    }
     :deep(.el-form-item__label) {
       display: flex;
       justify-content: flex-end;
